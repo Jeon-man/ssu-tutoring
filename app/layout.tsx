@@ -11,16 +11,18 @@ import { baseUrl } from './sitemap'
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: 'Next.js Portfolio Starter',
-    template: '%s | Next.js Portfolio Starter',
+    default: '강의 자료',
+    template: '%s | 강의 자료',
   },
-  description: 'This is my portfolio.',
+  description:
+    '프로그래밍1·컴퓨터 시스템 강의 자료 및 보충 자료를 모아 둔 페이지입니다.',
   openGraph: {
-    title: 'My Portfolio',
-    description: 'This is my portfolio.',
+    title: '강의 자료',
+    description:
+      '프로그래밍1·컴퓨터 시스템 강의 자료 및 보충 자료를 모아 둔 페이지입니다.',
     url: baseUrl,
-    siteName: 'My Portfolio',
-    locale: 'en_US',
+    siteName: '강의 자료',
+    locale: 'ko_KR',
     type: 'website',
   },
   robots: {
@@ -45,15 +47,15 @@ export default function RootLayout({
 }) {
   return (
     <html
-      lang="en"
+      lang="ko"
       className={cx(
         'text-black bg-white dark:text-white dark:bg-black',
         GeistSans.variable,
         GeistMono.variable
       )}
     >
-      <body className="antialiased max-w-xl mx-4 mt-8 lg:mx-auto">
-        <main className="flex-auto min-w-0 mt-6 flex flex-col px-2 md:px-0">
+      <body className="antialiased mx-auto mt-8 w-full max-w-3xl px-4 pb-20 sm:px-6">
+        <main className="mt-6 flex min-w-0 flex-auto flex-col">
           <Navbar />
           {children}
           <Footer />

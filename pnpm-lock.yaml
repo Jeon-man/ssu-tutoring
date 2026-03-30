@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@tailwindcss/oxide-darwin-arm64': ^4.2.2
   '@tailwindcss/postcss': 4.0.0-alpha.13
   '@types/node': 20.11.17
   '@types/react': 18.2.55
@@ -33,6 +34,9 @@ dependencies:
   sugar-high: 0.6.1
   tailwindcss: 4.0.0-alpha.13
   typescript: 5.9.3
+
+devDependencies:
+  '@tailwindcss/oxide-darwin-arm64': 4.2.2
 
 packages:
 
@@ -434,6 +438,13 @@ packages:
     dev: false
     optional: true
 
+  /@tailwindcss/oxide-darwin-arm64/4.2.2:
+    resolution: {integrity: sha512-iq9Qjr6knfMpZHj55/37ouZeykwbDqF21gPFtfnhCCKGDcPI/21FKC9XdMO/XyBM7qKORx6UIhGgg6jLl7BZlg==}
+    engines: {node: '>= 20'}
+    cpu: [arm64]
+    os: [darwin]
+    dev: true
+
   /@tailwindcss/oxide-darwin-x64/4.0.0-alpha.13:
     resolution: {integrity: sha512-/DmZbESO1Q3fVfi3cx3aYyt0TyvFQb1wTU+lG08BOnuUvY8g5bHsCVsN9jxt1yqItVQ2PJIbOhZT+BrZ066iBg==}
     engines: {node: '>= 10'}
@@ -552,13 +563,13 @@ packages:
   /@types/hast/3.0.4:
     resolution: {integrity: sha512-WPs+bbQw5aCj+x6laNGWLH3wviHtoCv/P3+otBhbOhJgG8qtpdAMlTCxLtsTWA7LH1Oh/bFCHsBn0TPS5m30EQ==}
     dependencies:
-      '@types/unist': 2.0.11
+      '@types/unist': 3.0.3
     dev: false
 
   /@types/mdast/4.0.4:
     resolution: {integrity: sha512-kGaNbPh1k7AFzgpud/gMdvIm5xuECykRR+JnWKQno9TAXVa6WIVCGTPvYGekIDL4uwCZQSYbUxNBSb1aUo79oA==}
     dependencies:
-      '@types/unist': 2.0.11
+      '@types/unist': 3.0.3
     dev: false
 
   /@types/mdx/2.0.13:

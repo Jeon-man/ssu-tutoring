@@ -33,6 +33,11 @@ html {
   min-width: 360px;
 }
 
+body {
+  overflow-wrap: break-word;
+  word-break: keep-all;
+}
+
 .prose .anchor {
   @apply absolute invisible no-underline;
 
@@ -61,7 +66,8 @@ html {
 }
 
 .prose pre {
-  @apply bg-neutral-50 dark:bg-neutral-900 rounded-lg overflow-x-auto border border-neutral-200 dark:border-neutral-900 py-2 px-3 text-sm;
+  @apply bg-neutral-50 dark:bg-neutral-900 rounded-lg overflow-x-auto border border-neutral-200 dark:border-neutral-900 py-2 px-3 text-sm max-w-full;
+  word-break: normal;
 }
 
 .prose code {
@@ -84,7 +90,7 @@ html {
 }
 
 .prose p {
-  @apply my-4 text-neutral-800 dark:text-neutral-200;
+  @apply my-4 text-neutral-800 dark:text-neutral-200 text-pretty leading-relaxed;
 }
 
 .prose h1 {
@@ -138,13 +144,23 @@ input[type='email'] {
   appearance: none;
 }
 
-table {
-  display: block;
-  max-width: fit-content;
-  overflow-x: auto;
-  white-space: nowrap;
+/* 긴 한글·셀 텍스트가 잘리지 않도록 (필요 시 가로 스크롤은 부모에서) */
+.prose table {
+  display: table;
+  width: 100%;
+  max-width: 100%;
+  table-layout: auto;
+  border-collapse: collapse;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.prose th,
+.prose td {
+  @apply border border-neutral-200 px-3 py-2 align-top dark:border-neutral-800;
 }
 
 .title {
   text-wrap: balance;
+  overflow-wrap: anywhere;
 }
