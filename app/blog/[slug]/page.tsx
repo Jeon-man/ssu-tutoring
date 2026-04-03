@@ -7,6 +7,7 @@ import {
   getSubjectTheme,
 } from "app/blog/utils";
 import { baseUrl } from "app/sitemap";
+import { PostComments } from "app/components/post-comments";
 
 export async function generateStaticParams() {
   let posts = getBlogPosts();
@@ -126,6 +127,7 @@ export default async function Blog({
       <article className="prose min-w-0 max-w-none overflow-x-auto">
         <CustomMDX source={post.content} />
       </article>
+      <PostComments postSlug={post.slug} />
     </section>
   );
 }
