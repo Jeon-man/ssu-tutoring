@@ -127,6 +127,19 @@ body {
   margin-bottom: 1.25em !important;
 }
 
+/* 블로그 해설 글: 구간 나눔·보조 설명 가독성 */
+.prose hr {
+  @apply my-10 border-0 border-t border-neutral-200 dark:border-neutral-800;
+}
+
+.prose blockquote {
+  @apply my-6 border-l-[3px] border-violet-500/80 bg-violet-50/40 py-3 pl-4 pr-3 text-[0.98em] leading-relaxed text-neutral-800 not-italic dark:border-violet-400/70 dark:bg-violet-950/25 dark:text-neutral-200;
+}
+
+.prose blockquote p {
+  @apply my-2 first:mt-0 last:mb-0;
+}
+
 pre::-webkit-scrollbar {
   display: none;
 }
@@ -158,6 +171,10 @@ input[type='email'] {
 .prose th,
 .prose td {
   @apply border border-neutral-200 px-3 py-2 align-top dark:border-neutral-800;
+}
+
+.prose thead th {
+  @apply bg-neutral-100/90 font-semibold text-neutral-900 dark:bg-neutral-900/90 dark:text-neutral-100;
 }
 
 .title {
