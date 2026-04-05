@@ -9,6 +9,13 @@ subject: "computersystems"
 
 ### **1. 주판 수의 8비트 2진수 변환**
 
+<Image
+  src="/mid_exam_1/1.png"
+  alt="주판 수의 8비트 2진수 변환"
+  width={500}
+  height={500}
+/>
+
 - **주판 읽기:**
   - 첫 번째 자리(백의 자리): 위알이 올라가 있고 아래알 1개가 올라와 있음 = **1**
   - 두 번째 자리(십의 자리): 위알이 올라가 있고 아래알 0개 = **0**
@@ -29,7 +36,15 @@ subject: "computersystems"
 
 ### **4. 하드웨어 소자의 변천 순서**
 
-- **정답:** [ Relay ] → [ **진공관 (Vacuum Tube)** ] → [ Transistor ] → [ IC ] → [ **초고밀도 집적회로 (VLSI/LSI)** ]
+<Image
+  src="/mid_exam_1/4.png"
+  alt="하드웨어 소자의 변천 순서"
+  width={500}
+  height={500}
+/>
+
+- **정답:** [ Relay ] → [ **진공관 (Vacuum Tube)** ] → [ Transistor ] → [ IC ] →
+  [ **초고밀도 집적회로 (VLSI/LSI)** ]
 
 ### **5. 하드웨어 기본 구성 요소 4부분**
 
@@ -49,6 +64,13 @@ subject: "computersystems"
 이론 해설: 4진수에서 음수 보수로 표현된 숫자의 실제 크기를 알려면 다시 4의 보수를 취해야 합니다. 3210을 각 자리 3에서 뺀 뒤 1을 더하면 0130(4)이 되며, 이를 10진수로 환산하면 28이 됩니다.
 
 ### **7. 게이트 이름과 진리표**
+
+<Image
+  src="/mid_exam_1/7.png"
+  alt="게이트 이름과 진리표"
+  width={500}
+  height={500}
+/>
 
 - **이름:** **XOR (Exclusive OR) 게이트**
 - **진리표:** 입력이 서로 다를 때만 1이 출력됩니다.
@@ -72,11 +94,25 @@ subject: "computersystems"
 
 ### **10. K-map을 이용한 간소화**
 
+<Image
+  src="/mid_exam_1/10.png"
+  alt="K-map을 이용한 간소화"
+  width={500}
+  height={500}
+/>
+
 - **식:** $A \cdot B \cdot C + A \cdot B \cdot C' + A \cdot B' \cdot C$
 - **풀이:** $AB(C+C') + AB'C = AB + AB'C = A(B + B'C) = A(B+C)$
 - **정답:** **$AB + AC$ (또는 $A(B+C)$)**
 
 ### **11. 3비트 소수(Prime Number) 판별 회로**
+
+<Image
+  src="/mid_exam_1/11.png"
+  alt="3비트 소수(Prime Number) 판별 회로"
+  width={500}
+  height={500}
+/>
 
 - **소수:** 2(010), 3(011), 5(101), 7(111)
 - **진리표 출력:** (0,1,2,3,4,5,6,7) 순서대로 0, 0, 1, 1, 0, 1, 0, 1
@@ -84,6 +120,13 @@ subject: "computersystems"
 - **정답:** **$F = B2'B1 + B2B0$** (가장 간소화된 형태)
 
 ### **12. 뺄셈 가능 회로 추가**
+
+<Image
+  src="/mid_exam_1/12.png"
+  alt="뺄셈 가능 회로 추가"
+  width={500}
+  height={500}
+/>
 
 - **정답:** 입력 B의 각 비트에 **XOR 게이트**를 추가하고, 한쪽 입력에는 **Sub 제어 신호**를 연결합니다. 또한 **Sub 신호를 첫 번째 가산기의 $C_in$**으로 넣어줍니다.
 
@@ -95,6 +138,13 @@ subject: "computersystems"
 이론 해설: '리플(Ripple)'은 잔물결을 뜻합니다. 하위 비트의 결과가 나와야 다음 비트의 계산이 시작되는 직렬 구조 때문에, 비트 수가 많아질수록 속도가 급격히 느려집니다. 이를 해결하기 위해 병렬 방식인 CLA 가산기가 사용되기도 합니다.
 
 ### **14. SR 래치 동작 과정**
+
+<Image
+  src="/mid_exam_1/14.png"
+  alt="SR 래치 동작 과정"
+  width={500}
+  height={500}
+/>
 
 - **상태:** 현재 $Q=1, \bar{Q}=0$. 입력 $(S,R) = (0,1)$
 - **과정:**
@@ -117,10 +167,19 @@ subject: "computersystems"
 
 ### **17. 회로 간소화**
 
+<Image src="/mid_exam_1/17.png" alt="회로 간소화" width={500} height={500} />
+
 - **논리식:** $X = A'B' + AB$
 - **정답:** **XNOR (Exclusive NOR) 게이트**입니다.
 
 ### **18. 2비트 비동기식 업 카운터**
+
+<Image
+  src="/mid_exam_1/18.png"
+  alt="2비트 비동기식 업 카운터"
+  width={500}
+  height={500}
+/>
 
 - **구성:** 두 T 플립플랍의 **T 입력을 모두 High(1)**로 고정합니다.
 - **연결:** 외부 입력 펄스를 첫 번째 플립플랍(FF0)의 클럭에 연결하고, **FF0의 출력 $Q_0$를 두 번째 플립플랍(FF1)의 클럭**에 연결합니다.
