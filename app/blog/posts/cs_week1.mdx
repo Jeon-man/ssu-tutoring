@@ -72,10 +72,27 @@ void float_test() {
 
 ## 3. 고정 소수점 vs 부동 소수점
 
-| 방식 | 특징 |
-| --- | --- |
-| **고정 소수점** | 소수점 위치를 미리 고정 (예: 상위 8비트 정수부, 하위 8비트 소수부). 연산은 단순·빠를 수 있으나 **표현 범위가 좁음**. |
-| **부동 소수점** | 소수점 위치가 **떠다님**. 과학적 표기법(a×10ᵇ)을 **2진**에 옮긴 형태에 가깝고, 지금은 대부분 **IEEE 754** 표준을 따릅니다. |
+<table>
+  <thead>
+    <tr>
+      <th scope="col">방식</th>
+      <th scope="col">소수점</th>
+      <th scope="col">특징</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>고정 소수점</strong> (Fixed-point)</td>
+      <td>위치를 <strong>미리 고정</strong><br />(예: 상위 8비트 정수부, 하위 8비트 소수부)</td>
+      <td>연산이 단순하고 빠를 수 있음. 대신 <strong>표현 범위가 좁음</strong>.</td>
+    </tr>
+    <tr>
+      <td><strong>부동 소수점</strong> (Floating-point)</td>
+      <td>위치가 <strong>가변</strong> (떠다님)</td>
+      <td>과학적 표기법(a×10^b)을 <strong>2진</strong>에 옮긴 형태에 가깝다. 요즘 시스템은 대부분 <strong>IEEE 754</strong> 표준을 따른다.</td>
+    </tr>
+  </tbody>
+</table>
 
 ---
 
