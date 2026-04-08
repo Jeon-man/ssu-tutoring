@@ -82,29 +82,29 @@ export function getSubjectLabel(subject?: CourseSubject): string | null {
   return null
 }
 
-/** 목록 구역·글 상단 뱃지에 쓰는 Tailwind 클래스 */
+/** 목록 구역·글 상단 뱃지에 쓰는 Tailwind 클래스 (라이트: 대비 강화, 다크: 기존 톤 유지) */
 export function getSubjectTheme(subject?: CourseSubject) {
   if (subject === 'programming1') {
     return {
       section:
-        'border-l-4 border-sky-500 bg-sky-50/90 dark:border-sky-400 dark:bg-sky-950/45',
+        'border-l-4 border-sky-600 bg-sky-100 shadow-sm ring-1 ring-sky-300/80 dark:border-sky-400 dark:bg-sky-950/55 dark:shadow-none dark:ring-sky-800/50',
       badge:
-        'bg-sky-600 text-white shadow-sm ring-1 ring-sky-700/30 dark:bg-sky-500 dark:ring-sky-300/25',
+        'bg-sky-800 text-white shadow-sm ring-1 ring-sky-950/25 dark:bg-sky-500 dark:ring-sky-300/30',
     }
   }
   if (subject === 'computersystems') {
     return {
       section:
-        'border-l-4 border-violet-500 bg-violet-50/90 dark:border-violet-400 dark:bg-violet-950/45',
+        'border-l-4 border-violet-600 bg-violet-100 shadow-sm ring-1 ring-violet-300/80 dark:border-violet-400 dark:bg-violet-950/55 dark:shadow-none dark:ring-violet-800/50',
       badge:
-        'bg-violet-600 text-white shadow-sm ring-1 ring-violet-700/30 dark:bg-violet-500 dark:ring-violet-300/25',
+        'bg-violet-800 text-white shadow-sm ring-1 ring-violet-950/25 dark:bg-violet-500 dark:ring-violet-300/30',
     }
   }
   return {
     section:
-      'border-l-4 border-neutral-400 bg-neutral-100/90 dark:border-neutral-500 dark:bg-neutral-900/55',
+      'border-l-4 border-neutral-600 bg-neutral-200/95 shadow-sm ring-1 ring-neutral-400/70 dark:border-neutral-500 dark:bg-neutral-900/60 dark:shadow-none dark:ring-neutral-700/80',
     badge:
-      'bg-neutral-700 text-white shadow-sm ring-1 ring-black/15 dark:bg-neutral-500 dark:ring-white/10',
+      'bg-neutral-800 text-white shadow-sm ring-1 ring-black/20 dark:bg-neutral-500 dark:ring-white/15',
   }
 }
 

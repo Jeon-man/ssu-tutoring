@@ -48,12 +48,20 @@ export default function RootLayout({
   return (
     <html
       lang="ko"
+      suppressHydrationWarning
       className={cx(
         'text-black bg-white dark:text-white dark:bg-black',
         GeistSans.variable,
         GeistMono.variable
       )}
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var s=localStorage.getItem('theme');var d=s==='dark'||(s!=='light'&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',d);}catch(e){}})();`,
+          }}
+        />
+      </head>
       <body className="antialiased mx-auto mt-8 w-full max-w-3xl px-4 pb-20 sm:px-6">
         <main className="mt-6 flex min-w-0 flex-auto flex-col">
           <Navbar />

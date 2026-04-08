@@ -1,5 +1,8 @@
 @import 'tailwindcss';
 
+/* 수동 다크 모드: <html class="dark"> 일 때 dark: 유틸 적용 */
+@custom-variant dark (&:where(.dark, .dark *));
+
 ::selection {
   background-color: #47a3f3;
   color: #fefefe;
@@ -17,16 +20,12 @@
   --sh-entity: #e25a1c;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --sh-class: #4c97f8;
-    --sh-identifier: white;
-    --sh-keyword: #f47067;
-    --sh-string: #0fa295;
-  }
-  html {
-    color-scheme: dark;
-  }
+html.dark {
+  color-scheme: dark;
+  --sh-class: #4c97f8;
+  --sh-identifier: white;
+  --sh-keyword: #f47067;
+  --sh-string: #0fa295;
 }
 
 html {

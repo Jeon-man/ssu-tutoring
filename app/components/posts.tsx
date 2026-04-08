@@ -93,7 +93,7 @@ export function BlogPosts() {
               >
                 {label}
               </span>
-              <span className="text-xs text-neutral-600 dark:text-neutral-400 sm:text-sm">
+              <span className="text-xs font-medium text-neutral-800 dark:text-neutral-300 sm:text-sm">
                 자료 {posts.length}개
               </span>
             </div>
@@ -120,7 +120,7 @@ export function BlogPosts() {
             >
               기타
             </span>
-            <span className="text-xs text-neutral-600 dark:text-neutral-400 sm:text-sm">
+            <span className="text-xs font-medium text-neutral-800 dark:text-neutral-300 sm:text-sm">
               자료 {other.length}개
             </span>
           </div>
