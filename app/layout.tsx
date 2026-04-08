@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { GeistSans } from 'geist/font/sans'
 import { GeistMono } from 'geist/font/mono'
 import { Navbar } from './components/nav'
+import { PageBack } from './components/page-back'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import Footer from './components/footer'
@@ -65,6 +66,7 @@ export default function RootLayout({
       <body className="antialiased mx-auto mt-8 w-full max-w-3xl px-4 pb-20 sm:px-6">
         <main className="mt-6 flex min-w-0 flex-auto flex-col">
           <Navbar />
+          <PageBack />
           {children}
           <Footer />
           <Analytics />
