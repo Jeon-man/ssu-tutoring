@@ -1,0 +1,285 @@
+---
+title: "증감연산자와 문제들"
+publishedAt: "2026-04-12"
+summary: "프로그래밍1: 증감연산자와 문제들"
+subject: "programming1"
+---
+
+`++`와 `--`는 변수에 **1을 더하거나 빼는** 연산을 한 번에 쓰기 위한 연산자입니다. **전위(prefix)**와 **후위(postfix)**에 따라 **값이 평가되는 시점**이 달라서, 시험·실습에서 자주 헷갈립니다.
+
+---
+
+## 1. 증감 연산자 정리
+
+<table>
+  <thead>
+    <tr>
+      <th scope="col">형태</th>
+      <th scope="col">의미</th>
+      <th scope="col">표현식 값</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <strong>전위</strong> <code>++i</code>, <code>--i</code>
+      </td>
+      <td>먼저 1 증가·감소한 뒤, 그 결과를 씀</td>
+      <td>
+        <strong>변경된 값</strong>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>후위</strong> <code>i++</code>, <code>i--</code>
+      </td>
+      <td>지금 값을 쓴 뒤, 나중에 1 증가·감소</td>
+      <td>
+        <strong>변경 전 값</strong>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+같은 줄에서 여러 번 쓰거나, `cout` 안에 섞어 쓰면 **평가 순서** 때문에 결과가 직관과 다를 수 있으니, 처음에는 **한 줄에 한 번만** 바꾸고 출력하는 습관이 안전합니다.
+
+### 예제 1: 전위 vs 후위
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int a = 3;
+    cout << "후위: " << a++ << endl;  // 3 출력, 그 다음 a는 4
+    cout << "a = " << a << endl;       // 4
+
+    int b = 3;
+    cout << "전위: " << ++b << endl;  // 먼저 4로 바뀐 뒤 출력 → 4
+    cout << "b = " << b << endl;       // 4
+
+    return 0;
+}
+```
+
+### 예제 2: 한 줄에 두 번 출력할 때
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int x = 1;
+    cout << x++ << " " << x << endl;  // 후위: 먼저 1 출력 → 그다음 x는 2 → 두 번째로 2 출력 → "1 2"
+
+    // 같은 변수를 한 식에서 ++/--로 여러 번 바꾸는 코드는 표준상 피해야 할 패턴이 많음 (시험·실무 답안 X)
+    return 0;
+}
+```
+
+---
+
+## 2. 연습 문제
+
+아래는 **입출력 · char · 연산자(산술·증감) · 실수형 · 조건 · 반복**을 다룹니다. 먼저 직접 짜 보고, 막히면 **정답 보기**를 펼쳐 보세요.
+
+---
+
+### 문제 1 — 입출력
+
+이름(`string` 또는 `char` 배열)과 나이(`int`)를 **한 줄에 공백으로 구분**해 입력받은 뒤, 아래 형식으로 출력하는 프로그램을 작성하시오.
+
+**출력 형식 예** (입력이 `Kim 20`일 때)
+
+```text
+안녕하세요, Kim님 (20세)
+```
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+```c++
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string name;
+    int age;
+    cin >> name >> age;
+    cout << "안녕하세요, " << name << "님 (" << age << "세)" << endl;
+    return 0;
+}
+```
+
+</RevealAnswer>
+
+---
+
+### 문제 2 — `char`와 아스키(ASCII) 번호
+
+`char`로 **문자 한 개**를 입력받아, 그 글자의 **아스키 코드 값(정수)** 을 출력하시오.
+
+**예:** 입력 `B` → 출력 `66`
+
+> **힌트.** `cout`에 넣을 때 `(int)`로 **정수로 바꿔** 출력하면 됩니다. 예: `(int)c`
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+```c++
+#include <iostream>
+using namespace std;
+
+int main() {
+    char c;
+    cin >> c;
+    cout << (int)c << endl;
+    return 0;
+}
+```
+
+</RevealAnswer>
+
+---
+
+### 문제 3 — 연산자 (증감)
+
+정수 `a`의 초깃값이 **10**일 때, 아래를 수행한 뒤 `a`의 값과 출력된 숫자를 적으시오. 그다음 **같은 동작을 하는 프로그램**을 작성해 실행 결과로 확인하시오.
+
+1. `cout << a++ << endl;`
+2. `cout << ++a << endl;`
+3. `cout << a << endl;`
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+```c++
+#include <iostream>
+using namespace std;
+
+int main() {
+    int a = 10;
+    cout << a++ << endl;
+    cout << ++a << endl;
+    cout << a << endl;
+    return 0;
+}
+```
+
+</RevealAnswer>
+
+---
+
+### 문제 4 — 산술 연산자 (`+`, `-`, `*`, `/`, `%`)
+
+정수 **두 개**를 한 줄에 입력받아, 아래 다섯 값을 **순서대로** 출력하시오. (마지막 `endl` 전까지 공백으로 구분해도 되고, 줄마다 출력해도 됩니다.)
+
+1. **덧셈** `a + b`
+2. **뺄셈** `a - b`
+3. **곱셈** `a * b`
+4. **나눗셈 몫** `a / b` — 정수끼리이면 **소수 버리고 몫만**
+5. **나머지** `a % b`
+
+**예:** 입력 `10 3` → `13 7 30 3 1` (한 줄) 또는 줄바꿈으로 다섯 줄
+
+> **힌트.** `/` 는 `int`끼리면 정수 나눗셈, `%` 는 나머지입니다.
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+```c++
+#include <iostream>
+using namespace std;
+
+int main() {
+    int a, b;
+    cin >> a >> b;
+    cout << a + b << endl;
+    cout << a - b << endl;
+    cout << a * b << endl;
+    cout << a / b << endl;
+    cout << a % b << endl;
+    return 0;
+}
+```
+
+</RevealAnswer>
+
+---
+
+### 문제 5 — 실수형 (`double`)
+
+`int`끼리 나누면 **몫만** 나옵니다(문제 4에서 `7 / 2`는 `3`). 이번에는 **실수 `double`** 두 개를 입력받아 **`a / b`** 를 출력하시오. **소수점이 나오는** 나눗셈이 되어야 합니다.
+
+**예:** 입력 `7 2` → 출력 `3.5` (출력 형태는 컴파일러 기본 표기면 됩니다.)
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+```c++
+#include <iostream>
+using namespace std;
+
+int main() {
+    double a, b;
+    cin >> a >> b;
+    cout << a / b << endl;
+    return 0;
+}
+```
+
+</RevealAnswer>
+
+---
+
+### 문제 6 — 조건문 (`if` / `else`)
+
+정수 **하나**를 입력받아, **짝수**이면 `even`, **홀수**이면 `odd` 를 출력하시오. (`0`은 짝수로 봅니다.)
+
+**예:** 입력 `4` → 출력 `even` / 입력 `7` → 출력 `odd`
+
+> **힌트.** `%` 연산자로 2로 나눈 **나머지**를 보면 짝·홀을 구분할 수 있습니다.
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+```c++
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    if (n % 2 == 0) {
+        cout << "even" << endl;
+    } else {
+        cout << "odd" << endl;
+    }
+    return 0;
+}
+```
+
+</RevealAnswer>
+
+---
+
+### 문제 7 — 반복문
+
+정수 `N`(1 ≤ N ≤ 100)을 입력받아 **1부터 N까지의 합**을 출력하시오.
+
+**예:** `N = 5` → `15`
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+```c++
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    int sum = 0;
+    for (int i = 1; i <= n; i++) {
+        sum += i;
+    }
+    cout << sum << endl;
+    return 0;
+}
+```
+
+</RevealAnswer>

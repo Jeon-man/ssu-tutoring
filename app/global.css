@@ -180,3 +180,12 @@ input[type='email'] {
   text-wrap: balance;
   overflow-wrap: anywhere;
 }
+
+/* 접기 정답: 기본 삼각형 마커 숨김 (커스텀 summary 스타일만) */
+.prose details.reveal-answer > summary {
+  list-style: none;
+}
+
+.prose details.reveal-answer > summary::-webkit-details-marker {
+  display: none;
+}

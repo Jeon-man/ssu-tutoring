@@ -89,9 +89,54 @@ function RoundedImage({ className, alt, src, width, height, ...rest }) {
   );
 }
 
+function flattenCodeChildren(node: React.ReactNode): string {
+  if (node == null || typeof node === "boolean") return "";
+  if (typeof node === "string" || typeof node === "number")
+    return String(node);
+  if (Array.isArray(node)) return node.map(flattenCodeChildren).join("");
+  if (React.isValidElement(node) && node.props && "children" in node.props)
+    return flattenCodeChildren(
+      (node.props as { children?: React.ReactNode }).children,
+    );
+  return "";
+}
+
 function Code({ children, ...props }) {
-  let codeHTML = highlight(children);
+  const raw = flattenCodeChildren(children);
+  const codeHTML = highlight(raw || "");
   return <code dangerouslySetInnerHTML={{ __html: codeHTML }} {...props} />;
+}
+
+/**
+ * 접어 두었다가 클릭 시 정답 펼침. **자식으로 마크다운 펜스만** 넣을 것:
+ *
+ * <RevealAnswer title="…">
+ *
+ * ```c++
+ * // 코드
+ * ```
+ *
+ * </RevealAnswer>
+ *
+ * (빈 줄로 JSX와 펜스를 구분)
+ */
+function RevealAnswer({
+  title = "정답 보기",
+  children,
+}: {
+  title?: string;
+  children?: React.ReactNode;
+}) {
+  return (
+    <details className="reveal-answer my-5 rounded-lg border border-neutral-200 bg-neutral-50/80 dark:border-neutral-800 dark:bg-neutral-950/60">
+      <summary className="cursor-pointer select-none px-3 py-2.5 text-sm font-semibold text-sky-800 dark:text-sky-200">
+        {title}
+      </summary>
+      <div className="reveal-answer-body border-t border-neutral-200 px-2 pb-3 pt-2 dark:border-neutral-800 [&_pre]:my-0 [&_pre]:max-w-full">
+        {children}
+      </div>
+    </details>
+  );
 }
 
 function slugify(str) {
@@ -137,6 +182,7 @@ let components = {
   Image: RoundedImage,
   a: CustomLink,
   code: Code,
+  RevealAnswer,
   Table,
 };
 
