@@ -1,49 +1,49 @@
-"use client";
+'use client'
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from 'react'
 
 type Comment = {
-  id: string;
-  post_slug: string;
-  parent_id: string | null;
-  author_name: string;
-  body: string;
-  created_at: string;
-};
+  id: string
+  post_slug: string
+  parent_id: string | null
+  author_name: string
+  body: string
+  created_at: string
+}
 
-type CommentNode = Comment & { replies: CommentNode[] };
+type CommentNode = Comment & { replies: CommentNode[] }
 
 function buildTree(flat: Comment[]): CommentNode[] {
-  let map = new Map<string, CommentNode>();
+  let map = new Map<string, CommentNode>()
   for (let c of flat) {
-    map.set(c.id, { ...c, replies: [] });
+    map.set(c.id, { ...c, replies: [] })
   }
-  let roots: CommentNode[] = [];
+  let roots: CommentNode[] = []
   for (let c of flat) {
-    let node = map.get(c.id)!;
+    let node = map.get(c.id)!
     if (!c.parent_id) {
-      roots.push(node);
+      roots.push(node)
     } else {
-      let parent = map.get(c.parent_id);
-      if (parent) parent.replies.push(node);
+      let parent = map.get(c.parent_id)
+      if (parent) parent.replies.push(node)
     }
   }
   let sortDeep = (nodes: CommentNode[]) => {
-    nodes.sort((a, b) => +new Date(a.created_at) - +new Date(b.created_at));
-    for (let n of nodes) sortDeep(n.replies);
-  };
-  sortDeep(roots);
-  return roots;
+    nodes.sort((a, b) => +new Date(a.created_at) - +new Date(b.created_at))
+    for (let n of nodes) sortDeep(n.replies)
+  }
+  sortDeep(roots)
+  return roots
 }
 
 function formatCommentTime(iso: string) {
   try {
-    return new Date(iso).toLocaleString("ko-KR", {
-      dateStyle: "medium",
-      timeStyle: "short",
-    });
+    return new Date(iso).toLocaleString('ko-KR', {
+      dateStyle: 'medium',
+      timeStyle: 'short',
+    })
   } catch {
-    return iso;
+    return iso
   }
 }
 
@@ -54,27 +54,27 @@ function CommentForm({
   onCancel,
   compact,
 }: {
-  postSlug: string;
-  parentId: string | null;
-  onSuccess: () => void;
-  onCancel?: () => void;
-  compact?: boolean;
+  postSlug: string
+  parentId: string | null
+  onSuccess: () => void
+  onCancel?: () => void
+  compact?: boolean
 }) {
-  let [author_name, setAuthorName] = useState("");
-  let [body, setBody] = useState("");
-  let [honeypot, setHoneypot] = useState("");
-  let [submitting, setSubmitting] = useState(false);
-  let [err, setErr] = useState<string | null>(null);
+  let [author_name, setAuthorName] = useState('')
+  let [body, setBody] = useState('')
+  let [honeypot, setHoneypot] = useState('')
+  let [submitting, setSubmitting] = useState(false)
+  let [err, setErr] = useState<string | null>(null)
 
   async function submit(e: React.FormEvent) {
-    e.preventDefault();
-    setErr(null);
-    if (honeypot.trim() !== "") return;
-    setSubmitting(true);
+    e.preventDefault()
+    setErr(null)
+    if (honeypot.trim() !== '') return
+    setSubmitting(true)
     try {
-      let res = await fetch("/api/comments", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      let res = await fetch('/api/comments', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           post_slug: postSlug,
           author_name,
@@ -82,17 +82,17 @@ function CommentForm({
           parent_id: parentId,
           website: honeypot,
         }),
-      });
-      let data = (await res.json().catch(() => ({}))) as { error?: string };
+      })
+      let data = (await res.json().catch(() => ({}))) as { error?: string }
       if (!res.ok) {
-        setErr(data.error ?? "전송에 실패했습니다.");
-        return;
+        setErr(data.error ?? '전송에 실패했습니다.')
+        return
       }
-      setAuthorName("");
-      setBody("");
-      onSuccess();
+      setAuthorName('')
+      setBody('')
+      onSuccess()
     } finally {
-      setSubmitting(false);
+      setSubmitting(false)
     }
   }
 
@@ -101,8 +101,8 @@ function CommentForm({
       onSubmit={submit}
       className={
         compact
-          ? "mt-3 space-y-3 rounded-lg border border-neutral-200 bg-neutral-50/80 p-3 dark:border-neutral-700 dark:bg-neutral-900/40"
-          : "space-y-3 rounded-xl border border-neutral-200 bg-neutral-50/50 p-4 dark:border-neutral-800 dark:bg-neutral-900/30"
+          ? 'mt-3 space-y-3 rounded-lg border border-neutral-200 bg-neutral-50/80 p-3 dark:border-neutral-700 dark:bg-neutral-900/40'
+          : 'space-y-3 rounded-xl border border-neutral-200 bg-neutral-50/50 p-4 dark:border-neutral-800 dark:bg-neutral-900/30'
       }
     >
       {err ? (
@@ -112,13 +112,13 @@ function CommentForm({
       ) : null}
       <div className="space-y-1">
         <label
-          htmlFor={compact ? `cname-${parentId ?? "root"}` : "comment-name"}
+          htmlFor={compact ? `cname-${parentId ?? 'root'}` : 'comment-name'}
           className="text-sm font-medium text-neutral-700 dark:text-neutral-300"
         >
           이름
         </label>
         <input
-          id={compact ? `cname-${parentId ?? "root"}` : "comment-name"}
+          id={compact ? `cname-${parentId ?? 'root'}` : 'comment-name'}
           className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900 outline-none ring-sky-500/30 focus:border-sky-500 focus:ring-2 dark:border-neutral-600 dark:bg-neutral-950 dark:text-neutral-100"
           value={author_name}
           onChange={(e) => setAuthorName(e.target.value)}
@@ -130,13 +130,13 @@ function CommentForm({
       </div>
       <div className="space-y-1">
         <label
-          htmlFor={compact ? `cbody-${parentId ?? "root"}` : "comment-body"}
+          htmlFor={compact ? `cbody-${parentId ?? 'root'}` : 'comment-body'}
           className="text-sm font-medium text-neutral-700 dark:text-neutral-300"
         >
-          {parentId ? "답글" : "댓글"}
+          {parentId ? '답글' : '댓글'}
         </label>
         <textarea
-          id={compact ? `cbody-${parentId ?? "root"}` : "comment-body"}
+          id={compact ? `cbody-${parentId ?? 'root'}` : 'comment-body'}
           className="w-full resize-y rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900 outline-none ring-sky-500/30 focus:border-sky-500 focus:ring-2 dark:border-neutral-600 dark:bg-neutral-950 dark:text-neutral-100"
           value={body}
           onChange={(e) => setBody(e.target.value)}
@@ -163,7 +163,7 @@ function CommentForm({
           disabled={submitting}
           className="rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-neutral-800 disabled:opacity-50 dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-white"
         >
-          {submitting ? "등록 중…" : "등록"}
+          {submitting ? '등록 중…' : '등록'}
         </button>
         {onCancel ? (
           <button
@@ -176,7 +176,7 @@ function CommentForm({
         ) : null}
       </div>
     </form>
-  );
+  )
 }
 
 function CommentBranch({
@@ -184,11 +184,11 @@ function CommentBranch({
   postSlug,
   onRefresh,
 }: {
-  node: CommentNode;
-  postSlug: string;
-  onRefresh: () => void;
+  node: CommentNode
+  postSlug: string
+  onRefresh: () => void
 }) {
-  let [replyOpen, setReplyOpen] = useState(false);
+  let [replyOpen, setReplyOpen] = useState(false)
 
   return (
     <li className="list-none">
@@ -212,7 +212,7 @@ function CommentBranch({
           onClick={() => setReplyOpen((v) => !v)}
           className="mt-2 text-sm font-medium text-sky-600 hover:underline dark:text-sky-400"
         >
-          {replyOpen ? "답글 접기" : "답글"}
+          {replyOpen ? '답글 접기' : '답글'}
         </button>
         {replyOpen ? (
           <CommentForm
@@ -220,8 +220,8 @@ function CommentBranch({
             parentId={node.id}
             compact
             onSuccess={() => {
-              setReplyOpen(false);
-              onRefresh();
+              setReplyOpen(false)
+              onRefresh()
             }}
             onCancel={() => setReplyOpen(false)}
           />
@@ -240,39 +240,39 @@ function CommentBranch({
         </ul>
       ) : null}
     </li>
-  );
+  )
 }
 
 export function PostComments({ postSlug }: { postSlug: string }) {
-  let [flat, setFlat] = useState<Comment[] | null>(null);
-  let [error, setError] = useState<string | null>(null);
+  let [flat, setFlat] = useState<Comment[] | null>(null)
+  let [error, setError] = useState<string | null>(null)
 
   let load = useCallback(async () => {
-    setError(null);
+    setError(null)
     try {
       let res = await fetch(
         `/api/comments?post_slug=${encodeURIComponent(postSlug)}`,
-        { cache: "no-store" },
-      );
+        { cache: 'no-store' },
+      )
       let data = (await res.json().catch(() => ({}))) as {
-        error?: string;
-        comments?: Comment[];
-      };
-      if (!res.ok) {
-        setError(data.error ?? "댓글을 불러오지 못했습니다.");
-        setFlat([]);
-        return;
+        error?: string
+        comments?: Comment[]
       }
-      setFlat(Array.isArray(data.comments) ? data.comments : []);
+      if (!res.ok) {
+        setError(data.error ?? '댓글을 불러오지 못했습니다.')
+        setFlat([])
+        return
+      }
+      setFlat(Array.isArray(data.comments) ? data.comments : [])
     } catch {
-      setError("네트워크 오류가 발생했습니다.");
-      setFlat([]);
+      setError('네트워크 오류가 발생했습니다.')
+      setFlat([])
     }
-  }, [postSlug]);
+  }, [postSlug])
 
   useEffect(() => {
-    load();
-  }, [load]);
+    load()
+  }, [load])
 
   if (flat === null) {
     return (
@@ -282,10 +282,10 @@ export function PostComments({ postSlug }: { postSlug: string }) {
         </h2>
         <p className="text-sm text-neutral-500">불러오는 중…</p>
       </div>
-    );
+    )
   }
 
-  let tree = buildTree(flat);
+  let tree = buildTree(flat)
 
   return (
     <div className="not-prose mt-14 border-t border-neutral-200 pt-10 dark:border-neutral-800">
@@ -319,5 +319,5 @@ export function PostComments({ postSlug }: { postSlug: string }) {
       </h3>
       <CommentForm postSlug={postSlug} parentId={null} onSuccess={load} />
     </div>
-  );
+  )
 }

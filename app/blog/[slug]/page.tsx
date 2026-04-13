@@ -1,31 +1,31 @@
-import { notFound } from "next/navigation";
-import { CustomMDX } from "app/components/mdx";
+import { notFound } from 'next/navigation'
+import { CustomMDX } from 'app/components/mdx'
 import {
   formatDate,
   getBlogPosts,
   getSubjectLabel,
   getSubjectTheme,
-} from "app/blog/utils";
-import { baseUrl } from "app/sitemap";
-import { PostComments } from "app/components/post-comments";
+} from 'app/blog/utils'
+import { baseUrl } from 'app/sitemap'
+import { PostComments } from 'app/components/post-comments'
 
 export async function generateStaticParams() {
-  let posts = getBlogPosts();
+  let posts = getBlogPosts()
 
   return posts.map((post) => ({
     slug: post.slug,
-  }));
+  }))
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string }>
 }) {
-  let { slug } = await params;
-  let post = getBlogPosts().find((post) => post.slug === slug);
+  let { slug } = await params
+  let post = getBlogPosts().find((post) => post.slug === slug)
   if (!post) {
-    return;
+    return
   }
 
   let {
@@ -33,10 +33,10 @@ export async function generateMetadata({
     publishedAt: publishedTime,
     summary: description,
     image,
-  } = post.metadata;
+  } = post.metadata
   let ogImage = image
     ? image
-    : `${baseUrl}/og?title=${encodeURIComponent(title)}`;
+    : `${baseUrl}/og?title=${encodeURIComponent(title)}`
 
   return {
     title,
@@ -44,7 +44,7 @@ export async function generateMetadata({
     openGraph: {
       title,
       description,
-      type: "article",
+      type: 'article',
       publishedTime,
       url: `${baseUrl}/blog/${post.slug}`,
       images: [
@@ -54,28 +54,28 @@ export async function generateMetadata({
       ],
     },
     twitter: {
-      card: "summary_large_image",
+      card: 'summary_large_image',
       title,
       description,
       images: [ogImage],
     },
-  };
+  }
 }
 
 export default async function Blog({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string }>
 }) {
-  let { slug } = await params;
-  let post = getBlogPosts().find((post) => post.slug === slug);
+  let { slug } = await params
+  let post = getBlogPosts().find((post) => post.slug === slug)
 
   if (!post) {
-    notFound();
+    notFound()
   }
 
-  let subjectLabel = getSubjectLabel(post.metadata.subject);
-  let subjectTheme = getSubjectTheme(post.metadata.subject);
+  let subjectLabel = getSubjectLabel(post.metadata.subject)
+  let subjectTheme = getSubjectTheme(post.metadata.subject)
 
   return (
     <section className="min-w-0">
@@ -84,8 +84,8 @@ export default async function Blog({
         suppressHydrationWarning
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BlogPosting",
+            '@context': 'https://schema.org',
+            '@type': 'BlogPosting',
             headline: post.metadata.title,
             datePublished: post.metadata.publishedAt,
             dateModified: post.metadata.publishedAt,
@@ -95,8 +95,8 @@ export default async function Blog({
               : `/og?title=${encodeURIComponent(post.metadata.title)}`,
             url: `${baseUrl}/blog/${post.slug}`,
             author: {
-              "@type": "Organization",
-              name: "강의 자료",
+              '@type': 'Organization',
+              name: '강의 자료',
             },
           }),
         }}
@@ -129,5 +129,5 @@ export default async function Blog({
       </article>
       <PostComments postSlug={post.slug} />
     </section>
-  );
+  )
 }

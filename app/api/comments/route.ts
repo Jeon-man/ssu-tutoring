@@ -30,7 +30,10 @@ export async function GET(request: Request) {
 
   if (error) {
     console.error('[comments GET]', error)
-    return NextResponse.json({ error: '댓글을 불러오지 못했습니다.' }, { status: 500 })
+    return NextResponse.json(
+      { error: '댓글을 불러오지 못했습니다.' },
+      { status: 500 },
+    )
   }
 
   return NextResponse.json({ comments: data as PostCommentRow[] })
@@ -79,20 +82,23 @@ export async function POST(request: Request) {
   if (author_name.length < 1 || author_name.length > 32) {
     return NextResponse.json(
       { error: '이름은 1~32자로 입력해 주세요.' },
-      { status: 400 }
+      { status: 400 },
     )
   }
 
   if (text.length < 1 || text.length > 2000) {
     return NextResponse.json(
       { error: '댓글은 1~2000자로 입력해 주세요.' },
-      { status: 400 }
+      { status: 400 },
     )
   }
 
   if (parent_id !== null) {
     if (!UUID_RE.test(parent_id)) {
-      return NextResponse.json({ error: '잘못된 답글 대상입니다.' }, { status: 400 })
+      return NextResponse.json(
+        { error: '잘못된 답글 대상입니다.' },
+        { status: 400 },
+      )
     }
     let { data: parent, error: pErr } = await admin
       .from('post_comments')
@@ -101,7 +107,10 @@ export async function POST(request: Request) {
       .maybeSingle()
 
     if (pErr || !parent || parent.post_slug !== post_slug) {
-      return NextResponse.json({ error: '답글 대상을 찾을 수 없습니다.' }, { status: 400 })
+      return NextResponse.json(
+        { error: '답글 대상을 찾을 수 없습니다.' },
+        { status: 400 },
+      )
     }
   }
 
@@ -121,5 +130,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: '저장에 실패했습니다.' }, { status: 500 })
   }
 
-  return NextResponse.json({ comment: inserted as PostCommentRow }, { status: 201 })
+  return NextResponse.json(
+    { comment: inserted as PostCommentRow },
+    { status: 201 },
+  )
 }

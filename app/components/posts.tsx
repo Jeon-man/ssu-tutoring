@@ -12,12 +12,10 @@ const SUBJECT_SECTIONS: { subject: CourseSubject; label: string }[] = [
 ]
 
 function sortByDateDesc<T extends { metadata: { publishedAt: string } }>(
-  posts: T[]
+  posts: T[],
 ) {
   return [...posts].sort((a, b) => {
-    if (
-      new Date(a.metadata.publishedAt) > new Date(b.metadata.publishedAt)
-    ) {
+    if (new Date(a.metadata.publishedAt) > new Date(b.metadata.publishedAt)) {
       return -1
     }
     return 1
@@ -65,7 +63,7 @@ export function BlogPosts() {
   const other = allBlogs.filter(
     (p) =>
       p.metadata.subject !== 'programming1' &&
-      p.metadata.subject !== 'computersystems'
+      p.metadata.subject !== 'computersystems',
   )
 
   let otherTheme = getSubjectTheme(undefined)

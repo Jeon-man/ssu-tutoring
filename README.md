@@ -28,9 +28,9 @@ pnpm dev
 
 프로젝트 루트에 `.env.local`을 만들고 다음을 넣습니다.
 
-| 변수 | 설명 |
-|------|------|
-| `NEXT_PUBLIC_SUPABASE_URL` | Supabase 프로젝트 URL |
+| 변수                        | 설명                                   |
+| --------------------------- | -------------------------------------- |
+| `NEXT_PUBLIC_SUPABASE_URL`  | Supabase 프로젝트 URL                  |
 | `SUPABASE_SERVICE_ROLE_KEY` | **service_role** 시크릿 (anon 키 아님) |
 
 DB에는 `supabase/migrations/001_post_comments.sql` 후 **`002_post_comments_service_role_only.sql`** 실행을 권장합니다. 키를 잘못 넣으면 RLS 오류(42501)가 날 수 있습니다.
@@ -62,8 +62,8 @@ subject: programming1
 
 ## 스크립트
 
-| 명령 | 설명 |
-|------|------|
-| `pnpm dev` | 개발 서버 |
-| `pnpm build` | 프로덕션 빌드 |
+| 명령         | 설명           |
+| ------------ | -------------- |
+| `pnpm dev`   | 개발 서버      |
+| `pnpm build` | 프로덕션 빌드  |
 | `pnpm start` | 빌드 결과 실행 |

@@ -13,8 +13,8 @@ export default function Page() {
         강의 자료 전체 목록
       </h1>
       <p className="mb-8 text-pretty leading-relaxed text-neutral-600 dark:text-neutral-400">
-        색이 있는 뱃지와 왼쪽 색 띠로 과목(프로그래밍1 / 컴퓨터 시스템)을
-        구분해 두었습니다.
+        색이 있는 뱃지와 왼쪽 색 띠로 과목(프로그래밍1 / 컴퓨터 시스템)을 구분해
+        두었습니다.
       </p>
       <BlogPosts />
     </section>

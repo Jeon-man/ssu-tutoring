@@ -71,9 +71,7 @@ export function ThemeToggle() {
       onClick={toggle}
       disabled={mode === null}
       className="ml-auto inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-neutral-200 bg-white text-neutral-700 transition hover:bg-neutral-100 disabled:opacity-40 dark:border-neutral-700 dark:bg-neutral-950 dark:text-neutral-200 dark:hover:bg-neutral-900"
-      aria-label={
-        mode === 'dark' ? '라이트 모드로 전환' : '다크 모드로 전환'
-      }
+      aria-label={mode === 'dark' ? '라이트 모드로 전환' : '다크 모드로 전환'}
       title={mode === 'dark' ? '라이트 모드' : '다크 모드'}
     >
       {mode === 'dark' ? <SunIcon /> : <MoonIcon />}
