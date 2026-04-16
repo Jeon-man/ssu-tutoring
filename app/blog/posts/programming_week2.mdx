@@ -81,7 +81,7 @@ int main() {
 
 ## 2. 연습 문제
 
-아래는 **입출력 · char · 연산자(산술·증감) · 실수형 · 조건 · 반복**을 다룹니다. 먼저 직접 짜 보고, 막히면 **정답 보기**를 펼쳐 보세요.
+아래는 **입출력 · char · 연산자(산술·증감) · 실수형 · 조건 · 반복(`while`, `do-while`)**을 다룹니다. 먼저 직접 짜 보고, 막히면 **정답 보기**를 펼쳐 보세요.
 
 ---
 
@@ -280,6 +280,37 @@ int main() {
         cout << i << ' ';
         i++;
     }
+    cout << endl;
+    return 0;
+}
+```
+
+</RevealAnswer>
+
+---
+
+### 문제 8 — 반복문 (`do-while`)
+
+정수 `N`(1 ≤ N ≤ 20)을 입력받아, **`do-while`문**만으로 문자 `*`를 **정확히 N개**, **한 줄에** 출력하시오. (`for`·`while`은 쓰지 마시오.)
+
+**예:** `N = 5` → `*****`
+
+> **힌트.** `int cnt = 0;` 을 두고, `do { cout << '*'; cnt++; } while (cnt < n);` 처럼 **몇 번 찍었는지** 세면 됩니다.
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+```c++
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    int cnt = 0;
+    do {
+        cout << '*';
+        cnt++;
+    } while (cnt < n);
     cout << endl;
     return 0;
 }
