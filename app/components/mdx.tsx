@@ -67,7 +67,7 @@ function RoundedImage({ className, alt, src, width, height, ...rest }) {
           : ''
 
     return (
-      <img
+      <Image
         src={srcStr}
         alt={alt ?? ''}
         className={imgClassName}
