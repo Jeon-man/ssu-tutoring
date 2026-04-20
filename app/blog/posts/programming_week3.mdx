@@ -1,0 +1,240 @@
+---
+title: '프로그래밍1 3주차 — 연습 문제'
+publishedAt: '2026-04-19'
+summary: '프로그래밍1: 입출력·문자·연산·실수·조건·반복 연습'
+subject: 'programming1'
+---
+
+---
+
+## 1. 연습 문제
+
+아래는 **입출력 · char · 비교 · 산술 연산자 · 실수형 · 조건 · 반복(`while`, `do-while`)**을 다룹니다. 먼저 직접 짜 보고, 막히면 **정답 보기**를 펼쳐 보세요.
+
+---
+
+### 문제 1 — 입출력
+
+학번(`int`)과 이름(`string`)을 **한 줄에 공백으로 구분**해 입력받은 뒤, 아래 형식으로 출력하는 프로그램을 작성하시오.
+
+**출력 형식 예** (입력이 `20240001 Kim`일 때)
+
+```text
+Kim 20240001
+```
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+```c++
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    int id;
+    string name;
+    cin >> id >> name;
+    cout << name << " " << id << endl;
+    return 0;
+}
+```
+
+</RevealAnswer>
+
+---
+
+### 문제 2 — `char` (대·소문자)
+
+**소문자 알파벳 한 글자**를 입력받아, 같은 글자의 **대문자 한 글자**를 출력하시오. (입력은 항상 `a`~`z` 중 하나라고 가정합니다.)
+
+**예:** 입력 `k` → 출력 `K`
+
+> **힌트.** 아스키에서 같은 글자의 소문자·대문자 차이는 **32**입니다. 소문자에서 32를 빼면 대문자가 됩니다.
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+```c++
+#include <iostream>
+using namespace std;
+
+int main() {
+    char c;
+    cin >> c;
+    cout << (char)(c - 32) << endl;
+    return 0;
+}
+```
+
+</RevealAnswer>
+
+---
+
+### 문제 3 — 비교 (큰 수)
+
+정수 **두 개**를 한 줄에 입력받아, **더 큰 수**를 출력하시오. 두 수가 같으면 `same` 을 출력하시오.
+
+**예:** `3 9` → `9` / `5 5` → `same`
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+```c++
+#include <iostream>
+using namespace std;
+
+int main() {
+    int a, b;
+    cin >> a >> b;
+    if (a > b) {
+        cout << a << endl;
+    } else if (a < b) {
+        cout << b << endl;
+    } else {
+        cout << "same" << endl;
+    }
+    return 0;
+}
+```
+
+</RevealAnswer>
+
+---
+
+### 문제 4 — 산술 연산자 (넓이)
+
+정수 **가로**와 **세로**를 한 줄에 입력받아, 직사각형의 **넓이**(가로 × 세로)를 출력하시오.
+
+**예:** 입력 `4 7` → 출력 `28`
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+```c++
+#include <iostream>
+using namespace std;
+
+int main() {
+    int w, h;
+    cin >> w >> h;
+    cout << w * h << endl;
+    return 0;
+}
+```
+
+</RevealAnswer>
+
+---
+
+### 문제 5 — 실수형 (`double`, 화씨 → 섭씨)
+
+화씨 온도 **`double` 하나**를 입력받아, 섭씨로 바꾼 값을 출력하시오. 공식은 **C = (F − 32) × 5 / 9** 입니다. (`int` 나눗셈이 되지 않도록 `5.0` / `9.0` 을 쓰는 것이 안전합니다.)
+
+**예:** 입력 `50` → 출력 `10` 에 가까운 실수 (컴파일러 기본 표기면 됩니다.)
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+```c++
+#include <iostream>
+using namespace std;
+
+int main() {
+    double f;
+    cin >> f;
+    double c = (f - 32.0) * 5.0 / 9.0;
+    cout << c << endl;
+    return 0;
+}
+```
+
+</RevealAnswer>
+
+---
+
+### 문제 6 — 조건문 (`if` / `else`)
+
+시험 **점수**(`0` 이상 `100` 이하 정수)를 하나 입력받아, **60 이상**이면 `pass`, **미만**이면 `fail` 을 출력하시오.
+
+**예:** `60` → `pass` / `59` → `fail`
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+```c++
+#include <iostream>
+using namespace std;
+
+int main() {
+    int s;
+    cin >> s;
+    if (s >= 60) {
+        cout << "pass" << endl;
+    } else {
+        cout << "fail" << endl;
+    }
+    return 0;
+}
+```
+
+</RevealAnswer>
+
+---
+
+### 문제 7 — 반복문 (`while`)
+
+정수 `N`(1 ≤ N ≤ 100)을 입력받아, **`while`문**으로 **`N`부터 `1`까지** 숫자를 **한 줄에 공백으로 구분**해 출력하시오. 마지막 뒤 공백이 있어도 됩니다.
+
+**예:** `N = 4` → `4 3 2 1`
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+```c++
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    int i = n;
+    while (i >= 1) {
+        cout << i << ' ';
+        i--;
+    }
+    cout << endl;
+    return 0;
+}
+```
+
+</RevealAnswer>
+
+---
+
+### 문제 8 — 반복문 (`do-while`)
+
+정수 `N`(1 ≤ N ≤ 20)을 입력받아, **`do-while`문만** 사용해 문자 `#`를 **정확히 N번** 출력하시오. **한 줄에 `#` 하나**씩, 총 **N줄**이 나와야 합니다. (`for`·`while`은 쓰지 마시오.)
+
+**예:** `N = 3`이면 출력은 아래와 같습니다.
+
+```text
+#
+#
+#
+```
+
+> **힌트.** `int cnt = 0;` 으로 몇 줄 찍었는지 세면서 `do { ... cnt++; } while (cnt < n);` 형태로 짜면 됩니다.
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+```c++
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    int cnt = 0;
+    do {
+        cout << '#' << endl;
+        cnt++;
+    } while (cnt < n);
+    return 0;
+}
+```
+
+</RevealAnswer>
