@@ -49,8 +49,8 @@ function RoundedImage({ className, alt, src, width, height, ...rest }) {
     .filter(Boolean)
     .join(' ')
 
-  const w = width != null ? Number(width) : NaN
-  const h = height != null ? Number(height) : NaN
+  const w = width != null && width !== '' ? Number(width) : NaN
+  const h = height != null && height !== '' ? Number(height) : NaN
   const canUseNextImage =
     (typeof src === 'string' || (src && typeof src === 'object')) &&
     Number.isFinite(w) &&
@@ -58,19 +58,22 @@ function RoundedImage({ className, alt, src, width, height, ...rest }) {
     Number.isFinite(h) &&
     h > 0
 
-  if (!canUseNextImage) {
-    const srcStr =
-      typeof src === 'string'
-        ? src
-        : src && typeof src === 'object' && 'src' in src
-          ? (src as { src: string }).src
-          : ''
+  const srcStr =
+    typeof src === 'string'
+      ? src
+      : src && typeof src === 'object' && 'src' in src
+        ? (src as { src: string }).src
+        : ''
 
+  if (!canUseNextImage) {
+    // next/image는 width·height가 필수인데, MDX 등에서 크기가 빠지는 경우가 있어 <img>로 폴백
     return (
-      <Image
+      <img
         src={srcStr}
         alt={alt ?? ''}
         className={imgClassName}
+        {...(Number.isFinite(w) && w > 0 ? { width: w } : {})}
+        {...(Number.isFinite(h) && h > 0 ? { height: h } : {})}
         loading="lazy"
         decoding="async"
       />
