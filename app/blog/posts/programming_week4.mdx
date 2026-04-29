@@ -1,0 +1,610 @@
+---
+title: '프로그래밍1 4주차 — 코드 빈칸 (비전공 심화)'
+publishedAt: '2026-04-26'
+summary: '프로그래밍1: 뒤집기·자릿수·약수·continue·별·소수·팩토리얼·거듭제곱·제곱합·직사각형·최댓값 — 빈칸 심화'
+subject: 'programming1'
+---
+
+> **규칙.** 한 빈칸(한 쌍의 괄호)에는 **한 덩어리**만 넣습니다(예: `n > 0`, `j <= M`, `i % 3 == 0`). **`break`·`continue`처럼 문장이 들어가는 줄**은 `(          )`와 그 뒤 `;`를 통째로 지우고 `break;` / `continue;`만 남기면 됩니다.
+
+---
+
+### 문제 1 — 정수 **뒤집기** (`while` + `%` + 자릿수 붙이기)
+
+양의 정수 `n`을 입력받아, **숫자 순서를 뒤집은 값**을 출력합니다. (끝자리부터 하나씩 떼서 `rev`에 “십 밀어 올리고 + 새 자리”로 붙입니다.)
+
+**예:** `n = 1205` → 맨 끝 `5`, 그다음 `0`…을 이어 붙여 **`5021`** 출력
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    int rev = 0;
+    while (          ) {
+        rev = (          );   // 기존 rev를 10배 + 방금 뗀 한 자리
+        n = (          );    // 끝 자리 제거
+    }
+    cout << rev << endl;
+    return 0;
+}
+```
+
+**예:** 입력 `1205` → 출력 `5021` / 입력 `700` → 출력 `7`
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+- 첫 번째 빈칸 → `n > 0`
+- 두 번째 빈칸 → `rev * 10 + n % 10`
+- 세 번째 빈칸 → `n / 10`
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    int rev = 0;
+    while (n > 0) {
+        rev = rev * 10 + n % 10;
+        n = n / 10;
+    }
+    cout << rev << endl;
+    return 0;
+}
+```
+
+</RevealAnswer>
+
+---
+
+### 문제 2 — 자릿수 합 (`while` + `/` + `%`)
+
+`n`(1 이상)을 입력받아 **각 자릿수의 합**을 구합니다. (예: `n = 308` → `3 + 0 + 8 = 11`)
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    int sum = 0;
+    while (          ) {
+        sum += (          );   // 맨 끝 자리 한 개를 sum에 더함
+        n = (          );      // 끝 자리를 버린 몫으로 갱신
+    }
+    cout << sum << endl;
+    return 0;
+}
+```
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+- 첫 번째 빈칸 → `n > 0` (또는 `n != 0` — 문제 조건이 1 이상이면 동일하게 동작)
+- 두 번째 빈칸 → `n % 10`
+- 세 번째 빈칸 → `n / 10`
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    int sum = 0;
+    while (n > 0) {
+        sum += n % 10;
+        n = n / 10;
+    }
+    cout << sum << endl;
+    return 0;
+}
+```
+
+</RevealAnswer>
+
+---
+
+### 문제 3 — `for` 한 번: **약수** 세기 (`%`)
+
+정수 **`M`(1 이상 2000 이하)** 를 입력받아, `1`부터 `M`까지 돌면서 **`M`을 나누어떨어지게 하는** `j`가 나올 때마다 개수를 셉니다.
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int M;
+    cin >> M;
+    int cnt = 0;
+    for (int j = 1; (          ); j++) {
+        if ( (          ) == 0)
+            cnt++;
+    }
+    cout << cnt << endl;
+    return 0;
+}
+```
+
+**예:** `M = 12` → 나누어떨어지는 것은 `1, 2, 3, 4, 6, 12` → **6**
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+- 첫 번째 빈칸 → `j <= M`
+- 두 번째 빈칸 → `M % j`
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int M;
+    cin >> M;
+    int cnt = 0;
+    for (int j = 1; j <= M; j++) {
+        if (M % j == 0)
+            cnt++;
+    }
+    cout << cnt << endl;
+    return 0;
+}
+```
+
+</RevealAnswer>
+
+---
+
+### 문제 4 — `continue`: 3의 배수만 제외하고 합
+
+`1`부터 `n`까지 정수를 더하되, **3의 배수는 건너뜁니다.** (`n`은 1 이상)
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    int sum = 0;
+    for (int i = 1; i <= n; i++) {
+        if (          )
+            (          );          // 이번 i는 합에 넣지 않고 다음으로
+        sum += (          );       // 여기까지 오면 i를 합산
+    }
+    cout << sum << endl;
+    return 0;
+}
+```
+
+**예:** `n = 6` → `1+2+4+5 = 12` (3, 6 제외)
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+- 첫 번째 빈칸 → `i % 3 == 0`
+- 두 번째 빈칸 → 괄호를 지우고 `continue`만 남기면 `continue;`가 됩니다.
+- 세 번째 빈칸 → `i`
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    int sum = 0;
+    for (int i = 1; i <= n; i++) {
+        if (i % 3 == 0)
+            continue;
+        sum += i;
+    }
+    cout << sum << endl;
+    return 0;
+}
+```
+
+</RevealAnswer>
+
+---
+
+### 문제 5 — 이중 루프: **왼쪽 맞춤** 별 삼각형
+
+높이 `h`(1 이상 20 이하)를 입력받아, **맨 왼쪽부터** `*`를 붙이고, **아래로 갈수록 한 줄에 별이 하나씩 늘어나는** 모양을 출력합니다. (바깥 `i`는 `0`부터 `h-1`까지, 안쪽 `j`는 그 줄에서 찍을 `*` 개수만큼 돕니다.)
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int h;
+    cin >> h;
+    for (int i = 0; (          ); i++) {
+        for (int j = 0; (          ); j++)
+            cout << '*';
+        cout << endl;
+    }
+    return 0;
+}
+```
+
+**예:** `h = 4`일 때
+
+```text
+*
+**
+***
+****
+```
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+- 첫 번째 빈칸 → `i < h`
+- 두 번째 빈칸 → `j <= i` (또는 `j < i + 1`)
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int h;
+    cin >> h;
+    for (int i = 0; i < h; i++) {
+        for (int j = 0; j <= i; j++)
+            cout << '*';
+        cout << endl;
+    }
+    return 0;
+}
+```
+
+</RevealAnswer>
+
+---
+
+### 문제 6 — 소수 판별 (`for` + `bool` + 조기 `break`)
+
+`n`(2 이상)이 **소수**이면 `yes`, 아니면 `no`를 출력합니다. `2`부터 `n-1`까지 나누어 떨어지는지 검사하되, **한 번이라도 나누어떨어지면** 더 볼 필요가 없습니다.
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    bool prime = true;
+    for (int d = 2; d < n; d++) {
+        if (          ) {
+            prime = (          );
+            (          );
+        }
+    }
+    cout << (prime ? "yes" : "no") << endl;
+    return 0;
+}
+```
+
+**예:** `7` → `yes`, `9` → `no`
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+- 첫 번째 빈칸 → `n % d == 0`
+- 두 번째 빈칸 → `false`
+- 세 번째 빈칸 → 괄호를 지우고 `break`만 남기면 `break;`가 됩니다.
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    bool prime = true;
+    for (int d = 2; d < n; d++) {
+        if (n % d == 0) {
+            prime = false;
+            break;
+        }
+    }
+    cout << (prime ? "yes" : "no") << endl;
+    return 0;
+}
+```
+
+</RevealAnswer>
+
+---
+
+### 문제 7 — **팩토리얼** `n!` (`for` + 누적 곱)
+
+`n`(0 이상 12 이하)을 입력받아 **`n! = 1×2×…×n`** 을 구합니다. (`0!`은 **1**로 둡니다.) 결과는 `long long`에 담습니다.
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    long long f = 1;
+    for (int i = 1; (          ); i++) {
+        f = (          );
+    }
+    cout << f << endl;
+    return 0;
+}
+```
+
+**예:** `n = 5` → `120` / `n = 0` → `1`
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+- 첫 번째 빈칸 → `i <= n`
+- 두 번째 빈칸 → `f * i`
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    long long f = 1;
+    for (int i = 1; i <= n; i++) {
+        f = f * i;
+    }
+    cout << f << endl;
+    return 0;
+}
+```
+
+</RevealAnswer>
+
+---
+
+### 문제 8 — **자릿수 개수** (`while`)
+
+`n`(1 이상)을 입력받아, **십진수로 쓸 때 숫자가 몇 자리인지** 셉니다. (예: `308` → **3**자리)
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    int cnt = 0;
+    while (          ) {
+        cnt++;
+        n = (          );
+    }
+    cout << cnt << endl;
+    return 0;
+}
+```
+
+**예:** `n = 1000` → **4**
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+- 첫 번째 빈칸 → `n > 0`
+- 두 번째 빈칸 → `n / 10`
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    int cnt = 0;
+    while (n > 0) {
+        cnt++;
+        n = n / 10;
+    }
+    cout << cnt << endl;
+    return 0;
+}
+```
+
+</RevealAnswer>
+
+---
+
+### 문제 9 — **거듭제곱** `a`의 `b`제곱 (`for`)
+
+`a`, `b`를 입력받습니다. **`a`를 `b`번 곱한 값**(`a`의 `b`제곱, 곱셈 `b`번)을 구합니다. (`b`는 0 이상 10 이하, `a`는 절댓값이 크지 않게 주어진다고 가정합니다. `b = 0`이면 답은 **1**입니다.)
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int a, b;
+    cin >> a >> b;
+    long long r = 1;
+    for (int i = 0; (          ); i++) {
+        r = (          );
+    }
+    cout << r << endl;
+    return 0;
+}
+```
+
+**예:** `a = 2`, `b = 10` → **1024** / `a = 5`, `b = 0` → **1**
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+- 첫 번째 빈칸 → `i < b`
+- 두 번째 빈칸 → `r * a`
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int a, b;
+    cin >> a >> b;
+    long long r = 1;
+    for (int i = 0; i < b; i++) {
+        r = r * a;
+    }
+    cout << r << endl;
+    return 0;
+}
+```
+
+</RevealAnswer>
+
+---
+
+### 문제 10 — **제곱의 합** (`1²+2²+…+n²`)
+
+`n`(1 이상 1000 이하)을 입력받아, **`1² + 2² + … + n²`** 를 구합니다.
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    long long s = 0;
+    for (int i = 1; (          ); i++) {
+        s += (          );
+    }
+    cout << s << endl;
+    return 0;
+}
+```
+
+**예:** `n = 3` → `1 + 4 + 9 = 14`
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+- 첫 번째 빈칸 → `i <= n`
+- 두 번째 빈칸 → `i * i`
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    long long s = 0;
+    for (int i = 1; i <= n; i++) {
+        s += i * i;
+    }
+    cout << s << endl;
+    return 0;
+}
+```
+
+</RevealAnswer>
+
+---
+
+### 문제 11 — 이중 루프: **별 직사각형**
+
+높이 `h`, 너비 `w`(각각 1 이상 20 이하)를 입력받아, **한 줄에 `w`개의 `*`** 를 찍는 줄을 **`h`줄** 출력합니다.
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int h, w;
+    cin >> h >> w;
+    for (int i = 0; (          ); i++) {
+        for (int j = 0; (          ); j++)
+            cout << '*';
+        cout << endl;
+    }
+    return 0;
+}
+```
+
+**예:** `h = 2`, `w = 5`일 때
+
+```text
+*****
+*****
+```
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+- 첫 번째 빈칸 → `i < h`
+- 두 번째 빈칸 → `j < w`
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int h, w;
+    cin >> h >> w;
+    for (int i = 0; i < h; i++) {
+        for (int j = 0; j < w; j++)
+            cout << '*';
+        cout << endl;
+    }
+    return 0;
+}
+```
+
+</RevealAnswer>
+
+---
+
+### 문제 12 — **세 정수** 중 최댓값 (`if`만)
+
+`a`, `b`, `c` 세 정수를 한 줄에 입력받아, **가장 큰 값** 하나를 출력합니다. (같은 값이 여러 개여도, 그 중 **하나**만 맞게 출력하면 됩니다.)
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int a, b, c;
+    cin >> a >> b >> c;
+    int mx = a;
+    if ( (          ) > mx )
+        mx = b;
+    if ( (          ) > mx )
+        mx = c;
+    cout << mx << endl;
+    return 0;
+}
+```
+
+**예:** `3 9 5` → **9** / `7 7 2` → **7**
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+- 첫 번째 빈칸 → `b`
+- 두 번째 빈칸 → `c`
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int a, b, c;
+    cin >> a >> b >> c;
+    int mx = a;
+    if (b > mx)
+        mx = b;
+    if (c > mx)
+        mx = c;
+    cout << mx << endl;
+    return 0;
+}
+```
+
+</RevealAnswer>
+
+---
