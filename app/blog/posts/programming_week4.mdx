@@ -1,7 +1,7 @@
 ---
 title: '프로그래밍1 4주차 — 코드 빈칸 (비전공 심화)'
 publishedAt: '2026-04-26'
-summary: '프로그래밍1: 뒤집기·자릿수·약수·continue·별·소수·팩토리얼·거듭제곱·제곱합·직사각형·최댓값 — 빈칸 심화'
+summary: '프로그래밍1: 뒤집기·자릿수·약수·continue·별·소수·팩토리얼·거듭제곱·제곱합·직사각형·최댓값·자릿수곱·최솟값·역삼각형 — 빈칸 심화'
 subject: 'programming1'
 ---
 
@@ -122,8 +122,9 @@ int main() {
     cin >> M;
     int cnt = 0;
     for (int j = 1; (          ); j++) {
-        if ( (          ) == 0)
+        if ( (          ) == 0) {
             cnt++;
+        }
     }
     cout << cnt << endl;
     return 0;
@@ -146,8 +147,9 @@ int main() {
     cin >> M;
     int cnt = 0;
     for (int j = 1; j <= M; j++) {
-        if (M % j == 0)
+        if (M % j == 0) {
             cnt++;
+        }
     }
     cout << cnt << endl;
     return 0;
@@ -171,8 +173,9 @@ int main() {
     cin >> n;
     int sum = 0;
     for (int i = 1; i <= n; i++) {
-        if (          )
+        if (          ) {
             (          );          // 이번 i는 합에 넣지 않고 다음으로
+        }
         sum += (          );       // 여기까지 오면 i를 합산
     }
     cout << sum << endl;
@@ -197,8 +200,9 @@ int main() {
     cin >> n;
     int sum = 0;
     for (int i = 1; i <= n; i++) {
-        if (i % 3 == 0)
+        if (i % 3 == 0) {
             continue;
+        }
         sum += i;
     }
     cout << sum << endl;
@@ -222,8 +226,9 @@ int main() {
     int h;
     cin >> h;
     for (int i = 0; (          ); i++) {
-        for (int j = 0; (          ); j++)
+        for (int j = 0; (          ); j++) {
             cout << '*';
+        }
         cout << endl;
     }
     return 0;
@@ -252,8 +257,9 @@ int main() {
     int h;
     cin >> h;
     for (int i = 0; i < h; i++) {
-        for (int j = 0; j <= i; j++)
+        for (int j = 0; j <= i; j++) {
             cout << '*';
+        }
         cout << endl;
     }
     return 0;
@@ -520,8 +526,9 @@ int main() {
     int h, w;
     cin >> h >> w;
     for (int i = 0; (          ); i++) {
-        for (int j = 0; (          ); j++)
+        for (int j = 0; (          ); j++) {
             cout << '*';
+        }
         cout << endl;
     }
     return 0;
@@ -548,8 +555,9 @@ int main() {
     int h, w;
     cin >> h >> w;
     for (int i = 0; i < h; i++) {
-        for (int j = 0; j < w; j++)
+        for (int j = 0; j < w; j++) {
             cout << '*';
+        }
         cout << endl;
     }
     return 0;
@@ -608,3 +616,161 @@ int main() {
 </RevealAnswer>
 
 ---
+
+### 문제 13 — 자릿수 **곱** (`while` + `%`)
+
+`n`(1 이상)을 입력받아, **각 자릿수를 모두 곱한 값**을 출력합니다. (예: `n = 308` → `3 × 0 × 8 = 0`)
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    int prod = 1;
+    while (          ) {
+        prod *= (          );
+        n = (          );
+    }
+    cout << prod << endl;
+    return 0;
+}
+```
+
+**예:** `n = 234` → `2×3×4 = 24` / `n = 101` → **1**
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+- 첫 번째 빈칸 → `n > 0`
+- 두 번째 빈칸 → `n % 10`
+- 세 번째 빈칸 → `n / 10`
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    int prod = 1;
+    while (n > 0) {
+        prod *= n % 10;
+        n = n / 10;
+    }
+    cout << prod << endl;
+    return 0;
+}
+```
+
+</RevealAnswer>
+
+---
+
+### 문제 14 — **세 정수** 중 최솟값 (`if`만)
+
+`a`, `b`, `c` 세 정수를 한 줄에 입력받아, **가장 작은 값** 하나를 출력합니다.
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int a, b, c;
+    cin >> a >> b >> c;
+    int mn = a;
+    if ( (          ) < mn )
+        mn = b;
+    if ( (          ) < mn )
+        mn = c;
+    cout << mn << endl;
+    return 0;
+}
+```
+
+**예:** `3 1 5` → **1** / `4 4 9` → **4**
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+- 첫 번째 빈칸 → `b`
+- 두 번째 빈칸 → `c`
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int a, b, c;
+    cin >> a >> b >> c;
+    int mn = a;
+    if (b < mn)
+        mn = b;
+    if (c < mn)
+        mn = c;
+    cout << mn << endl;
+    return 0;
+}
+```
+
+</RevealAnswer>
+
+---
+
+### 문제 15 — 이중 루프: **왼쪽 맞춤 역삼각형** 별
+
+높이 `h`(1 이상 20 이하)를 입력받아, **첫 줄에 `h`개**, 아래로 갈수록 **별이 한 줄에 하나씩 줄어드는** 모양을 출력합니다.
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int h;
+    cin >> h;
+    for (int i = 0; (          ); i++) {
+        for (int j = 0; (          ); j++) {
+            cout << '*';
+        }
+        cout << endl;
+    }
+    return 0;
+}
+```
+
+**예:** `h = 4`일 때
+
+```text
+****
+***
+**
+*
+```
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+- 첫 번째 빈칸 → `i < h`
+- 두 번째 빈칸 → `j < h - i` (또는 `j <= h - 1 - i`)
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int h;
+    cin >> h;
+    for (int i = 0; i < h; i++) {
+        for (int j = 0; j < h - i; j++) {
+            cout << '*';
+        }
+        cout << endl;
+    }
+    return 0;
+}
+```
+
+</RevealAnswer>
+
+---
+
+막히면 **정답 보기**만 보지 말고, 한 칸씩 예를 들어 손으로 따라가 보는 것도 추천합니다.
+
