@@ -95,15 +95,17 @@ int main() {
 
 ---
 
-### 문제 3 — **`1 ~ 96` 중 4의 배수만** 출력 (`for` + `%`)
+### 문제 3 — **`1 ~ hi` 중 `k`의 배수만** 출력 (`for` + `%`)
 
-4로 나누어떨어지는 수만 한 줄에 하나씩 출력합니다.
+`hi`(끝 수)와 `k`(나누어떨어짐을 검사할 값)를 입력받습니다. **`1`부터 `hi`까지** 중 **`k`의 배수**만 한 줄에 하나씩 출력합니다 (`hi >= 1`, `k >= 1` 가정).
 
 ```cpp
 #include <iostream>
 using namespace std;
 
 int main() {
+    int hi, k;
+    cin >> hi >> k;
     for (int i = 1; (          ); i++) {
         if ( (          ) == 0) {
             cout << i << endl;
@@ -113,20 +115,22 @@ int main() {
 }
 ```
 
-**예:** `4`, `8`, `12`, … 가 차례로 출력됩니다.
+**예:** `hi = 96`, `k = 4`이면 예전과 같이 `4`, `8`, `12`, … / `hi = 15`, `k = 5`이면 `5`, `10`, `15`
 
 <RevealAnswer title="정답 보기 (클릭하여 펼침)">
 
-- 첫 번째 빈칸 → `i <= 96`
-- 두 번째 빈칸 → `i % 4`
+- 첫 번째 빈칸 → `i <= hi`
+- 두 번째 빈칸 → `i % k`
 
 ```cpp
 #include <iostream>
 using namespace std;
 
 int main() {
-    for (int i = 1; i <= 96; i++) {
-        if (i % 4 == 0) {
+    int hi, k;
+    cin >> hi >> k;
+    for (int i = 1; i <= hi; i++) {
+        if (i % k == 0) {
             cout << i << endl;
         }
     }
@@ -292,15 +296,17 @@ int main() {
 
 ---
 
-### 문제 7 — **`1 ~ 24` 중 홀수만** (`for` + `%`)
+### 문제 7 — **`1 ~ m` 중 홀수만** (`for` + `%`)
 
-홀수인 수만 줄마다 출력합니다.
+정수 `m`을 입력받습니다. **`1`부터 `m`까지** 중 **홀수**만 줄마다 출력합니다.
 
 ```cpp
 #include <iostream>
 using namespace std;
 
 int main() {
+    int m;
+    cin >> m;
     for (int i = 1; i <= (          ); i++) {
         if ( (          ) == 1 ) {
             cout << i << endl;
@@ -310,11 +316,11 @@ int main() {
 }
 ```
 
-**예:** `1`, `3`, `5`, …
+**예:** `m = 24`이면 `1`, `3`, …, `23` / `m = 7`이면 `1`, `3`, `5`, `7`
 
 <RevealAnswer title="정답 보기 (클릭하여 펼침)">
 
-- 첫 번째 빈칸 → `24`
+- 첫 번째 빈칸 → `m`
 - 두 번째 빈칸 → `i % 2`
 
 ```cpp
@@ -322,7 +328,9 @@ int main() {
 using namespace std;
 
 int main() {
-    for (int i = 1; i <= 24; i++) {
+    int m;
+    cin >> m;
+    for (int i = 1; i <= m; i++) {
         if (i % 2 == 1) {
             cout << i << endl;
         }
@@ -989,5 +997,3 @@ int main() {
 </RevealAnswer>
 
 ---
-
-막히면 **정답 보기**만 보지 말고 손 예로 따라가 보는 것도 추천합니다.
