@@ -1,0 +1,816 @@
+---
+title: '컴사코기 — 기말고사 대비 문제은행'
+publishedAt: '2026-05-20'
+summary: '컴사코기 기말고사 대비: 개념·변수·Turtle·입출력·조건문·반복문·함수 정리'
+subject: 'programming1'
+---
+
+**컴사코기**(컴퓨터 과학과 코딩 사고) 기말고사를 앞두고, 강의·실습에서 다룬 **개념·연산·Turtle·입출력·조건문·반복문·함수**를 문제은행 형태로 정리했습니다.
+
+먼저 스스로 풀어 보고, 막히면 각 문제 아래 **정답 보기**를 펼쳐 확인하세요.
+
+---
+
+## 기말고사 출제 안내
+
+<table>
+  <thead>
+    <tr>
+      <th scope="col">항목</th>
+      <th scope="col">내용</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>출제 범위</td>
+      <td>아래 문제은행에서 <strong>약 10문제</strong> 선정</td>
+    </tr>
+    <tr>
+      <td>객관식·단답형</td>
+      <td><strong>7~8문제</strong></td>
+    </tr>
+    <tr>
+      <td>직접 코딩</td>
+      <td><strong>2~3문제</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## Part 1. 개념 이해
+
+### 문제 1 — 컴퓨팅적 사고
+
+컴퓨팅적 사고(Computational Thinking)를 **가장 잘** 설명한 것은?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**3번** — 문제 해결을 위해 컴퓨터 과학 분야의 개념을 적용하는 사고 방식
+
+</RevealAnswer>
+
+---
+
+### 문제 2 — 분해(Decomposition)
+
+복잡한 문제를 **작은 문제로 나누어** 해결하는 방식은?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**1번** — 분해(Decomposition)
+
+</RevealAnswer>
+
+---
+
+### 문제 3 — 지넷 윙
+
+컴퓨팅적 사고 교육을 강조하고 전 세계에 확산시킨 사람은?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**1번** — 지넷 윙(Jeannette Wing)
+
+</RevealAnswer>
+
+---
+
+### 문제 4 — 파이썬
+
+파이썬에 대한 설명 중 **옳은** 것은?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**1번** — 파이썬은 **고급 언어**이다
+
+</RevealAnswer>
+
+---
+
+### 문제 5 — 코딩과 AI
+
+코딩에 대한 설명 중 **잘못된** 것은?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**4번** — ChatGPT는 코딩 분야 활용에 부적합하다 *(실제로는 코딩 보조·학습 도구로 널리 활용됨)*
+
+</RevealAnswer>
+
+---
+
+### 문제 6 — TTS
+
+텍스트를 오디오로 변환해 주는 기술의 명칭은?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**1번** — **TTS**(Text-To-Speech)
+
+</RevealAnswer>
+
+---
+
+## Part 2. 변수와 연산자
+
+### 문제 1 — 파이썬 데이터 타입
+
+파이썬 **데이터 타입이 아닌** 것은?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**3번** — `double` *(C/Java 등에서 쓰이는 타입명)*
+
+</RevealAnswer>
+
+---
+
+### 문제 2 — 데이터 타입 (복수)
+
+파이썬 데이터 타입이 **아닌** 것 **2개**는?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+- **3번** — `double`
+- **5번** — `Object`
+
+</RevealAnswer>
+
+---
+
+### 문제 3 — 변수 이름
+
+변수 이름으로 **사용할 수 없는** 것 **2개**는?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+- **2번** — `math score` *(공백 포함)*
+- **4번** — `2x` *(숫자로 시작)*
+
+</RevealAnswer>
+
+---
+
+### 문제 4 — 대입 에러
+
+**에러가 발생하는** 코드 **2개**는?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+- **2번** — `a + 10 = 20` *(좌변에 연산식 불가)*
+- **3번** — `20 = x` *(리터럴에 대입 불가)*
+
+</RevealAnswer>
+
+---
+
+### 문제 5-1 — 연산 순서
+
+아래 코드의 `print(a)` 결과는?
+
+```python
+a = 10
+a = a + 10
+b = a + 20
+print(a)
+```
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**`20`** — `a`는 `10 → 20`으로 갱신된 뒤 출력
+
+</RevealAnswer>
+
+---
+
+### 문제 5-2 — 복합 연산·거듭제곱
+
+아래 코드의 `print(x**2)` 결과는?
+
+```python
+x = 10
+x += 20      # x = 30
+x = x / 5    # x = 6.0
+print(x**2)
+```
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**`36`** — `6.0 ** 2 = 36.0` (출력 시 `36` 또는 `36.0`)
+
+</RevealAnswer>
+
+---
+
+### 문제 6 — 언더스코어·나머지
+
+```python
+a = 1_000
+b = a / 100    # 10.0
+c = b % 3      # 10 % 3
+print(c)
+```
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**`1`**
+
+</RevealAnswer>
+
+---
+
+### 문제 7 — 나머지·거듭제곱
+
+```python
+a = 10
+b = a % 4      # 2
+c = b ** 3     # 8
+print(c)
+```
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**`8`**
+
+</RevealAnswer>
+
+---
+
+### 문제 8 — 나머지 연산
+
+```python
+a = 10
+a = a + 10     # a = 20
+b = a + 20     # b = 40
+print(b % a)   # 40 % 20
+```
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**`0`**
+
+</RevealAnswer>
+
+---
+
+### 문제 9 — 포맷 출력
+
+```python
+a = 10
+b = 3
+c = a / b
+print('%.2f' % c)
+```
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**`3.33`** — 소수 둘째 자리까지 반올림
+
+</RevealAnswer>
+
+---
+
+## Part 3. Turtle 그래픽 코딩
+
+### 문제 1 — `rt(120)` × 3
+
+`turtle.rt(120)`를 **3번** 반복하면 그려지는 도형은?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**4번** — **역삼각형** (외각 120° × 3 → 삼각형, 시계 방향)
+
+</RevealAnswer>
+
+---
+
+### 문제 2 — `left(120)` × 5
+
+`turtle.left(120)`를 `range(5)`로 반복하면 그려지는 도형은?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**1번** — **정삼각형** (한 변을 그릴 때마다 120° 회전, 3번이 한 바퀴)
+
+</RevealAnswer>
+
+---
+
+### 문제 3 — `left(90)` × 5
+
+`t.left(90)`를 `range(5)`로 반복하면 그려지는 도형은?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**2번** — **정사각형**
+
+</RevealAnswer>
+
+---
+
+### 문제 4 — 선 색·두께
+
+선의 **색상** 및 **두께**를 조절하는 함수 **2개**는?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+- **2번** — `width()` (또는 `pensize()`)
+- **3번** — `color()`
+
+</RevealAnswer>
+
+---
+
+### 문제 5 — 별 모양
+
+`t.right(144)`를 **5번** 반복하면 그려지는 모양은?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**4번** — **별 모양** (정오각형 별, 외각 144°)
+
+</RevealAnswer>
+
+---
+
+### 문제 6 — 정팔각형
+
+정팔각형을 그리기 위해 `b = a * 2`일 때, 한 변의 길이 `a`에 들어갈 숫자는?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**`4`** — `b = 8`이 되도록 `a = 4`
+
+</RevealAnswer>
+
+---
+
+## Part 4. 입력과 출력
+
+### 문제 1 — 기본 입력
+
+기본 **입력** 함수는?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**3번** — `input()`
+
+</RevealAnswer>
+
+---
+
+### 문제 2 — 음성 합성 모듈
+
+음성 합성에 쓰이는 모듈 **2개**는?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+- **3번** — `gtts`
+- **4번** — `pyttsx3`
+
+</RevealAnswer>
+
+---
+
+### 문제 3 — 몸무게 입력 (소수)
+
+몸무게(소수점 포함)를 입력할 때 필요한 함수 **2개**는?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+- **2번** — `float()`
+- **3번** — `input()`
+
+</RevealAnswer>
+
+---
+
+### 문제 4 — 출생연도 입력 (정수)
+
+출생연도(정수)를 입력할 때 필요한 함수 **2개**는?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+- **1번** — `int()`
+- **3번** — `input()`
+
+</RevealAnswer>
+
+---
+
+### 문제 5 — 줄 바꿈
+
+줄 바꿈을 나타내는 **이스케이프 문자**는?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**1번** — `\n`
+
+</RevealAnswer>
+
+---
+
+### 문제 6 — `print`의 `end`
+
+한 줄로 결과를 이어서 표시하기 위한 `print` **파라미터**는?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**2번** — `end`
+
+</RevealAnswer>
+
+---
+
+### 문제 7 — `print`의 `sep`
+
+항목 사이에 줄 바꿈(또는 구분)을 넣기 위한 `print` **파라미터**는?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**`sep`**
+
+</RevealAnswer>
+
+---
+
+### 문제 8 — f-string / format
+
+소수점 **1자리** 표시를 위한 `{a/b: }` 안에 들어갈 코드는?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**`:.1f`** — 예: `f"{a/b:.1f}"`
+
+</RevealAnswer>
+
+---
+
+## Part 5. 조건문
+
+### 문제 1 — 키워드
+
+조건문·논리 연산자 **키워드가 아닌** 것은?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**5번** — `break` *(반복문 제어용)*
+
+</RevealAnswer>
+
+---
+
+### 문제 2 — `else if`
+
+파이썬에서 **사용할 수 없는** 키워드는?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**4번** — `else if` *(파이썬은 `elif` 사용)*
+
+</RevealAnswer>
+
+---
+
+### 문제 3 — 단순 `if`
+
+```python
+age = 25
+if age >= 20:
+    print(20)
+```
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**`20`** 출력
+
+</RevealAnswer>
+
+---
+
+### 문제 4 — `elif`와 `or`
+
+```python
+score = 90
+quiz = 27
+elif score >= 80 or quiz < 20:
+    print(95)
+```
+
+*(앞선 `if` 분기가 거짓일 때)*
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**`95`** — `score >= 80` 참
+
+</RevealAnswer>
+
+---
+
+### 문제 5 — `and` / `or` / `elif`
+
+```python
+score = 90
+quiz = 27
+if score >= 95 and quiz >= 30:
+    ...
+elif score >= 80 or quiz < 20:
+    print(90)
+```
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**`90`** — 첫 `if`는 거짓, `elif` 조건 `score >= 80` 참
+
+</RevealAnswer>
+
+---
+
+### 문제 6 — `if` / `else`
+
+```python
+성별 = '남자'
+if 성별 != '남자':
+    print(100)
+else:
+    print(200)
+```
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**`200`**
+
+</RevealAnswer>
+
+---
+
+### 문제 7 — `if`–`elif`–`else`
+
+`if` - `____` - `else` 구조에서 빈칸에 들어갈 키워드는?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**`elif`**
+
+</RevealAnswer>
+
+---
+
+### 문제 8 — 빈칸 순서
+
+`score = int(____(...)); ____ score >= 90: ... ____ :` 빈칸 순서는?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**5번** — `input`, `if`, `else`
+
+</RevealAnswer>
+
+---
+
+### 문제 9 — 마지막 키워드
+
+조건문 블록의 **마지막** 빈칸에 들어갈 키워드는?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**`else`**
+
+</RevealAnswer>
+
+---
+
+## Part 6. 반복문
+
+### 문제 1 — `range(7)`
+
+`range(7)` 반복 시 `'Python'` 출력 횟수는?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**`7`** — 0, 1, …, 6
+
+</RevealAnswer>
+
+---
+
+### 문제 2 — `range(1, 7)`
+
+`range(1, 7)` 반복 시 `'Hello'` 출력 횟수는?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**`6`** — 1, 2, …, 6
+
+</RevealAnswer>
+
+---
+
+### 문제 3 — `break`와 `range(5)`
+
+`range(5)` 반복 중 `if a == 5: break`일 때 출력 횟수는?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**`5`** — `a`는 0~4, `a == 5`는 성립하지 않아 끝까지 반복
+
+</RevealAnswer>
+
+---
+
+### 문제 4 — `range(1, 5)`
+
+`range(1, 5)` 반복 시 출력 횟수는?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**`4`** — 1, 2, 3, 4
+
+</RevealAnswer>
+
+---
+
+### 문제 5-1 — 조건문 복합
+
+조건문·반복문을 함께 쓰는 복합 문제의 결과는?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**`95`**
+
+</RevealAnswer>
+
+---
+
+### 문제 5-2 — 3의 배수와 `박수`
+
+`range(1, 11)` 중 `n % 3 == 0`일 때 `'박수'` 출력 횟수는?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**`3`** — 3, 6, 9
+
+</RevealAnswer>
+
+---
+
+### 문제 6-1 — 홀수만 `Hello World`
+
+`range(1, 5, 1)` 중 `n % 2 == 0`이 **아닐** 때 `'Hello World'` 출력 횟수는?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**`2`** — n = 1, 3
+
+</RevealAnswer>
+
+---
+
+### 문제 6-2 — 수열 함수
+
+수열을 만들 때 사용하는 함수는?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**1번** — `range()`
+
+</RevealAnswer>
+
+---
+
+### 문제 7 — 마지막 출력 (`range(1, 10)`)
+
+`range(1, 10)` 반복 시 **마지막**으로 출력되는 숫자는?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**`9`**
+
+</RevealAnswer>
+
+---
+
+### 문제 8 — `range(1, 9, 2)`
+
+`range(1, 9, 2)` 반복 시 **마지막** 출력 숫자는?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**`7`** — 1, 3, 5, 7
+
+</RevealAnswer>
+
+---
+
+### 문제 9 — `pass`와 3의 배수
+
+`range(1, 10)` 중 `n % 3 == 0`일 때 `pass`하면, **마지막**으로 출력되는 숫자는?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**`8`** — 3, 6, 9는 건너뛰고 8까지
+
+</RevealAnswer>
+
+---
+
+### 문제 10 — `range` 빈칸
+
+`range(2 + ___)`으로 **5번** 출력하려면 빈칸에 들어갈 수는?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**`3`** — `range(5)` → 0, 1, 2, 3, 4
+
+</RevealAnswer>
+
+---
+
+### 문제 11 — `박수` (1~10)
+
+1부터 10까지 반복하며 `'박수'` 출력 횟수는?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**`3`**
+
+</RevealAnswer>
+
+---
+
+### 문제 12 — `continue`
+
+`range(1, 7)` 중 `x % 3 == 0`일 때 `continue`하면 `'Hello World'` 출력 횟수는?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**`4`** — 3, 6을 건너뛰고 1, 2, 4, 5에서 출력
+
+</RevealAnswer>
+
+---
+
+## Part 8. 함수(Function)
+
+### 문제 1 — `myfunc(10)`
+
+`myfunc(10)` 호출 시 `2 * 10 + 1`의 결과는?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**`21`**
+
+</RevealAnswer>
+
+---
+
+### 문제 2 — 출력 순서
+
+코드 실행에 따른 출력 순서는?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**4번** — `Coding` → `Hello` → `Bye` → `Python`
+
+</RevealAnswer>
+
+---
+
+### 문제 3 — 구구단 함수 빈칸
+
+구구단 함수의 `( __, __, __ )`에 들어갈 내용은?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**5번** — `n`, `x`, `n * x`
+
+</RevealAnswer>
+
+---
+
+### 문제 4 — 삼각형 그리기 함수
+
+`import ___, range(___), left(___)` 빈칸에 들어갈 내용은?
+
+<RevealAnswer title="정답 보기 (클릭하여 펼침)">
+
+**4번** — `turtle`, `3`, `120`
+
+</RevealAnswer>
+
+---
+
+## 마무리
+
+| 파트 | 주제 |
+| --- | --- |
+| 1 | 컴퓨팅적 사고, 파이썬·코딩 개념 |
+| 2 | 변수, 타입, 연산자, 출력 포맷 |
+| 3 | Turtle 그래픽 |
+| 4 | `input` / `print`, TTS |
+| 5 | `if` / `elif` / `else` |
+| 6 | `range`, `break` / `continue` / `pass` |
+| 8 | 함수 정의·호출 |
+
+기말 전에는 **틀렸던 유형**만 골라 다시 풀어 보고, 코딩 2~3문제는 **손으로 직접 타이핑**해 보는 연습을 권합니다.
