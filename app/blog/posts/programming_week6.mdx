@@ -1,0 +1,284 @@
+---
+title: '프로그래밍1 6주차 — 연습 문제'
+publishedAt: '2026-05-27'
+summary: '프로그래밍1: 업다운 숫자 맞추기 — 변수·조건·반복·함수 단계별 연습'
+subject: 'programming1'
+---
+
+---
+
+## 연습 문제(3)
+
+**주제:** 업다운 숫자 맞추기 게임
+
+**교재:** [UniBook — 연습 문제(3) 업다운 숫자 맞추기](https://unibook.co/book/15/section/1396)
+
+컴퓨터가 1~100 사이의 정답을 정해 두고, 사용자가 **Up / Down** 힌트를 보며 맞추는 게임입니다. 아래 **1단계 → 4단계** 순서로 코드를 쌓아 가세요. 각 단계를 먼저 직접 작성해 보고, 막히면 **정답 보기**를 펼쳐 보세요.
+
+> **참고.** 정답 `target`은 `srand(time(0));` 후 `rand() % 100 + 1`로 **1~100** 사이 임의 정수를 씁니다.
+
+---
+
+### 1단계: 기본 게임 구조 만들기 (변수, 입출력, 조건문)
+
+**목표:** 컴퓨터가 정한 정답 숫자를 사용자가 **한 번** 입력해 맞추는 가장 기본적인 구조를 작성합니다.
+
+**요구사항**
+
+- 정답 숫자 변수 `target`을 `rand()`로 1부터 100 사이의 정수로 임의 지정하세요.
+- 사용자에게 숫자를 입력받습니다.
+- 입력한 숫자가 정답보다 크면 `Down!`, 작으면 `Up!`, 같으면 `Correct!`를 출력하세요.
+
+<RevealAnswer title="1단계 정답 보기 (클릭하여 펼침)">
+
+```cpp
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+using namespace std;
+
+int main() {
+    srand(time(0));
+    int target = rand() % 100 + 1;
+
+    int guess;
+    cout << "1~100 사이 숫자를 입력하세요: ";
+    cin >> guess;
+
+    if (guess > target) {
+        cout << "Down!" << endl;
+    } else if (guess < target) {
+        cout << "Up!" << endl;
+    } else {
+        cout << "Correct!" << endl;
+    }
+
+    return 0;
+}
+```
+
+</RevealAnswer>
+
+---
+
+### 2단계: 맞출 때까지 반복하기 (반복문, 연산자 활용)
+
+**목표:** 사용자가 정답을 맞출 때까지 기회를 계속 제공하고, **시도 횟수**를 기록합니다.
+
+**요구사항**
+
+- `while` 또는 `do-while` 반복문을 사용하여 정답을 맞출 때까지 입력을 반복해서 받으세요.
+- 사용자가 **틀릴 때마다** 시도 횟수 변수 `count`를 1씩 증가시킵니다.
+- 정답을 맞추면 축하 메시지와 함께 **총 몇 번 만에** 맞추었는지 출력하고 프로그램을 종료하세요.
+
+<RevealAnswer title="2단계 정답 보기 (클릭하여 펼침)">
+
+```cpp
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+using namespace std;
+
+int main() {
+    srand(time(0));
+    int target = rand() % 100 + 1;
+
+    int guess;
+    int count = 0;
+
+    while (true) {
+        cout << "숫자를 입력하세요: ";
+        cin >> guess;
+
+        if (guess == target) {
+            cout << "Correct!" << endl;
+            cout << "축하합니다! " << (count + 1) << "번 만에 맞추셨습니다!" << endl;
+            break;
+        }
+
+        count++;
+
+        if (guess > target) {
+            cout << "Down!" << endl;
+        } else {
+            cout << "Up!" << endl;
+        }
+    }
+
+    return 0;
+}
+```
+
+틀릴 때만 `count`를 올리고, 맞춘 그 입력은 **(count + 1)번째 시도**로 안내합니다.
+
+</RevealAnswer>
+
+---
+
+### 3단계: 입력 값 유효성 검사 및 힌트 추가 (복합 조건문, 논리 연산자)
+
+**목표:** 잘못된 입력을 걸러내고, 게임 흥미를 위한 **짝수/홀수 힌트**를 추가합니다.
+
+**요구사항**
+
+- 사용자가 **1 미만** 또는 **100 초과**의 숫자를 입력하면, 논리 연산자 `||`를 사용하여 `1부터 100 사이의 숫자만 입력하세요!`라는 경고를 출력하고 **시도 횟수에 포함하지 마세요.**
+- 사용자가 정답을 맞추지 못했을 때, 정답이 **짝수인지 홀수인지** 알려주는 힌트 기능을 추가하세요. (나머지 연산자 `%` 활용)
+
+<RevealAnswer title="3단계 정답 보기 (클릭하여 펼침)">
+
+```cpp
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+using namespace std;
+
+int main() {
+    srand(time(0));
+    int target = rand() % 100 + 1;
+
+    int guess;
+    int count = 0;
+
+    while (true) {
+        cout << "숫자를 입력하세요: ";
+        cin >> guess;
+
+        if (guess < 1 || guess > 100) {
+            cout << "1부터 100 사이의 숫자만 입력하세요!" << endl;
+            continue;
+        }
+
+        if (guess == target) {
+            cout << "Correct!" << endl;
+            cout << "축하합니다! " << (count + 1) << "번 만에 맞추셨습니다!" << endl;
+            break;
+        }
+
+        count++;
+
+        if (guess > target) {
+            cout << "Down!" << endl;
+        } else {
+            cout << "Up!" << endl;
+        }
+
+        if (target % 2 == 0) {
+            cout << "힌트: 정답은 짝수입니다." << endl;
+        } else {
+            cout << "힌트: 정답은 홀수입니다." << endl;
+        }
+    }
+
+    return 0;
+}
+```
+
+범위 밖 입력은 `continue`로 **시도 횟수를 올리지 않고** 다시 입력을 받습니다.
+
+</RevealAnswer>
+
+---
+
+### 4단계: 기능을 함수로 분리하기 (함수 구조화)
+
+**목표:** `main` 함수의 코드를 가독성 있게 정리하고, 기능을 **함수 단위**로 나눕니다.
+
+**요구사항**
+
+다음 세 가지 함수를 정의하고 `main`에서 호출하세요.
+
+<table>
+  <thead>
+    <tr>
+      <th scope="col">함수</th>
+      <th scope="col">역할</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>void printWelcome()</code></td>
+      <td>게임 시작 환영 문구 출력</td>
+    </tr>
+    <tr>
+      <td><code>bool checkAnswer(int guess, int target)</code></td>
+      <td>
+        <code>guess</code>와 <code>target</code> 비교 후 <code>Up</code> / <code>Down</code> / <code>Correct</code> 출력. 맞으면 <code>true</code>, 틀리면 <code>false</code> 반환
+      </td>
+    </tr>
+    <tr>
+      <td><code>void printHint(int target)</code></td>
+      <td>정답의 짝수/홀수 힌트 출력</td>
+    </tr>
+  </tbody>
+</table>
+
+<RevealAnswer title="4단계 정답 보기 (클릭하여 펼침)">
+
+```cpp
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+using namespace std;
+
+void printWelcome() {
+    cout << "=== 업다운 숫자 맞추기 게임 ===" << endl;
+    cout << "1~100 사이의 숫자를 맞춰 보세요!" << endl;
+}
+
+bool checkAnswer(int guess, int target) {
+    if (guess > target) {
+        cout << "Down!" << endl;
+        return false;
+    }
+    if (guess < target) {
+        cout << "Up!" << endl;
+        return false;
+    }
+    cout << "Correct!" << endl;
+    return true;
+}
+
+void printHint(int target) {
+    if (target % 2 == 0) {
+        cout << "힌트: 정답은 짝수입니다." << endl;
+    } else {
+        cout << "힌트: 정답은 홀수입니다." << endl;
+    }
+}
+
+int main() {
+    srand(time(0));
+    int target = rand() % 100 + 1;
+
+    int guess;
+    int count = 0;
+
+    printWelcome();
+
+    while (true) {
+        cout << "숫자를 입력하세요: ";
+        cin >> guess;
+
+        if (guess < 1 || guess > 100) {
+            cout << "1부터 100 사이의 숫자만 입력하세요!" << endl;
+            continue;
+        }
+
+        if (checkAnswer(guess, target)) {
+            cout << "축하합니다! " << (count + 1) << "번 만에 맞추셨습니다!" << endl;
+            break;
+        }
+
+        count++;
+        printHint(target);
+    }
+
+    return 0;
+}
+```
+
+3단계의 **유효성 검사**와 **반복·시도 횟수** 로직은 `main`에 두고, 비교·환영·힌트만 함수로 분리한 예시입니다.
+
+</RevealAnswer>
+
+---
