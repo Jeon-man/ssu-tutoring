@@ -28,51 +28,79 @@ subject: 'programming1'
   <tbody>
     <tr>
       <td>1</td>
-      <td><code>1 X n</code></td>
+      <td>
+        <code>1 X n</code>
+      </td>
       <td>변수 X에 정수 n을 대입</td>
-      <td><code>A = n;</code></td>
+      <td>
+        <code>A = n;</code>
+      </td>
       <td>n은 정수</td>
     </tr>
     <tr>
       <td>2</td>
-      <td><code>2 X</code></td>
+      <td>
+        <code>2 X</code>
+      </td>
       <td>변수 X의 값을 화면에 출력</td>
-      <td><code>cout &lt;&lt; A &lt;&lt; endl;</code></td>
+      <td>
+        <code>cout &lt;&lt; A &lt;&lt; endl;</code>
+      </td>
       <td>출력 후 줄바꿈</td>
     </tr>
     <tr>
       <td>3</td>
-      <td><code>3 X Y</code></td>
+      <td>
+        <code>3 X Y</code>
+      </td>
       <td>X + Y를 X에 저장</td>
-      <td><code>X += Y;</code></td>
+      <td>
+        <code>X += Y;</code>
+      </td>
       <td>복합 대입 연산자</td>
     </tr>
     <tr>
       <td>4</td>
-      <td><code>4 X Y</code></td>
+      <td>
+        <code>4 X Y</code>
+      </td>
       <td>X * Y를 X에 저장</td>
-      <td><code>X *= Y;</code></td>
+      <td>
+        <code>X *= Y;</code>
+      </td>
       <td>복합 대입 연산자</td>
     </tr>
     <tr>
       <td>5</td>
-      <td><code>5 X Y</code></td>
+      <td>
+        <code>5 X Y</code>
+      </td>
       <td>X - Y를 X에 저장</td>
-      <td><code>X -= Y;</code></td>
+      <td>
+        <code>X -= Y;</code>
+      </td>
       <td>복합 대입 연산자</td>
     </tr>
     <tr>
       <td>6</td>
-      <td><code>6 X Y</code></td>
+      <td>
+        <code>6 X Y</code>
+      </td>
       <td>X / Y의 몫(정수)을 X에 저장</td>
-      <td><code>X /= Y;</code></td>
+      <td>
+        <code>X /= Y;</code>
+      </td>
       <td>[4단계] Y가 0이면 에러 처리</td>
     </tr>
     <tr>
       <td>7</td>
-      <td><code>7</code></td>
+      <td>
+        <code>7</code>
+      </td>
       <td>프로그램 실행 중단</td>
-      <td><code>break;</code></td>
+      <td>
+        <code>break;</code>
+      </td>
       <td>[5단계] 총 명령어 통계 출력</td>
     </tr>
   </tbody>
@@ -110,25 +138,26 @@ subject: 'programming1'
 using namespace std;
 
 int main() {
+    // 이 프로그램이 다루는 유일한 두 변수, 0으로 초기화
     int A = 0;
     int B = 0;
 
-    int cmd;
-    char targetX;
-    int valueN;
+    int cmd;        // 명령어 번호 (1~7)
+    char targetX;   // 대상 변수 이름 ('A' 또는 'B')
+    int valueN;     // 대입할 정수 값
 
     cout << "명령어를 입력하세요: ";
-    cin >> cmd;
+    cin >> cmd;     // 먼저 명령어 번호만 읽는다
 
-    if (cmd == 1) {
-        cin >> targetX >> valueN;
+    if (cmd == 1) {                 // 1번: 변수에 값 대입
+        cin >> targetX >> valueN;   // 대상 변수와 값을 이어서 받기
         if (targetX == 'A') {
             A = valueN;
         } else if (targetX == 'B') {
             B = valueN;
         }
-    } else if (cmd == 2) {
-        cin >> targetX;
+    } else if (cmd == 2) {          // 2번: 변수 값 출력
+        cin >> targetX;             // 출력할 대상 변수만 받기
         if (targetX == 'A') {
             cout << A << endl;
         } else if (targetX == 'B') {
@@ -182,18 +211,18 @@ int main() {
     char targetX;
     int valueN;
 
-    while (true) {
-        cin >> cmd;
+    while (true) {          // 종료 명령이 들어올 때까지 무한 반복
+        cin >> cmd;         // 매 반복마다 새 명령어 번호를 읽는다
 
-        if (cmd == 7) {
-            break;
+        if (cmd == 7) {     // 7번: 프로그램 종료
+            break;          // 반복문 탈출
         }
 
-        if (cmd == 1) {
+        if (cmd == 1) {                 // 1번: 값 대입
             cin >> targetX >> valueN;
             if (targetX == 'A') A = valueN;
             else if (targetX == 'B') B = valueN;
-        } else if (cmd == 2) {
+        } else if (cmd == 2) {          // 2번: 값 출력
             cin >> targetX;
             if (targetX == 'A') cout << A << endl;
             else if (targetX == 'B') cout << B << endl;
@@ -245,7 +274,7 @@ int main() {
     int B = 0;
 
     int cmd;
-    char targetX, targetY;
+    char targetX, targetY;  // 사칙연산은 대상 변수 두 개(X, Y)가 필요
     int valueN;
 
     while (true) {
@@ -263,17 +292,19 @@ int main() {
             cin >> targetX;
             if (targetX == 'A') cout << A << endl;
             else if (targetX == 'B') cout << B << endl;
-        } else if (cmd == 3 || cmd == 4 || cmd == 5) {
+        } else if (cmd == 3 || cmd == 4 || cmd == 5) {  // 3·4·5번: +, *, -
             cin >> targetX >> targetY;
 
+            // 두 변수의 '현재 값'을 먼저 꺼낸다
             int x = (targetX == 'A') ? A : B;
             int y = (targetY == 'A') ? A : B;
 
             int result;
-            if (cmd == 3) result = x + y;
-            else if (cmd == 4) result = x * y;
-            else result = x - y;
+            if (cmd == 3) result = x + y;       // 3번: 덧셈
+            else if (cmd == 4) result = x * y;  // 4번: 곱셈
+            else result = x - y;                // 5번: 뺄셈
 
+            // 계산 결과를 다시 X 변수에 저장
             if (targetX == 'A') A = result;
             else B = result;
         }
@@ -341,7 +372,7 @@ int main() {
             cin >> targetX;
             if (targetX == 'A') cout << A << endl;
             else if (targetX == 'B') cout << B << endl;
-        } else if (cmd == 3 || cmd == 4 || cmd == 5) {
+        } else if (cmd == 3 || cmd == 4 || cmd == 5) {  // 3·4·5번: +, *, -
             cin >> targetX >> targetY;
 
             int x = (targetX == 'A') ? A : B;
@@ -354,16 +385,16 @@ int main() {
 
             if (targetX == 'A') A = result;
             else B = result;
-        } else if (cmd == 6) {
+        } else if (cmd == 6) {              // 6번: 정수 나눗셈(몫)
             cin >> targetX >> targetY;
 
             int x = (targetX == 'A') ? A : B;
             int y = (targetY == 'A') ? A : B;
 
-            if (y == 0) {
+            if (y == 0) {                   // 나누는 수가 0이면 연산하지 않음
                 cout << "에러: 0으로 나눌 수 없습니다!" << endl;
             } else {
-                int result = x / y;
+                int result = x / y;         // 정수 나눗셈은 소수점 이하를 버린다
                 if (targetX == 'A') A = result;
                 else B = result;
             }
@@ -395,8 +426,15 @@ int main() {
   </thead>
   <tbody>
     <tr>
-      <td><code>void executeCommand(int cmd, char targetX, char targetY, int value)</code></td>
-      <td>입력받은 인자로 전역 변수 <code>A</code>·<code>B</code>의 값을 조작하는 핵심 인터프리터 함수</td>
+      <td>
+        <code>
+          void executeCommand(int cmd, char targetX, char targetY, int value)
+        </code>
+      </td>
+      <td>
+        입력받은 인자로 전역 변수 <code>A</code>·<code>B</code>의 값을 조작하는
+        핵심 인터프리터 함수
+      </td>
     </tr>
   </tbody>
 </table>
@@ -424,34 +462,37 @@ int main() {
 #include <iostream>
 using namespace std;
 
+// A, B는 함수 안에서 직접 값을 바꿔야 하므로 전역 변수로 선언
 int A = 0;
 int B = 0;
 
+// 명령어 한 개를 해석해서 A 또는 B의 값을 조작하는 핵심 함수
 void executeCommand(int cmd, char targetX, char targetY, int value) {
-    int x = (targetX == 'A') ? A : B;
-    int y = (targetY == 'A') ? A : B;
+    int x = (targetX == 'A') ? A : B;   // 대상 변수 X의 현재 값
+    int y = (targetY == 'A') ? A : B;   // 대상 변수 Y의 현재 값
 
-    int result = x;
+    int result = x;     // 계산 결과 (기본값은 X 그대로)
 
     if (cmd == 1) {
-        result = value;
+        result = value;             // 1번: 값 대입
     } else if (cmd == 2) {
-        cout << x << endl;
-        return;
+        cout << x << endl;          // 2번: 값 출력
+        return;                     // 출력만 하고 종료 (변수 변경 없음)
     } else if (cmd == 3) {
-        result = x + y;
+        result = x + y;             // 3번: 덧셈
     } else if (cmd == 4) {
-        result = x * y;
+        result = x * y;             // 4번: 곱셈
     } else if (cmd == 5) {
-        result = x - y;
+        result = x - y;             // 5번: 뺄셈
     } else if (cmd == 6) {
-        if (y == 0) {
+        if (y == 0) {               // 0으로 나누기 방지
             cout << "에러: 0으로 나눌 수 없습니다!" << endl;
             return;
         }
-        result = x / y;
+        result = x / y;             // 6번: 정수 나눗셈(몫)
     }
 
+    // 계산 결과를 대상 변수 X에 저장
     if (targetX == 'A') A = result;
     else B = result;
 }
@@ -460,27 +501,29 @@ int main() {
     int cmd;
     char targetX = ' ', targetY = ' ';
     int value = 0;
-    int execCount = 0;
+    int execCount = 0;      // 실행된 유효 명령어 개수 누적
 
     while (true) {
         cin >> cmd;
 
-        if (cmd == 7) {
+        if (cmd == 7) {     // 7번: 종료
             break;
         }
 
+        // 명령 번호에 따라 필요한 인자만큼만 이어서 입력받기
         if (cmd == 1) {
-            cin >> targetX >> value;
+            cin >> targetX >> value;    // 대상 변수 + 값
         } else if (cmd == 2) {
-            cin >> targetX;
+            cin >> targetX;             // 대상 변수만
         } else {
-            cin >> targetX >> targetY;
+            cin >> targetX >> targetY;  // 대상 변수 두 개
         }
 
-        executeCommand(cmd, targetX, targetY, value);
-        execCount++;
+        executeCommand(cmd, targetX, targetY, value);   // 해석은 함수에 위임
+        execCount++;                                    // 실행 횟수 +1
     }
 
+    // 종료 시 통계 출력
     cout << "====================================" << endl;
     cout << "[인터프리터 시스템 종료]" << endl;
     cout << "- 총 실행된 유효 명령어: " << execCount << "회 (종료 명령 제외)" << endl;
