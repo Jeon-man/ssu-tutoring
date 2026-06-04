@@ -78,6 +78,8 @@ subject: 'programming1'
   </tbody>
 </table>
 
+> **참고.** 명령어는 `1 A 25`처럼 한 줄에 입력하면 됩니다. `cin >>`은 공백·줄바꿈을 자동으로 건너뛰므로, `cmd`를 먼저 읽고 명령 종류에 따라 `cin >> targetX >> valueN`으로 나머지를 이어 받으면 됩니다.
+
 아래 **1단계 → 5단계** 순서로 코드를 쌓아 가세요. 각 단계를 먼저 직접 작성해 보고, 막히면 **정답 보기**를 펼쳐 보세요.
 
 ---
@@ -138,6 +140,8 @@ int main() {
 }
 ```
 
+`cin >>`은 공백을 자동으로 건너뛰므로 `cmd`를 먼저 읽고, 명령이 1번이면 `cin >> targetX >> valueN`으로 나머지를 이어 받습니다.
+
 </RevealAnswer>
 
 ---
@@ -187,18 +191,12 @@ int main() {
 
         if (cmd == 1) {
             cin >> targetX >> valueN;
-            if (targetX == 'A') {
-                A = valueN;
-            } else if (targetX == 'B') {
-                B = valueN;
-            }
+            if (targetX == 'A') A = valueN;
+            else if (targetX == 'B') B = valueN;
         } else if (cmd == 2) {
             cin >> targetX;
-            if (targetX == 'A') {
-                cout << A << endl;
-            } else if (targetX == 'B') {
-                cout << B << endl;
-            }
+            if (targetX == 'A') cout << A << endl;
+            else if (targetX == 'B') cout << B << endl;
         }
     }
 
@@ -285,7 +283,7 @@ int main() {
 }
 ```
 
-먼저 X·Y의 **현재 값**을 꺼낸 뒤 계산하고, 결과를 다시 X 변수에 써 넣습니다.
+`cin >> targetX >> targetY`로 두 변수 이름을 꺼낸 뒤, X·Y의 **현재 값**을 가져와 계산하고 결과를 다시 X에 써 넣습니다.
 
 </RevealAnswer>
 
@@ -460,8 +458,8 @@ void executeCommand(int cmd, char targetX, char targetY, int value) {
 
 int main() {
     int cmd;
-    char targetX, targetY;
-    int value;
+    char targetX = ' ', targetY = ' ';
+    int value = 0;
     int execCount = 0;
 
     while (true) {
@@ -473,15 +471,13 @@ int main() {
 
         if (cmd == 1) {
             cin >> targetX >> value;
-            executeCommand(cmd, targetX, ' ', value);
         } else if (cmd == 2) {
             cin >> targetX;
-            executeCommand(cmd, targetX, ' ', 0);
         } else {
             cin >> targetX >> targetY;
-            executeCommand(cmd, targetX, targetY, 0);
         }
 
+        executeCommand(cmd, targetX, targetY, value);
         execCount++;
     }
 
@@ -494,7 +490,7 @@ int main() {
 }
 ```
 
-명령어 해석 로직을 `executeCommand` 함수로 옮기면 `main`에는 “입력받아 함수에 넘기고, 종료 시 통계를 낸다”는 흐름만 남습니다. `A`·`B`는 함수에서 값을 바꿔야 하므로 **전역 변수**로 두었습니다.
+`main`은 `cmd`를 먼저 읽고 명령 번호에 맞게 인자를 이어 받아 `executeCommand`에 넘기기만 합니다. `A`·`B`는 함수에서 값을 바꿔야 하므로 **전역 변수**로 두었습니다.
 
 </RevealAnswer>
 
