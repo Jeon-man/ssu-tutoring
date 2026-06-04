@@ -9,137 +9,266 @@ subject: 'computersystems'
 
 ---
 
-## 1. 주요 레지스터와 파이프라인 (문제 1~3)
-
-### 1번. MAR과 MBR
-
-<table>
-  <thead>
-    <tr>
-      <th scope="col">레지스터</th>
-      <th scope="col">역할</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <strong>MAR (Memory Address Register)</strong>
-      </td>
-      <td>CPU가 읽거나 쓰려는 메모리의 <strong>주소</strong>를 보관하는 레지스터.</td>
-    </tr>
-    <tr>
-      <td>
-        <strong>MBR (Memory Buffer Register)</strong>
-      </td>
-      <td>
-        메모리에서 읽어온 <strong>데이터</strong>나 메모리에 저장할 데이터를 임시로
-        보관하는 레지스터.
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-### 2번. 파이프라인(Pipeline)
-
-- **개념:** 하나의 명령어가 실행되는 동안 다음 명령어의 인출이나 해독을 동시에 진행하는 **병렬 처리** 기술입니다.
-- **성능 향상:** 명령어 처리 단계를 겹쳐서 수행함으로써 단위 시간당 처리량(Throughput)을 늘려 CPU 전체 성능을 향상시킵니다.
-
-### 3번. 명령어 수행 사이클 3단계
-
-<table>
-  <thead>
-    <tr>
-      <th scope="col">단계</th>
-      <th scope="col">설명</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <strong>인출(Fetch)</strong>
-      </td>
-      <td>
-        <strong>PC 레지스터</strong>가 가리키는 주소의 명령어를 가져와{' '}
-        <strong>IR 레지스터</strong>에 저장합니다.
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <strong>해독(Decode)</strong>
-      </td>
-      <td>IR에 저장된 명령어를 제어 장치가 분석하여 수행할 작업을 결정합니다.</td>
-    </tr>
-    <tr>
-      <td>
-        <strong>실행(Execute)</strong>
-      </td>
-      <td>해독된 결과에 따라 실제 연산이나 데이터 이동을 수행합니다.</td>
-    </tr>
-  </tbody>
-</table>
-
----
-
-## 2. 캐시 메모리 (문제 4~5)
-
-### 4번. Associative Memory
-
-주소값이 아닌 **데이터의 내용(Content)**의 일부를 검색 키로 사용하여 데이터를 직접 찾는 방식입니다. 이를 통해 캐시 내에서 원하는 데이터가 있는지 빠르게 확인할 수 있습니다.
-
-### 5번. Hit Ratio
-
-CPU가 요청한 데이터가 캐시 메모리에 존재할 확률입니다. 이 비율이 높을수록 속도가 느린 주기억장치(RAM)에 접근하는 횟수가 줄어들어 전체 시스템 속도가 비약적으로 빨라집니다.
-
----
-
-## 3. Pep/8 기계어 및 어셈블리어 실습 (문제 6~12)
+## 3. Pep/8 기계어 및 어셈블리어 실습 (문제 6, 10~12)
 
 ### 6번. 입출력 기계어 완성
 
-- C 코드의 `scanf("%c", &ch1)`는 기계어 `49 00 20` (CHARI 0x0020, d)입니다.
-- `printf("%c", ch1)`에 해당하는 기계어는 **`51 00 20`** (CHARO 0x0020, d)이고, `ch2`는 **`51 00 21`**입니다.
-- 마지막은 프로그램 종료인 **`00`** (STOP)과 데이터 끝을 알리는 **`zz`**가 들어갑니다.
+C 코드는 `scanf("%c%c", &ch1, &ch2)`로 **두 글자**를 입력받고, `printf("%c%c", ch1, ch2)`로 다시 출력합니다. (`ch1` = 0x0020, `ch2` = 0x0021)
+
+<table>
+  <thead>
+    <tr>
+      <th scope="col">주소</th>
+      <th scope="col">기계어</th>
+      <th scope="col">의미</th>
+      <th scope="col">비고</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0x0000</td>
+      <td>49 00 20</td>
+      <td>CHARI 0x0020, d (ch1 입력)</td>
+      <td>주어짐</td>
+    </tr>
+    <tr>
+      <td>0x0003</td>
+      <td>49 00 21</td>
+      <td>CHARI 0x0021, d (ch2 입력)</td>
+      <td>주어짐</td>
+    </tr>
+    <tr>
+      <td>0x0006</td>
+      <td>
+        <strong>51 00 20</strong>
+      </td>
+      <td>CHARO 0x0020, d (ch1 출력)</td>
+      <td>빈칸</td>
+    </tr>
+    <tr>
+      <td>0x0009</td>
+      <td>
+        <strong>51 00 21</strong>
+      </td>
+      <td>CHARO 0x0021, d (ch2 출력)</td>
+      <td>빈칸</td>
+    </tr>
+    <tr>
+      <td>0x000C</td>
+      <td>
+        <strong>00</strong>
+      </td>
+      <td>STOP (프로그램 종료)</td>
+      <td>빈칸</td>
+    </tr>
+    <tr>
+      <td>—</td>
+      <td>
+        <strong>zz</strong>
+      </td>
+      <td>입력 데이터 끝 표시</td>
+      <td>빈칸</td>
+    </tr>
+  </tbody>
+</table>
+
+- 핵심: 입력은 **CHARI = `49`**, 출력은 **CHARO = `51`**. 주소만 ch1(0x20)/ch2(0x21)로 맞춰주면 됩니다.
 
 ### 10번. 덧셈 프로그램 빈칸
 
+`sum = num + 10`을 계산해 출력하는 프로그램입니다.
+
 ```asm
-bonus:  .EQUATE 10      ; 상수 정의
-        STA     sum, d   ; 더한 결과를 sum 변수에 저장
-        DECO    sum, d   ; 결과값을 숫자로 출력
+        BR      main
+num:    .BLOCK  2
+sum:    .BLOCK  2
+bonus:  .EQUATE 10          ; (1) 상수 10 정의
+msg:    .ASCII  "enter a number: \x00"
+main:   STRO    msg, d
+        DECI    num, d
+        LDA     num, d
+        ADDA    bonus, i
+        STA     sum, d      ; (2) 더한 결과를 sum에 저장
+        DECO    sum, d      ; (3) 결과를 10진수로 출력
+        STOP
+        .END
 ```
+
+- 빈칸 정답: **`bonus: .EQUATE 10`**, **`STA sum, d`**, **`DECO sum, d`**
 
 ### 11번. While 루프 빈칸
 
+0이 입력될 때까지 입력값을 누적(`sum += input`)하는 프로그램입니다.
+
 ```asm
+        BR      main
+input:  .BLOCK  2
+sum:    .BLOCK  2
+msg1:   .ASCII  "enter numbers(0: quit): \x00"
+msg2:   .ASCII  "sum: \x00"
+main:   STRO    msg1, d
 while:  DECI    input, d
-        LDA     input, d   ; 입력받은 값을 검사하기 위해 로드
+        LDA     input, d    ; (1) 비교를 위해 input 로드
         CPA     0, i
-        BREQ    endWhile   ; if (input == 0) break
-        ; ... 반복 본문 ...
-        BR      while      ; 루프 끝에서 다시 처음으로
-endWhile:
+        BREQ    endWhile    ; (2) input == 0 이면 루프 탈출
+        ADDA    sum, d
+        STA     sum, d
+        BR      while       ; (3) 루프 처음으로 복귀
+endWhile: STRO  msg2, d
+        DECO    sum, d
+        STOP
+        .END
 ```
+
+- 빈칸 정답: **`LDA input, d`**, **`BREQ endWhile`**, **`BR while`**
 
 ### 12번. 대문자 판별(IF 조건문) 빈칸
 
-`ch >= 'A'` 조건 통과 후 `ch <= 'Z'`를 검사하기 위해 다시 값을 가져옵니다.
+`if (ch >= 'A' && ch <= 'Z')` 를 두 단계 비교로 구현합니다.
 
 ```asm
-        LDBYTEA ch, d      ; ch 값을 다시 로드
-        CPA     'Z', i
-        BRGT    else       ; Z보다 크면 else로 이동
+        BR      main
+ch:     .BLOCK  1
+main:   CHARI   ch, d
+if:     LDA     0x0000, i
+        LDBYTEA ch, d
+        CPA     'A', i
+        BRLT    else        ; ch < 'A' 이면 else
+        LDBYTEA ch, d       ; (1) ch 값을 다시 로드
+        CPA     'Z', i      ; (2) 'Z'와 비교
+        BRGT    else        ; (3) ch > 'Z' 이면 else
+        STRO    msg1, d
+        BR      endIf
+else:   STRO    msg2, d
+endIf:  STOP
+msg1:   .ASCII  "Capital Letter\x00"
+msg2:   .ASCII  "Not Capital Letter\x00"
+        .END
 ```
+
+- 빈칸 정답: **`LDBYTEA ch, d`**, **`CPA 'Z', i`**, **`BRGT else`**
 
 ---
 
-## 4. 심화 문제 (문제 8~9)
+## 4. 심화 / 수 표현 문제 (문제 7~9)
 
-### 8번. 코드 해독
+### 7번. 2바이트 2의 보수 해석
 
-- `D1 00 1D` (LDBYTEA 0x001D, d): 주소 0x001D에서 바이트를 로드합니다.
-- 이후 연산(`C1`, `71`, `A1` 등)을 거쳐 최종적으로 `51 00 16`을 통해 결과값을 문자로 출력합니다.
-- 자료에 따르면 0x0016 위치에 결과가 저장됩니다.
+각 줄은 `[연산 코드 1바이트] [피연산자 2바이트]` 형식입니다. **뒤쪽 2바이트(피연산자)**를 16비트 2의 보수로 해석한 10진수 값을 적으면 됩니다. (앞 바이트의 첫 비트가 1이라도, 부호는 2바이트 피연산자의 최상위 비트로 판단)
+
+<table>
+  <thead>
+    <tr>
+      <th scope="col">2진수</th>
+      <th scope="col">피연산자(2바이트)</th>
+      <th scope="col">2의 보수 10진수</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>11000000 00000000 00000100</td>
+      <td>0x0004</td>
+      <td>
+        <strong>4</strong>
+      </td>
+    </tr>
+    <tr>
+      <td>10000000 00000000 00000110</td>
+      <td>0x0006</td>
+      <td>
+        <strong>6</strong>
+      </td>
+    </tr>
+    <tr>
+      <td>11100001 00000000 00100000</td>
+      <td>0x0020</td>
+      <td>
+        <strong>32</strong>
+      </td>
+    </tr>
+    <tr>
+      <td>00000000</td>
+      <td>—</td>
+      <td>STOP(0x00)</td>
+    </tr>
+  </tbody>
+</table>
+
+- 세 피연산자 모두 최상위 비트가 0이라 양수이며, 값은 각각 **4, 6, 32**입니다.
+
+### 8번. 코드 해독 (출력값: `2`)
+
+이 문제의 핵심은 **자기수정코드(self-modifying code)** 입니다. 실행 중에 명령어 자신을 바꿔버립니다.
+
+**메모리 배치**
+
+<table>
+  <thead>
+    <tr>
+      <th scope="col">주소</th>
+      <th scope="col">내용</th>
+      <th scope="col">의미</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0x0009</td>
+      <td>71 00 19</td>
+      <td>원래 ADDA 0x0019, d</td>
+    </tr>
+    <tr>
+      <td>0x0016</td>
+      <td>00</td>
+      <td>결과 저장용 1바이트</td>
+    </tr>
+    <tr>
+      <td>0x0017</td>
+      <td>00 05</td>
+      <td>word = 5</td>
+    </tr>
+    <tr>
+      <td>0x0019</td>
+      <td>00 03</td>
+      <td>word = 3</td>
+    </tr>
+    <tr>
+      <td>0x001B</td>
+      <td>00 30</td>
+      <td>word = 0x30 ('0')</td>
+    </tr>
+    <tr>
+      <td>0x001D</td>
+      <td>81</td>
+      <td>byte = 0x81 (= SUBA 연산 코드)</td>
+    </tr>
+  </tbody>
+</table>
+
+**실행 추적**
+
+```asm
+D1 00 1D   ; LDBYTEA 0x001D,d → A의 하위바이트 = 0x81
+F1 00 09   ; STBYTEA 0x0009,d → 0x0009의 71(ADDA)을 81(SUBA)로 덮어씀!
+C1 00 17   ; LDA 0x0017,d → A = 5
+71 00 19   ; ↑에서 81로 바뀜 → 실제로는 SUBA 0x0019,d → A = 5 - 3 = 2
+A1 00 1B   ; ORA 0x001B,d → A = 2 OR 0x30 = 0x32 ('2')
+F1 00 16   ; STBYTEA 0x0016,d → 0x0016에 0x32 저장
+51 00 16   ; CHARO 0x0016,d → '2' 출력
+00         ; STOP
+```
+
+- `81`을 0x0009에 써넣어 `ADDA(71)`가 `SUBA(81)`로 바뀝니다 → `5 + 3`이 아니라 **`5 - 3 = 2`**.
+- 2를 0x30과 OR 연산하면 0x32 = 문자 **`'2'`** → 최종 **출력값은 `2`**.
 
 ### 9번. % 연산 아이디어
 
-`number % 2 == 0`은 짝수인지 확인하는 것입니다. Pep/8에서는 **`ANDA 1, i`** (1과 비트 단위 AND 연산)를 수행한 결과가 0이면 짝수, 1이면 홀수임을 이용하여 `BREQ`나 `BRNE`로 분기할 수 있습니다.
+`number % 2 == 0`은 짝수 판별입니다. **2진수에서 짝수/홀수는 최하위 비트(LSB) 하나로 결정**됩니다.
+
+```asm
+        LDA     number, d
+        ANDA    1, i         ; 최하위 비트만 남김 (number & 1)
+        BREQ    even         ; 결과가 0이면 짝수 → 분기
+        ; 결과가 1이면 홀수
+```
+
+- `ANDA 1, i` 결과가 **0이면 짝수**, **1이면 홀수**임을 이용해 `BREQ`(또는 `BRNE`)로 분기하면 됩니다.
