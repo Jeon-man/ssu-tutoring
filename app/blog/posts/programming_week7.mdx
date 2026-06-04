@@ -1,0 +1,180 @@
+---
+title: '프로그래밍1 7주차 — 연습 문제'
+publishedAt: '2026-06-03'
+summary: '프로그래밍1: 구구단 출력기 — 변수·반복·조건·중첩 반복·함수 단계별 연습'
+subject: 'programming1'
+---
+
+---
+
+## 연습 문제(4)
+
+**주제:** 구구단 출력기
+
+**교재:** [UniBook — 연습 문제(4) 구구단 출력기](https://unibook.co/book/15/section/1396)
+
+사용자가 입력한 단(예: 3단)을 보기 좋게 출력하고, 나아가 **전체 구구단**까지 찍어 주는 프로그램입니다. 아래 **1단계 → 4단계** 순서로 코드를 쌓아 가세요. 각 단계를 먼저 직접 작성해 보고, 막히면 **정답 보기**를 펼쳐 보세요.
+
+> **참고.** 곱셈 결과는 `dan * i` 형태로 만들고, 반복은 `for (int i = 1; i <= 9; i++)`처럼 **1부터 9까지** 돌립니다.
+
+---
+
+### 1단계: 한 단 출력하기 (변수, 입출력, 반복문)
+
+**목표:** 사용자에게 단 하나를 입력받아 그 단의 구구단을 출력합니다.
+
+**요구사항**
+
+- 단을 저장할 변수 `dan`을 선언하고 사용자에게 입력받으세요.
+- `for` 반복문으로 1부터 9까지 곱하며 결과를 출력하세요.
+- 출력 형식은 `3 x 1 = 3` 처럼 보이게 하세요.
+
+<RevealAnswer title="1단계 정답 보기 (클릭하여 펼침)">
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int dan;
+    cout << "출력할 단을 입력하세요: ";
+    cin >> dan;
+
+    for (int i = 1; i <= 9; i++) {
+        cout << dan << " x " << i << " = " << dan * i << endl;
+    }
+
+    return 0;
+}
+```
+
+`dan * i`가 곱셈 결과이고, `i`가 1부터 9까지 바뀌면서 한 단이 완성됩니다.
+
+</RevealAnswer>
+
+---
+
+### 2단계: 잘못된 단 걸러내기 (조건문, 논리 연산자)
+
+**목표:** 구구단 범위인 **2단~9단**만 출력하도록 입력을 검사합니다.
+
+**요구사항**
+
+- 입력한 `dan`이 **2 미만** 또는 **9 초과**이면, 논리 연산자 `||`를 사용하여 `2부터 9 사이의 단만 입력하세요!`라는 경고를 출력하세요.
+- 올바른 범위일 때만 구구단을 출력하세요.
+
+<RevealAnswer title="2단계 정답 보기 (클릭하여 펼침)">
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int dan;
+    cout << "출력할 단을 입력하세요: ";
+    cin >> dan;
+
+    if (dan < 2 || dan > 9) {
+        cout << "2부터 9 사이의 단만 입력하세요!" << endl;
+    } else {
+        for (int i = 1; i <= 9; i++) {
+            cout << dan << " x " << i << " = " << dan * i << endl;
+        }
+    }
+
+    return 0;
+}
+```
+
+범위를 벗어나면 경고만 출력하고, 올바른 경우에만 `else` 안의 반복문이 실행됩니다.
+
+</RevealAnswer>
+
+---
+
+### 3단계: 전체 구구단 출력하기 (중첩 반복문)
+
+**목표:** 2단부터 9단까지 **전체 구구단**을 한 번에 출력합니다.
+
+**요구사항**
+
+- 바깥 반복문으로 단(`dan`)을 **2부터 9까지** 바꾸세요.
+- 안쪽 반복문으로 곱하는 수(`i`)를 **1부터 9까지** 바꾸세요.
+- 단이 바뀔 때마다 보기 좋게 빈 줄을 한 줄 넣으세요.
+
+<RevealAnswer title="3단계 정답 보기 (클릭하여 펼침)">
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    for (int dan = 2; dan <= 9; dan++) {
+        for (int i = 1; i <= 9; i++) {
+            cout << dan << " x " << i << " = " << dan * i << endl;
+        }
+        cout << endl;
+    }
+
+    return 0;
+}
+```
+
+바깥 반복문이 한 번 돌 때마다 안쪽 반복문이 9번 돌아 **한 단**이 완성됩니다. 단이 끝날 때마다 `cout << endl;`로 줄을 띄웁니다.
+
+</RevealAnswer>
+
+---
+
+### 4단계: 한 단 출력을 함수로 분리하기 (함수 구조화)
+
+**목표:** `main`의 코드를 정리하고, **한 단을 출력하는 기능**을 함수로 나눕니다.
+
+**요구사항**
+
+다음 함수를 정의하고 `main`에서 호출하세요.
+
+<table>
+  <thead>
+    <tr>
+      <th scope="col">함수</th>
+      <th scope="col">역할</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>void printDan(int dan)</code></td>
+      <td><code>dan</code>단을 1~9까지 한 줄씩 출력</td>
+    </tr>
+  </tbody>
+</table>
+
+`main`에서는 2단부터 9단까지 반복하며 `printDan`을 호출하세요.
+
+<RevealAnswer title="4단계 정답 보기 (클릭하여 펼침)">
+
+```cpp
+#include <iostream>
+using namespace std;
+
+void printDan(int dan) {
+    for (int i = 1; i <= 9; i++) {
+        cout << dan << " x " << i << " = " << dan * i << endl;
+    }
+}
+
+int main() {
+    for (int dan = 2; dan <= 9; dan++) {
+        printDan(dan);
+        cout << endl;
+    }
+
+    return 0;
+}
+```
+
+반복해서 쓰던 **한 단 출력** 코드를 `printDan` 함수로 묶으면, `main`은 “2단부터 9단까지 출력”이라는 흐름만 남아 훨씬 읽기 쉬워집니다.
+
+</RevealAnswer>
+
+---
