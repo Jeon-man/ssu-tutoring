@@ -1,7 +1,7 @@
 ---
 title: '프로그래밍1 7주차 — 연습 문제'
 publishedAt: '2026-06-03'
-summary: '프로그래밍1: 구구단 출력기 — 변수·반복·조건·중첩 반복·함수 단계별 연습'
+summary: '프로그래밍1: 간단한 계산기 — 변수·조건·반복·함수 단계별 연습'
 subject: 'programming1'
 ---
 
@@ -9,25 +9,24 @@ subject: 'programming1'
 
 ## 연습 문제(4)
 
-**주제:** 구구단 출력기
+**주제:** 간단한 계산기
 
-**교재:** [UniBook — 연습 문제(4) 구구단 출력기](https://unibook.co/book/15/section/1396)
+**교재:** [UniBook — 연습 문제(4) 간단한 계산기](https://unibook.co/book/15/section/1396)
 
-사용자가 입력한 단(예: 3단)을 보기 좋게 출력하고, 나아가 **전체 구구단**까지 찍어 주는 프로그램입니다. 아래 **1단계 → 4단계** 순서로 코드를 쌓아 가세요. 각 단계를 먼저 직접 작성해 보고, 막히면 **정답 보기**를 펼쳐 보세요.
+두 개의 숫자와 연산자(`+ - * /`)를 입력받아 계산 결과를 알려 주는 프로그램입니다. 아래 **1단계 → 4단계** 순서로 코드를 쌓아 가세요. 각 단계를 먼저 직접 작성해 보고, 막히면 **정답 보기**를 펼쳐 보세요.
 
-> **참고.** 곱셈 결과는 `dan * i` 형태로 만들고, 반복은 `for (int i = 1; i <= 9; i++)`처럼 **1부터 9까지** 돌립니다.
+> **참고.** 연산자는 `char op;`로 한 글자만 입력받고, `if (op == '+')`처럼 비교합니다.
 
 ---
 
-### 1단계: 한 단 출력하기 (변수, 입출력, 반복문)
+### 1단계: 사칙연산 계산하기 (변수, 입출력, 조건문)
 
-**목표:** 사용자에게 단 하나를 입력받아 그 단의 구구단을 출력합니다.
+**목표:** 두 수와 연산자를 입력받아 알맞은 사칙연산 결과를 출력합니다.
 
 **요구사항**
 
-- 단을 저장할 변수 `dan`을 선언하고 사용자에게 입력받으세요.
-- `for` 반복문으로 1부터 9까지 곱하며 결과를 출력하세요.
-- 출력 형식은 `3 x 1 = 3` 처럼 보이게 하세요.
+- 두 실수 `a`, `b`와 연산자 `op`를 입력받으세요.
+- 연산자가 `+`, `-`, `*`, `/`일 때 각각의 결과를 출력하세요.
 
 <RevealAnswer title="1단계 정답 보기 (클릭하여 펼침)">
 
@@ -36,32 +35,44 @@ subject: 'programming1'
 using namespace std;
 
 int main() {
-    int dan;
-    cout << "출력할 단을 입력하세요: ";
-    cin >> dan;
+    double a, b;
+    char op;
 
-    for (int i = 1; i <= 9; i++) {
-        cout << dan << " x " << i << " = " << dan * i << endl;
+    cout << "첫 번째 숫자: ";
+    cin >> a;
+    cout << "연산자(+ - * /): ";
+    cin >> op;
+    cout << "두 번째 숫자: ";
+    cin >> b;
+
+    if (op == '+') {
+        cout << "결과: " << a + b << endl;
+    } else if (op == '-') {
+        cout << "결과: " << a - b << endl;
+    } else if (op == '*') {
+        cout << "결과: " << a * b << endl;
+    } else if (op == '/') {
+        cout << "결과: " << a / b << endl;
     }
 
     return 0;
 }
 ```
 
-`dan * i`가 곱셈 결과이고, `i`가 1부터 9까지 바뀌면서 한 단이 완성됩니다.
+`op`에 담긴 연산자에 따라 알맞은 분기 하나만 실행됩니다.
 
 </RevealAnswer>
 
 ---
 
-### 2단계: 잘못된 단 걸러내기 (조건문, 논리 연산자)
+### 2단계: 잘못된 입력 처리하기 (복합 조건문, 논리 연산자)
 
-**목표:** 구구단 범위인 **2단~9단**만 출력하도록 입력을 검사합니다.
+**목표:** **0으로 나누기**와 **이상한 연산자**를 걸러냅니다.
 
 **요구사항**
 
-- 입력한 `dan`이 **2 미만** 또는 **9 초과**이면, 논리 연산자 `||`를 사용하여 `2부터 9 사이의 단만 입력하세요!`라는 경고를 출력하세요.
-- 올바른 범위일 때만 구구단을 출력하세요.
+- 연산자가 `/`이고 `b`가 **0**이면 `0으로 나눌 수 없습니다!`를 출력하세요.
+- `+ - * /` 중 어느 것도 아니면 `잘못된 연산자입니다!`를 출력하세요. (`else` 활용)
 
 <RevealAnswer title="2단계 정답 보기 (클릭하여 펼침)">
 
@@ -70,37 +81,50 @@ int main() {
 using namespace std;
 
 int main() {
-    int dan;
-    cout << "출력할 단을 입력하세요: ";
-    cin >> dan;
+    double a, b;
+    char op;
 
-    if (dan < 2 || dan > 9) {
-        cout << "2부터 9 사이의 단만 입력하세요!" << endl;
-    } else {
-        for (int i = 1; i <= 9; i++) {
-            cout << dan << " x " << i << " = " << dan * i << endl;
+    cout << "첫 번째 숫자: ";
+    cin >> a;
+    cout << "연산자(+ - * /): ";
+    cin >> op;
+    cout << "두 번째 숫자: ";
+    cin >> b;
+
+    if (op == '+') {
+        cout << "결과: " << a + b << endl;
+    } else if (op == '-') {
+        cout << "결과: " << a - b << endl;
+    } else if (op == '*') {
+        cout << "결과: " << a * b << endl;
+    } else if (op == '/') {
+        if (b == 0) {
+            cout << "0으로 나눌 수 없습니다!" << endl;
+        } else {
+            cout << "결과: " << a / b << endl;
         }
+    } else {
+        cout << "잘못된 연산자입니다!" << endl;
     }
 
     return 0;
 }
 ```
 
-범위를 벗어나면 경고만 출력하고, 올바른 경우에만 `else` 안의 반복문이 실행됩니다.
+나눗셈은 `b == 0`인지 한 번 더 확인하고, 어떤 연산자에도 해당하지 않으면 마지막 `else`로 걸러냅니다.
 
 </RevealAnswer>
 
 ---
 
-### 3단계: 전체 구구단 출력하기 (중첩 반복문)
+### 3단계: 여러 번 계산하기 (반복문)
 
-**목표:** 2단부터 9단까지 **전체 구구단**을 한 번에 출력합니다.
+**목표:** 계산을 한 번만 하지 않고, 사용자가 **그만둘 때까지** 반복합니다.
 
 **요구사항**
 
-- 바깥 반복문으로 단(`dan`)을 **2부터 9까지** 바꾸세요.
-- 안쪽 반복문으로 곱하는 수(`i`)를 **1부터 9까지** 바꾸세요.
-- 단이 바뀔 때마다 보기 좋게 빈 줄을 한 줄 넣으세요.
+- `while` 반복문으로 계산을 반복하세요.
+- 연산자로 `q`를 입력하면 `계산기를 종료합니다.`를 출력하고 반복을 끝내세요. (`break` 활용)
 
 <RevealAnswer title="3단계 정답 보기 (클릭하여 펼침)">
 
@@ -109,30 +133,57 @@ int main() {
 using namespace std;
 
 int main() {
-    for (int dan = 2; dan <= 9; dan++) {
-        for (int i = 1; i <= 9; i++) {
-            cout << dan << " x " << i << " = " << dan * i << endl;
+    double a, b;
+    char op;
+
+    while (true) {
+        cout << "연산자(+ - * /, 종료는 q): ";
+        cin >> op;
+
+        if (op == 'q') {
+            cout << "계산기를 종료합니다." << endl;
+            break;
         }
-        cout << endl;
+
+        cout << "첫 번째 숫자: ";
+        cin >> a;
+        cout << "두 번째 숫자: ";
+        cin >> b;
+
+        if (op == '+') {
+            cout << "결과: " << a + b << endl;
+        } else if (op == '-') {
+            cout << "결과: " << a - b << endl;
+        } else if (op == '*') {
+            cout << "결과: " << a * b << endl;
+        } else if (op == '/') {
+            if (b == 0) {
+                cout << "0으로 나눌 수 없습니다!" << endl;
+            } else {
+                cout << "결과: " << a / b << endl;
+            }
+        } else {
+            cout << "잘못된 연산자입니다!" << endl;
+        }
     }
 
     return 0;
 }
 ```
 
-바깥 반복문이 한 번 돌 때마다 안쪽 반복문이 9번 돌아 **한 단**이 완성됩니다. 단이 끝날 때마다 `cout << endl;`로 줄을 띄웁니다.
+`q`를 먼저 검사해서 종료하고, 그 외에는 숫자를 입력받아 계산을 이어 갑니다.
 
 </RevealAnswer>
 
 ---
 
-### 4단계: 한 단 출력을 함수로 분리하기 (함수 구조화)
+### 4단계: 기능을 함수로 분리하기 (함수 구조화)
 
-**목표:** `main`의 코드를 정리하고, **한 단을 출력하는 기능**을 함수로 나눕니다.
+**목표:** `main`의 코드를 정리하고, 기능을 **함수 단위**로 나눕니다.
 
 **요구사항**
 
-다음 함수를 정의하고 `main`에서 호출하세요.
+다음 세 가지 함수를 정의하고 `main`에서 호출하세요.
 
 <table>
   <thead>
@@ -143,13 +194,21 @@ int main() {
   </thead>
   <tbody>
     <tr>
-      <td><code>void printDan(int dan)</code></td>
-      <td><code>dan</code>단을 1~9까지 한 줄씩 출력</td>
+      <td><code>void printMenu()</code></td>
+      <td>사용할 수 있는 연산자 안내 문구 출력</td>
+    </tr>
+    <tr>
+      <td><code>bool isValidOperator(char op)</code></td>
+      <td>
+        <code>op</code>가 <code>+ - * /</code> 중 하나면 <code>true</code>, 아니면 <code>false</code> 반환
+      </td>
+    </tr>
+    <tr>
+      <td><code>double calculate(double a, double b, char op)</code></td>
+      <td>연산자에 맞는 계산 결과를 반환</td>
     </tr>
   </tbody>
 </table>
-
-`main`에서는 2단부터 9단까지 반복하며 `printDan`을 호출하세요.
 
 <RevealAnswer title="4단계 정답 보기 (클릭하여 펼침)">
 
@@ -157,23 +216,60 @@ int main() {
 #include <iostream>
 using namespace std;
 
-void printDan(int dan) {
-    for (int i = 1; i <= 9; i++) {
-        cout << dan << " x " << i << " = " << dan * i << endl;
-    }
+void printMenu() {
+    cout << "=== 간단한 계산기 ===" << endl;
+    cout << "사용 가능한 연산자: + - * / (종료는 q)" << endl;
+}
+
+bool isValidOperator(char op) {
+    return op == '+' || op == '-' || op == '*' || op == '/';
+}
+
+double calculate(double a, double b, char op) {
+    if (op == '+') return a + b;
+    if (op == '-') return a - b;
+    if (op == '*') return a * b;
+    return a / b;
 }
 
 int main() {
-    for (int dan = 2; dan <= 9; dan++) {
-        printDan(dan);
-        cout << endl;
+    double a, b;
+    char op;
+
+    printMenu();
+
+    while (true) {
+        cout << "연산자: ";
+        cin >> op;
+
+        if (op == 'q') {
+            cout << "계산기를 종료합니다." << endl;
+            break;
+        }
+
+        if (!isValidOperator(op)) {
+            cout << "잘못된 연산자입니다!" << endl;
+            continue;
+        }
+
+        cout << "첫 번째 숫자: ";
+        cin >> a;
+        cout << "두 번째 숫자: ";
+        cin >> b;
+
+        if (op == '/' && b == 0) {
+            cout << "0으로 나눌 수 없습니다!" << endl;
+            continue;
+        }
+
+        cout << "결과: " << calculate(a, b, op) << endl;
     }
 
     return 0;
 }
 ```
 
-반복해서 쓰던 **한 단 출력** 코드를 `printDan` 함수로 묶으면, `main`은 “2단부터 9단까지 출력”이라는 흐름만 남아 훨씬 읽기 쉬워집니다.
+안내(`printMenu`)·유효성 검사(`isValidOperator`)·계산(`calculate`)을 함수로 나누면, `main`에는 “입력받아 검사하고 계산한다”는 흐름만 남아 훨씬 읽기 쉬워집니다.
 
 </RevealAnswer>
 
