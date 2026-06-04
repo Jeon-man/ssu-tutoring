@@ -5,7 +5,7 @@ summary: '컴퓨터 시스템'
 subject: 'computersystems'
 ---
 
-기말고사 자료를 바탕으로 주요 문제들의 정답과 해설을 정리합니다.
+기말고사 자료를 바탕으로 주요 문제들을 정리합니다. 먼저 스스로 풀어 보고, **정답 보기**를 눌러 답과 해설을 확인하세요.
 
 ---
 
@@ -13,7 +13,30 @@ subject: 'computersystems'
 
 ### 6번. 입출력 기계어 완성
 
-C 코드는 `scanf("%c%c", &ch1, &ch2)`로 **두 글자**를 입력받고, `printf("%c%c", ch1, ch2)`로 다시 출력합니다. (`ch1` = 0x0020, `ch2` = 0x0021)
+아래 C 코드와 동일한 기능을 수행하는 Pep/8 기계어 코드입니다. 음영(빈칸) 셀에 16진수 기계어를 한 칸씩 채우시오.
+
+```c
+#include <stdio.h>
+char ch1, ch2;
+int main() {
+    scanf("%c%c", &ch1, &ch2);
+    printf("%c%c", ch1, ch2);
+    return 0;
+}
+```
+
+```text
+49 00 20      ← 주어짐
+49 00 21      ← 주어짐
+( ? )         ← 빈칸
+( ? )         ← 빈칸
+( ? )         ← 빈칸
+( ? )         ← 빈칸
+```
+
+<RevealAnswer title="6번 정답 보기 (클릭하여 펼침)">
+
+`scanf("%c%c")`로 **두 글자**를 입력받고 `printf("%c%c")`로 다시 출력합니다. (`ch1` = 0x0020, `ch2` = 0x0021)
 
 <table>
   <thead>
@@ -74,9 +97,29 @@ C 코드는 `scanf("%c%c", &ch1, &ch2)`로 **두 글자**를 입력받고, `prin
 
 - 핵심: 입력은 **CHARI = `49`**, 출력은 **CHARO = `51`**. 주소만 ch1(0x20)/ch2(0x21)로 맞춰주면 됩니다.
 
+</RevealAnswer>
+
 ### 10번. 덧셈 프로그램 빈칸
 
-`sum = num + 10`을 계산해 출력하는 프로그램입니다.
+`sum = num + 10`을 계산해 출력하는 프로그램입니다. 빈칸 (1)~(3)을 채우시오.
+
+```asm
+        BR      main
+num:    .BLOCK  2
+sum:    .BLOCK  2
+( 1 )                       ; 상수 10 정의
+msg:    .ASCII  "enter a number: \x00"
+main:   STRO    msg, d
+        DECI    num, d
+        LDA     num, d
+        ADDA    bonus, i
+        ( 2 )               ; 더한 결과 저장
+        ( 3 )               ; 결과 출력
+        STOP
+        .END
+```
+
+<RevealAnswer title="10번 정답 보기 (클릭하여 펼침)">
 
 ```asm
         BR      main
@@ -96,9 +139,33 @@ main:   STRO    msg, d
 
 - 빈칸 정답: **`bonus: .EQUATE 10`**, **`STA sum, d`**, **`DECO sum, d`**
 
+</RevealAnswer>
+
 ### 11번. While 루프 빈칸
 
-0이 입력될 때까지 입력값을 누적(`sum += input`)하는 프로그램입니다.
+0이 입력될 때까지 입력값을 누적(`sum += input`)하는 프로그램입니다. 빈칸 (1)~(3)을 채우시오.
+
+```asm
+        BR      main
+input:  .BLOCK  2
+sum:    .BLOCK  2
+msg1:   .ASCII  "enter numbers(0: quit): \x00"
+msg2:   .ASCII  "sum: \x00"
+main:   STRO    msg1, d
+while:  DECI    input, d
+        ( 1 )               ; 비교를 위해 input 로드
+        CPA     0, i
+        ( 2 )               ; input == 0 이면 루프 탈출
+        ADDA    sum, d
+        STA     sum, d
+        ( 3 )               ; 루프 처음으로 복귀
+endWhile: STRO  msg2, d
+        DECO    sum, d
+        STOP
+        .END
+```
+
+<RevealAnswer title="11번 정답 보기 (클릭하여 펼침)">
 
 ```asm
         BR      main
@@ -122,9 +189,33 @@ endWhile: STRO  msg2, d
 
 - 빈칸 정답: **`LDA input, d`**, **`BREQ endWhile`**, **`BR while`**
 
+</RevealAnswer>
+
 ### 12번. 대문자 판별(IF 조건문) 빈칸
 
-`if (ch >= 'A' && ch <= 'Z')` 를 두 단계 비교로 구현합니다.
+`if (ch >= 'A' && ch <= 'Z')` 를 구현하는 코드입니다. 빈칸 (1)~(3)을 채우시오.
+
+```asm
+        BR      main
+ch:     .BLOCK  1
+main:   CHARI   ch, d
+if:     LDA     0x0000, i
+        LDBYTEA ch, d
+        CPA     'A', i
+        BRLT    else        ; ch < 'A' 이면 else
+        ( 1 )               ; ch 값을 다시 로드
+        ( 2 )               ; 'Z'와 비교
+        ( 3 )               ; ch > 'Z' 이면 else
+        STRO    msg1, d
+        BR      endIf
+else:   STRO    msg2, d
+endIf:  STOP
+msg1:   .ASCII  "Capital Letter\x00"
+msg2:   .ASCII  "Not Capital Letter\x00"
+        .END
+```
+
+<RevealAnswer title="12번 정답 보기 (클릭하여 펼침)">
 
 ```asm
         BR      main
@@ -148,13 +239,26 @@ msg2:   .ASCII  "Not Capital Letter\x00"
 
 - 빈칸 정답: **`LDBYTEA ch, d`**, **`CPA 'Z', i`**, **`BRGT else`**
 
+</RevealAnswer>
+
 ---
 
 ## 4. 심화 / 수 표현 문제 (문제 7~9)
 
 ### 7번. 2바이트 2의 보수 해석
 
-각 줄은 `[연산 코드 1바이트] [피연산자 2바이트]` 형식입니다. **뒤쪽 2바이트(피연산자)**를 16비트 2의 보수로 해석한 10진수 값을 적으면 됩니다. (앞 바이트의 첫 비트가 1이라도, 부호는 2바이트 피연산자의 최상위 비트로 판단)
+다음 각 줄에서 **뒤쪽 2바이트(피연산자)**를 16비트 2의 보수로 해석한 값을 10진수로 적으시오.
+
+```text
+11000000 00000000 00000100
+10000000 00000000 00000110
+11100001 00000000 00100000
+00000000
+```
+
+<RevealAnswer title="7번 정답 보기 (클릭하여 펼침)">
+
+각 줄은 `[연산 코드 1바이트] [피연산자 2바이트]` 형식입니다. 앞 바이트의 첫 비트가 1이라도, 부호는 **2바이트 피연산자**의 최상위 비트로 판단합니다.
 
 <table>
   <thead>
@@ -196,7 +300,32 @@ msg2:   .ASCII  "Not Capital Letter\x00"
 
 - 세 피연산자 모두 최상위 비트가 0이라 양수이며, 값은 각각 **4, 6, 32**입니다.
 
-### 8번. 코드 해독 (출력값: `2`)
+</RevealAnswer>
+
+### 8번. 코드 해독
+
+아래 Pep/8 기계어 코드를 수행했을 때의 출력값을 쓰고, 각 줄의 해독 과정을 적으시오.
+
+```text
+[코드]
+D1 00 1D
+F1 00 09
+C1 00 17
+71 00 19
+A1 00 1B
+F1 00 16
+51 00 16
+00
+
+[데이터]
+0x0016: 00
+0x0017: 00 05
+0x0019: 00 03
+0x001B: 00 30
+0x001D: 81
+```
+
+<RevealAnswer title="8번 정답 보기 (클릭하여 펼침)">
 
 이 문제의 핵심은 **자기수정코드(self-modifying code)** 입니다. 실행 중에 명령어 자신을 바꿔버립니다.
 
@@ -260,7 +389,18 @@ F1 00 16   ; STBYTEA 0x0016,d → 0x0016에 0x32 저장
 - `81`을 0x0009에 써넣어 `ADDA(71)`가 `SUBA(81)`로 바뀝니다 → `5 + 3`이 아니라 **`5 - 3 = 2`**.
 - 2를 0x30과 OR 연산하면 0x32 = 문자 **`'2'`** → 최종 **출력값은 `2`**.
 
+</RevealAnswer>
+
 ### 9번. % 연산 아이디어
+
+아래 C 코드의 `if` 문을 Pep/8 어셈블리어로 변환할 아이디어를 제시하시오. (수업에서 쓰지 않은 명령어를 사용해도 됩니다.)
+
+```c
+int number = 3;
+if (number % 2 == 0)
+```
+
+<RevealAnswer title="9번 정답 보기 (클릭하여 펼침)">
 
 `number % 2 == 0`은 짝수 판별입니다. **2진수에서 짝수/홀수는 최하위 비트(LSB) 하나로 결정**됩니다.
 
@@ -272,3 +412,5 @@ F1 00 16   ; STBYTEA 0x0016,d → 0x0016에 0x32 저장
 ```
 
 - `ANDA 1, i` 결과가 **0이면 짝수**, **1이면 홀수**임을 이용해 `BREQ`(또는 `BRNE`)로 분기하면 됩니다.
+
+</RevealAnswer>
