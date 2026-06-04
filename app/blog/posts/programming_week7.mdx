@@ -292,19 +292,25 @@ int main() {
             cin >> targetX;
             if (targetX == 'A') cout << A << endl;
             else if (targetX == 'B') cout << B << endl;
-        } else if (cmd == 3 || cmd == 4 || cmd == 5) {  // 3·4·5번: +, *, -
+        } else if (cmd == 3) {              // 3번: 덧셈
             cin >> targetX >> targetY;
-
-            // 두 변수의 '현재 값'을 먼저 꺼낸다
             int x = (targetX == 'A') ? A : B;
             int y = (targetY == 'A') ? A : B;
-
-            int result;
-            if (cmd == 3) result = x + y;       // 3번: 덧셈
-            else if (cmd == 4) result = x * y;  // 4번: 곱셈
-            else result = x - y;                // 5번: 뺄셈
-
-            // 계산 결과를 다시 X 변수에 저장
+            int result = x + y;
+            if (targetX == 'A') A = result;
+            else B = result;
+        } else if (cmd == 4) {              // 4번: 곱셈
+            cin >> targetX >> targetY;
+            int x = (targetX == 'A') ? A : B;
+            int y = (targetY == 'A') ? A : B;
+            int result = x * y;
+            if (targetX == 'A') A = result;
+            else B = result;
+        } else if (cmd == 5) {              // 5번: 뺄셈
+            cin >> targetX >> targetY;
+            int x = (targetX == 'A') ? A : B;
+            int y = (targetY == 'A') ? A : B;
+            int result = x - y;
             if (targetX == 'A') A = result;
             else B = result;
         }
@@ -314,7 +320,7 @@ int main() {
 }
 ```
 
-`cin >> targetX >> targetY`로 두 변수 이름을 꺼낸 뒤, X·Y의 **현재 값**을 가져와 계산하고 결과를 다시 X에 써 넣습니다.
+명령어 3·4·5번을 각각의 `else if` 가지로 분리했습니다. 각 가지에서 두 변수 이름을 받아 X·Y의 **현재 값**을 가져온 뒤 계산하고, 결과를 다시 X에 써 넣습니다.
 
 </RevealAnswer>
 
