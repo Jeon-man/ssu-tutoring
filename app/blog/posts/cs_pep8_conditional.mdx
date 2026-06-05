@@ -126,6 +126,13 @@ done:
 
 **핵심:** 분기 명령은 **거짓(원하는 조건의 반대)** 을 먼저 검사해 점프시키고, 분기하지 않고 그대로 흘러내려간 경우가 "조건이 참"인 상황이 됩니다. 참동작 끝에는 반드시 `BR`로 거짓동작(else)을 건너뛰어야 둘 다 실행되는 실수를 막을 수 있습니다.
 
+<Image
+  src="/cs/if_state.webp"
+  alt="if 문을 어셈블리 조건 분기로 변환하는 흐름"
+  width={972}
+  height={554}
+/>
+
 ---
 
 ## 문제 1 — 숫자 1개와 0 비교
@@ -162,32 +169,6 @@ endIf:    STOP                ; 프로그램 종료
 ```
 
 `LDA`는 값을 적재하면서 **상태비트(N 등)** 도 함께 설정합니다. 0과의 비교는 곧 **부호 판별**이라, 별도 비교 없이 `LDA` 직후 `BRLT`로 바로 분기할 수 있습니다.
-
-</RevealAnswer>
-
-<RevealAnswer title="문제 1 정답 보기 — CPA 버전 (클릭하여 펼침)">
-
-```asm
-         BR      main        ; 데이터 영역을 건너뛰고 main으로 점프
-num:     .BLOCK  2           ; 입력 숫자를 저장할 변수 (2바이트)
-great:   .ASCII  "greater than or equal to 0\x00"
-less:    .ASCII  "less than 0\x00"
-
-main:    DECI    num,d       ; 숫자 1개를 입력받아 num에 저장
-         LDA     num,d       ; num 값을 누산기 A로 적재
-         CPA     0,i         ; A - 0 으로 상태비트만 설정 (A는 그대로)
-         BRLT    else        ; num < 0 이면 else로 분기
-
-         STRO    great,d     ; (0 이상) "greater than or equal to 0" 출력
-         BR      endIf       ; else를 건너뛰어 종료로
-
-else:    STRO    less,d      ; (0 미만) "less than 0" 출력
-
-endIf:   STOP                ; 프로그램 종료
-         .END
-```
-
-`CPA 0,i`는 `A - 0`을 계산해 **상태비트만** 갱신하고 A 값은 바꾸지 않습니다. 이번처럼 0과 비교할 때는 `LDA`만으로도 N 비트가 정해져 `CPA`를 생략할 수 있지만, **비교 대상이 0이 아닐 때**(문제 2)는 `CPA`가 꼭 필요합니다.
 
 </RevealAnswer>
 
@@ -301,35 +282,3 @@ endIf:   STOP                ; 프로그램 종료
 `ADDA`가 덧셈 결과에 맞춰 상태비트(N 등)를 설정하므로, 0과의 비교는 별도 `CPA` 없이 `BRLT`로 바로 분기할 수 있습니다.
 
 </RevealAnswer>
-
-<RevealAnswer title="문제 3 정답 보기 — CPA 버전 (클릭하여 펼침)">
-
-```asm
-         BR      main        ; 데이터 영역을 건너뛰고 main으로 점프
-num1:    .BLOCK  2           ; 첫 번째 입력 숫자
-num2:    .BLOCK  2           ; 두 번째 입력 숫자
-great:   .ASCII  "greater than or equal to 0\x00"
-less:    .ASCII  "less than 0\x00"
-
-main:    DECI    num1,d      ; 첫 번째 숫자 입력
-         DECI    num2,d      ; 두 번째 숫자 입력
-
-         LDA     num1,d      ; A = num1
-         ADDA    num2,d      ; A = num1 + num2 (합)
-         CPA     0,i         ; 합 - 0 으로 상태비트만 설정 (A는 그대로)
-         BRLT    else        ; 합 < 0 이면 else로 분기
-
-         STRO    great,d     ; (0 이상) "greater than or equal to 0" 출력
-         BR      endIf       ; else를 건너뛰어 종료로
-
-else:    STRO    less,d      ; (0 미만) "less than 0" 출력
-
-endIf:   STOP                ; 프로그램 종료
-         .END
-```
-
-`ADDA` 직후 `CPA 0,i`로 합의 부호를 한 번 더 명시적으로 비교하는 버전입니다. 합산 결과(A)를 보존하면서 분기 조건만 판별합니다.
-
-</RevealAnswer>
-
----
