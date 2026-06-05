@@ -161,7 +161,33 @@ endIf:    STOP                ; 프로그램 종료
          .END
 ```
 
-`CPA`는 A 값을 바꾸지 않고 **상태비트만** 설정하므로, 비교 직후 `BRLT`로 분기를 결정할 수 있습니다. 음수를 입력하면 상태비트 N(음수)이 1이 되어 `BRLT`가 분기합니다.
+`LDA`는 값을 적재하면서 **상태비트(N 등)** 도 함께 설정합니다. 0과의 비교는 곧 **부호 판별**이라, 별도 비교 없이 `LDA` 직후 `BRLT`로 바로 분기할 수 있습니다.
+
+</RevealAnswer>
+
+<RevealAnswer title="문제 1 정답 보기 — CPA 버전 (클릭하여 펼침)">
+
+```asm
+         BR      main        ; 데이터 영역을 건너뛰고 main으로 점프
+num:     .BLOCK  2           ; 입력 숫자를 저장할 변수 (2바이트)
+great:   .ASCII  "greater than or equal to 0\x00"
+less:    .ASCII  "less than 0\x00"
+
+main:    DECI    num,d       ; 숫자 1개를 입력받아 num에 저장
+         LDA     num,d       ; num 값을 누산기 A로 적재
+         CPA     0,i         ; A - 0 으로 상태비트만 설정 (A는 그대로)
+         BRLT    else        ; num < 0 이면 else로 분기
+
+         STRO    great,d     ; (0 이상) "greater than or equal to 0" 출력
+         BR      endIf       ; else를 건너뛰어 종료로
+
+else:    STRO    less,d      ; (0 미만) "less than 0" 출력
+
+endIf:   STOP                ; 프로그램 종료
+         .END
+```
+
+`CPA 0,i`는 `A - 0`을 계산해 **상태비트만** 갱신하고 A 값은 바꾸지 않습니다. 이번처럼 0과 비교할 때는 `LDA`만으로도 N 비트가 정해져 `CPA`를 생략할 수 있지만, **비교 대상이 0이 아닐 때**(문제 2)는 `CPA`가 꼭 필요합니다.
 
 </RevealAnswer>
 
@@ -179,7 +205,7 @@ endIf:    STOP                ; 프로그램 종료
 
 문제 1과 구조가 같고, 비교 대상만 0에서 **100**으로 바뀝니다. `NEGA`로 음수를 만들고 `ADDA 100,i`로 100을 더해 100 이상인지 판별합니다.
 
-<RevealAnswer title="문제 2 정답 보기 (클릭하여 펼침)">
+<RevealAnswer title="문제 2 정답 보기 — CPA 없이 (클릭하여 펼침)">
 
 ```asm
          BR      main        ; 데이터 영역을 건너뛰고 main으로 점프
@@ -201,7 +227,33 @@ endIf:    STOP                ; 프로그램 종료
          .END
 ```
 
-비교 대상 값만 `CPA 100,i`로 바꾸면 됩니다. 나머지 분기·출력 구조는 문제 1과 동일합니다.
+비교 대상 값만 바꾸면 되고, 나머지 분기·출력 구조는 문제 1과 동일합니다.
+
+</RevealAnswer>
+
+<RevealAnswer title="문제 2 정답 보기 — CPA 버전 (클릭하여 펼침)">
+
+```asm
+         BR      main        ; 데이터 영역을 건너뛰고 main으로 점프
+num:     .BLOCK  2           ; 입력 숫자를 저장할 변수 (2바이트)
+great:   .ASCII  "greater than or equal to 100\x00"
+less:    .ASCII  "less than 100\x00"
+
+main:    DECI    num,d       ; 숫자 1개를 입력받아 num에 저장
+         LDA     num,d       ; A = num
+         CPA     100,i       ; A - 100 으로 상태비트만 설정 (A는 그대로)
+         BRLT    else        ; num < 100 이면 else로 분기
+
+         STRO    great,d     ; (100 이상) "greater than or equal to 100" 출력
+         BR      endIf       ; else를 건너뛰어 종료로
+
+else:    STRO    less,d      ; (100 미만) "less than 100" 출력
+
+endIf:   STOP                ; 프로그램 종료
+         .END
+```
+
+`CPA`는 사실상 **`SUBA`가 결과를 버리는 버전**입니다. 위의 무(無)CPA 버전과 달리 A 값을 보존하므로, 비교 후에도 `num` 원본 값을 계속 써야 할 때 유용합니다.
 
 </RevealAnswer>
 
@@ -219,34 +271,64 @@ endIf:    STOP                ; 프로그램 종료
 
 1. `DECI`를 두 번 사용해 `num1`, `num2`를 각각 입력받는다.
 2. `LDA num1,d`로 첫 수를 A에 넣고 `ADDA num2,d`로 둘째 수를 더해 **합**을 만든다.
-3. `CPA 0,i`로 0과 비교하고, 합이 음수면 `BRLT`로 "less" 라벨로 분기한다.
+3. 합과 0을 비교해 음수면 `BRLT`로 "else" 라벨로 분기한다. (0과 비교이므로 `CPA`는 생략 가능)
 
-<RevealAnswer title="문제 3 정답 보기 (클릭하여 펼침)">
+<RevealAnswer title="문제 3 정답 보기 — CPA 없이 (클릭하여 펼침)">
 
 ```asm
          BR      main        ; 데이터 영역을 건너뛰고 main으로 점프
 num1:    .BLOCK  2           ; 첫 번째 입력 숫자
 num2:    .BLOCK  2           ; 두 번째 입력 숫자
 great:   .ASCII  "greater than or equal to 0\x00"
-less:   .ASCII  "less than 0\x00"
+less:    .ASCII  "less than 0\x00"
+
+main:    DECI    num1,d      ; 첫 번째 숫자 입력
+         DECI    num2,d      ; 두 번째 숫자 입력
+
+         LDA     num1,d      ; A = num1
+         ADDA    num2,d      ; A = num1 + num2 (합, 상태비트도 설정됨)
+         BRLT    else        ; 합 < 0 이면 else로 분기
+
+         STRO    great,d     ; (0 이상) "greater than or equal to 0" 출력
+         BR      endIf       ; else를 건너뛰어 종료로
+
+else:    STRO    less,d      ; (0 미만) "less than 0" 출력
+
+endIf:   STOP                ; 프로그램 종료
+         .END
+```
+
+`ADDA`가 덧셈 결과에 맞춰 상태비트(N 등)를 설정하므로, 0과의 비교는 별도 `CPA` 없이 `BRLT`로 바로 분기할 수 있습니다.
+
+</RevealAnswer>
+
+<RevealAnswer title="문제 3 정답 보기 — CPA 버전 (클릭하여 펼침)">
+
+```asm
+         BR      main        ; 데이터 영역을 건너뛰고 main으로 점프
+num1:    .BLOCK  2           ; 첫 번째 입력 숫자
+num2:    .BLOCK  2           ; 두 번째 입력 숫자
+great:   .ASCII  "greater than or equal to 0\x00"
+less:    .ASCII  "less than 0\x00"
 
 main:    DECI    num1,d      ; 첫 번째 숫자 입력
          DECI    num2,d      ; 두 번째 숫자 입력
 
          LDA     num1,d      ; A = num1
          ADDA    num2,d      ; A = num1 + num2 (합)
-         BRLT    else        ; 합 < 0 이면 less 라벨로 분기
+         CPA     0,i         ; 합 - 0 으로 상태비트만 설정 (A는 그대로)
+         BRLT    else        ; 합 < 0 이면 else로 분기
 
          STRO    great,d     ; (0 이상) "greater than or equal to 0" 출력
-         BR      endIf        ; 종료 지점으로 점프
+         BR      endIf       ; else를 건너뛰어 종료로
 
-else:    STRO    less,d     ; (0 미만) "less than 0" 출력
+else:    STRO    less,d      ; (0 미만) "less than 0" 출력
 
-endIf:    STOP                ; 프로그램 종료
+endIf:   STOP                ; 프로그램 종료
          .END
 ```
 
-`ADDA`로 합을 누산기에 만든 뒤 `CPA 0,i`로 부호를 판별합니다. 합이 음수면 상태비트의 N(음수)이 반영되어 `BRLT`가 분기를 수행합니다.
+`ADDA` 직후 `CPA 0,i`로 합의 부호를 한 번 더 명시적으로 비교하는 버전입니다. 합산 결과(A)를 보존하면서 분기 조건만 판별합니다.
 
 </RevealAnswer>
 
