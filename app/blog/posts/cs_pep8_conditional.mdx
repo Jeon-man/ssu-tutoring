@@ -22,52 +22,78 @@ subject: 'computersystems'
   <tbody>
     <tr>
       <td>입력</td>
-      <td><code>DECI 대상,d</code></td>
+      <td>
+        <code>DECI 대상,d</code>
+      </td>
       <td>10진수를 입력받아 메모리(대상)에 저장</td>
     </tr>
     <tr>
       <td>적재</td>
-      <td><code>LDA 대상,d</code></td>
+      <td>
+        <code>LDA 대상,d</code>
+      </td>
       <td>메모리 값을 누산기(A)로 불러오기</td>
     </tr>
     <tr>
       <td>덧셈</td>
-      <td><code>ADDA 대상,d</code></td>
+      <td>
+        <code>ADDA 대상,d</code>
+      </td>
       <td>A에 메모리 값을 더하기</td>
     </tr>
     <tr>
       <td>비교</td>
-      <td><code>CPA 값,i</code></td>
+      <td>
+        <code>CPA 값,i</code>
+      </td>
       <td>A에서 값을 뺀 결과로 상태비트(N,Z,V,C)만 설정 (A는 변하지 않음)</td>
     </tr>
     <tr>
       <td>분기</td>
-      <td><code>BRLT 라벨</code></td>
-      <td>직전 비교 결과가 <strong>작으면(less than)</strong> 라벨로 점프</td>
+      <td>
+        <code>BRLT 라벨</code>
+      </td>
+      <td>
+        직전 비교 결과가 <strong>작으면(less than)</strong> 라벨로 점프
+      </td>
     </tr>
     <tr>
       <td>분기</td>
-      <td><code>BR 라벨</code></td>
+      <td>
+        <code>BR 라벨</code>
+      </td>
       <td>무조건 라벨로 점프</td>
     </tr>
     <tr>
       <td>출력</td>
-      <td><code>STRO 대상,d</code></td>
-      <td>대상 주소부터 <strong>널(\x00)</strong>을 만날 때까지 문자열 출력</td>
+      <td>
+        <code>STRO 대상,d</code>
+      </td>
+      <td>
+        대상 주소부터 <strong>널(\x00)</strong>을 만날 때까지 문자열 출력
+      </td>
     </tr>
     <tr>
       <td>지시어</td>
-      <td><code>.BLOCK n</code></td>
+      <td>
+        <code>.BLOCK n</code>
+      </td>
       <td>n바이트 메모리 공간 확보 (변수 자리)</td>
     </tr>
     <tr>
       <td>지시어</td>
-      <td><code>.ASCII "..."</code></td>
-      <td>문자열 상수 저장 (출력용으로 끝에 <code>\x00</code> 필요)</td>
+      <td>
+        <code>.ASCII "..."</code>
+      </td>
+      <td>
+        문자열 상수 저장 (출력용으로 끝에 <code>\x00</code> 필요)
+      </td>
     </tr>
     <tr>
       <td>종료</td>
-      <td><code>STOP</code> / <code>.END</code></td>
+      <td>
+        <code>STOP</code> / <code>.END</code>
+      </td>
       <td>프로그램 실행 종료 / 소스 끝 표시</td>
     </tr>
   </tbody>
@@ -96,20 +122,20 @@ subject: 'computersystems'
 ```asm
          BR      main        ; 데이터 영역을 건너뛰고 main으로 점프
 num:     .BLOCK  2           ; 입력 숫자를 저장할 변수 (2바이트)
-msgGE:   .ASCII  "greater than or equal to 0\x00"
-msgLT:   .ASCII  "less than 0\x00"
+great:   .ASCII  "greater than or equal to 0\x00"
+less:   .ASCII  "less than 0\x00"
 
 main:    DECI    num,d       ; 숫자 1개를 입력받아 num에 저장
          LDA     num,d       ; num 값을 누산기 A로 적재
          CPA     0,i         ; A - 0 으로 상태비트 설정
-         BRLT    less        ; num < 0 이면 less 라벨로 분기
+         BRLT    else        ; num < 0 이면 less 라벨로 분기
 
-         STRO    msgGE,d     ; (0 이상) "greater than or equal to 0" 출력
-         BR      done        ; 출력 끝났으니 종료 지점으로 점프
+         STRO    great,d     ; (0 이상) "greater than or equal to 0" 출력
+         BR      endIf        ; 출력 끝났으니 종료 지점으로 점프
 
-less:    STRO    msgLT,d     ; (0 미만) "less than 0" 출력
+else:    STRO    less,d     ; (0 미만) "less than 0" 출력
 
-done:    STOP                ; 프로그램 종료
+endIf:    STOP                ; 프로그램 종료
          .END
 ```
 
@@ -136,20 +162,20 @@ done:    STOP                ; 프로그램 종료
 ```asm
          BR      main        ; 데이터 영역을 건너뛰고 main으로 점프
 num:     .BLOCK  2           ; 입력 숫자를 저장할 변수 (2바이트)
-msgGE:   .ASCII  "greater than or equal to 100\x00"
-msgLT:   .ASCII  "less than 100\x00"
+great:   .ASCII  "greater than or equal to 100\x00"
+less:   .ASCII  "less than 100\x00"
 
 main:    DECI    num,d       ; 숫자 1개를 입력받아 num에 저장
          LDA     num,d       ; num 값을 누산기 A로 적재
          CPA     100,i       ; A - 100 으로 상태비트 설정
-         BRLT    less        ; num < 100 이면 less 라벨로 분기
+         BRLT    else        ; num < 100 이면 less 라벨로 분기
 
-         STRO    msgGE,d     ; (100 이상) "greater than or equal to 100" 출력
-         BR      done        ; 출력 끝났으니 종료 지점으로 점프
+         STRO    great,d     ; (100 이상) "greater than or equal to 100" 출력
+         BR      endIf        ; 출력 끝났으니 종료 지점으로 점프
 
-less:    STRO    msgLT,d     ; (100 미만) "less than 100" 출력
+else:    STRO    less,d     ; (100 미만) "less than 100" 출력
 
-done:    STOP                ; 프로그램 종료
+endIf:    STOP                ; 프로그램 종료
          .END
 ```
 
@@ -179,8 +205,8 @@ done:    STOP                ; 프로그램 종료
          BR      main        ; 데이터 영역을 건너뛰고 main으로 점프
 num1:    .BLOCK  2           ; 첫 번째 입력 숫자
 num2:    .BLOCK  2           ; 두 번째 입력 숫자
-msgGE:   .ASCII  "greater than or equal to 0\x00"
-msgLT:   .ASCII  "less than 0\x00"
+great:   .ASCII  "greater than or equal to 0\x00"
+less:   .ASCII  "less than 0\x00"
 
 main:    DECI    num1,d      ; 첫 번째 숫자 입력
          DECI    num2,d      ; 두 번째 숫자 입력
@@ -188,14 +214,14 @@ main:    DECI    num1,d      ; 첫 번째 숫자 입력
          LDA     num1,d      ; A = num1
          ADDA    num2,d      ; A = num1 + num2 (합)
          CPA     0,i         ; A - 0 으로 상태비트 설정
-         BRLT    less        ; 합 < 0 이면 less 라벨로 분기
+         BRLT    else        ; 합 < 0 이면 less 라벨로 분기
 
-         STRO    msgGE,d     ; (0 이상) "greater than or equal to 0" 출력
-         BR      done        ; 종료 지점으로 점프
+         STRO    great,d     ; (0 이상) "greater than or equal to 0" 출력
+         BR      endIf        ; 종료 지점으로 점프
 
-less:    STRO    msgLT,d     ; (0 미만) "less than 0" 출력
+else:    STRO    less,d     ; (0 미만) "less than 0" 출력
 
-done:    STOP                ; 프로그램 종료
+endIf:    STOP                ; 프로그램 종료
          .END
 ```
 
