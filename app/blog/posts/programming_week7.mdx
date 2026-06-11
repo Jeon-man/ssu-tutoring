@@ -220,12 +220,18 @@ int main() {
 
         if (cmd == 1) {                 // 1번: 값 대입
             cin >> targetX >> valueN;   // 대상 변수와 값을 이어서 받기
-            if (targetX == 'A') A = valueN;
-            else if (targetX == 'B') B = valueN;
+            if (targetX == 'A') {
+                A = valueN;
+            } else if (targetX == 'B') {
+                B = valueN;
+            }
         } else if (cmd == 2) {          // 2번: 값 출력
             cin >> targetX;             // 출력할 대상 변수만 받기
-            if (targetX == 'A') cout << A << endl;
-            else if (targetX == 'B') cout << B << endl;
+            if (targetX == 'A') {
+                cout << A << endl;
+            } else if (targetX == 'B') {
+                cout << B << endl;
+            }
         }
     }
 
@@ -286,33 +292,63 @@ int main() {
 
         if (cmd == 1) {                 // 1번: 값 대입
             cin >> targetX >> valueN;
-            if (targetX == 'A') A = valueN;
-            else if (targetX == 'B') B = valueN;
+            if (targetX == 'A') {
+                A = valueN;
+            } else if (targetX == 'B') {
+                B = valueN;
+            }
         } else if (cmd == 2) {          // 2번: 값 출력
             cin >> targetX;
-            if (targetX == 'A') cout << A << endl;
-            else if (targetX == 'B') cout << B << endl;
+            if (targetX == 'A') {
+                cout << A << endl;
+            } else if (targetX == 'B') {
+                cout << B << endl;
+            }
         } else if (cmd == 3) {              // 3번: 덧셈 (X += Y)
             cin >> targetX >> targetY;      // 연산에 쓸 변수 이름 두 개 받기
-            int x = (targetX == 'A') ? A : B;  // X의 현재 값
-            int y = (targetY == 'A') ? A : B;  // Y의 현재 값
-            int result = x + y;
-            if (targetX == 'A') A = result;  // 결과를 다시 X에 저장
-            else B = result;
+            if (targetX == 'A') {
+                if (targetY == 'A') {
+                    A = A + A;
+                } else {
+                    A = A + B;
+                }
+            } else {
+                if (targetY == 'A') {
+                    B = B + A;
+                } else {
+                    B = B + B;
+                }
+            }
         } else if (cmd == 4) {              // 4번: 곱셈 (X *= Y)
             cin >> targetX >> targetY;
-            int x = (targetX == 'A') ? A : B;
-            int y = (targetY == 'A') ? A : B;
-            int result = x * y;
-            if (targetX == 'A') A = result;
-            else B = result;
+            if (targetX == 'A') {
+                if (targetY == 'A') {
+                    A = A * A;
+                } else {
+                    A = A * B;
+                }
+            } else {
+                if (targetY == 'A') {
+                    B = B * A;
+                } else {
+                    B = B * B;
+                }
+            }
         } else if (cmd == 5) {              // 5번: 뺄셈 (X -= Y)
             cin >> targetX >> targetY;
-            int x = (targetX == 'A') ? A : B;
-            int y = (targetY == 'A') ? A : B;
-            int result = x - y;
-            if (targetX == 'A') A = result;
-            else B = result;
+            if (targetX == 'A') {
+                if (targetY == 'A') {
+                    A = A - A;
+                } else {
+                    A = A - B;
+                }
+            } else {
+                if (targetY == 'A') {
+                    B = B - A;
+                } else {
+                    B = B - B;
+                }
+            }
         }
     }
 
@@ -320,7 +356,7 @@ int main() {
 }
 ```
 
-명령어 3·4·5번을 각각의 `else if` 가지로 분리했습니다. 각 가지에서 두 변수 이름을 받아 X·Y의 **현재 값**을 가져온 뒤 계산하고, 결과를 다시 X에 써 넣습니다.
+명령어 3·4·5번을 각각의 `else if` 가지로 분리했습니다. `targetX`가 `'A'`인지 먼저 나눈 뒤, 그 안에서 `targetY`에 따라 연산합니다.
 
 </RevealAnswer>
 
@@ -372,45 +408,93 @@ int main() {
 
         if (cmd == 1) {                 // 1번: 값 대입
             cin >> targetX >> valueN;
-            if (targetX == 'A') A = valueN;
-            else if (targetX == 'B') B = valueN;
+            if (targetX == 'A') {
+                A = valueN;
+            } else if (targetX == 'B') {
+                B = valueN;
+            }
         } else if (cmd == 2) {          // 2번: 값 출력
             cin >> targetX;
-            if (targetX == 'A') cout << A << endl;
-            else if (targetX == 'B') cout << B << endl;
+            if (targetX == 'A') {
+                cout << A << endl;
+            } else if (targetX == 'B') {
+                cout << B << endl;
+            }
         } else if (cmd == 3) {              // 3번: 덧셈 (X += Y)
             cin >> targetX >> targetY;
-            int x = (targetX == 'A') ? A : B;  // X의 현재 값
-            int y = (targetY == 'A') ? A : B;  // Y의 현재 값
-            int result = x + y;
-            if (targetX == 'A') A = result;
-            else B = result;
+            if (targetX == 'A') {
+                if (targetY == 'A') {
+                    A = A + A;
+                } else {
+                    A = A + B;
+                }
+            } else {
+                if (targetY == 'A') {
+                    B = B + A;
+                } else {
+                    B = B + B;
+                }
+            }
         } else if (cmd == 4) {              // 4번: 곱셈 (X *= Y)
             cin >> targetX >> targetY;
-            int x = (targetX == 'A') ? A : B;
-            int y = (targetY == 'A') ? A : B;
-            int result = x * y;
-            if (targetX == 'A') A = result;
-            else B = result;
+            if (targetX == 'A') {
+                if (targetY == 'A') {
+                    A = A * A;
+                } else {
+                    A = A * B;
+                }
+            } else {
+                if (targetY == 'A') {
+                    B = B * A;
+                } else {
+                    B = B * B;
+                }
+            }
         } else if (cmd == 5) {              // 5번: 뺄셈 (X -= Y)
             cin >> targetX >> targetY;
-            int x = (targetX == 'A') ? A : B;
-            int y = (targetY == 'A') ? A : B;
-            int result = x - y;
-            if (targetX == 'A') A = result;
-            else B = result;
+            if (targetX == 'A') {
+                if (targetY == 'A') {
+                    A = A - A;
+                } else {
+                    A = A - B;
+                }
+            } else {
+                if (targetY == 'A') {
+                    B = B - A;
+                } else {
+                    B = B - B;
+                }
+            }
         } else if (cmd == 6) {              // 6번: 정수 나눗셈 (X /= Y)
             cin >> targetX >> targetY;
-
-            int x = (targetX == 'A') ? A : B;  // 나눠지는 수
-            int y = (targetY == 'A') ? A : B;  // 나누는 수
-
-            if (y == 0) {                   // 나누는 수가 0이면 연산하지 않음
-                cout << "에러: 0으로 나눌 수 없습니다!" << endl;
+            if (targetX == 'A') {
+                if (targetY == 'A') {
+                    if (A == 0) {
+                        cout << "에러: 0으로 나눌 수 없습니다!" << endl;
+                    } else {
+                        A = A / A;
+                    }
+                } else {
+                    if (B == 0) {
+                        cout << "에러: 0으로 나눌 수 없습니다!" << endl;
+                    } else {
+                        A = A / B;
+                    }
+                }
             } else {
-                int result = x / y;         // 정수 나눗셈은 소수점 이하를 버린다
-                if (targetX == 'A') A = result;
-                else B = result;
+                if (targetY == 'A') {
+                    if (A == 0) {
+                        cout << "에러: 0으로 나눌 수 없습니다!" << endl;
+                    } else {
+                        B = B / A;
+                    }
+                } else {
+                    if (B == 0) {
+                        cout << "에러: 0으로 나눌 수 없습니다!" << endl;
+                    } else {
+                        B = B / B;
+                    }
+                }
             }
         }
     }
@@ -419,7 +503,7 @@ int main() {
 }
 ```
 
-나눗셈 전에 `y == 0`인지 먼저 확인하고, 0이면 에러만 출력한 뒤 변수 값을 바꾸지 않습니다.
+나눗셈 전에 나누는 수(`targetY`가 가리키는 변수)가 0인지 먼저 확인하고, 0이면 에러만 출력한 뒤 변수 값을 바꾸지 않습니다.
 
 </RevealAnswer>
 
@@ -482,33 +566,91 @@ int B = 0;
 
 // 명령어 한 개를 해석해서 A 또는 B의 값을 조작하는 핵심 함수
 void executeCommand(int cmd, char targetX, char targetY, int value) {
-    int x = (targetX == 'A') ? A : B;   // 대상 변수 X의 현재 값
-    int y = (targetY == 'A') ? A : B;   // 대상 변수 Y의 현재 값
-
-    int result = x;     // 계산 결과 (기본값은 X 그대로)
-
-    if (cmd == 1) {
-        result = value;             // 1번: 값 대입
-    } else if (cmd == 2) {
-        cout << x << endl;          // 2번: 값 출력
-        return;                     // 출력만 하고 종료 (변수 변경 없음)
-    } else if (cmd == 3) {
-        result = x + y;             // 3번: 덧셈
-    } else if (cmd == 4) {
-        result = x * y;             // 4번: 곱셈
-    } else if (cmd == 5) {
-        result = x - y;             // 5번: 뺄셈
-    } else if (cmd == 6) {
-        if (y == 0) {               // 0으로 나누기 방지
-            cout << "에러: 0으로 나눌 수 없습니다!" << endl;
-            return;
+    if (cmd == 1) {                     // 1번: 값 대입
+        if (targetX == 'A') {
+            A = value;
+        } else {
+            B = value;
         }
-        result = x / y;             // 6번: 정수 나눗셈(몫)
+    } else if (cmd == 2) {              // 2번: 값 출력
+        if (targetX == 'A') {
+            cout << A << endl;
+        } else {
+            cout << B << endl;
+        }
+    } else if (cmd == 3) {              // 3번: 덧셈 (X += Y)
+        if (targetX == 'A') {
+            if (targetY == 'A') {
+                A = A + A;
+            } else {
+                A = A + B;
+            }
+        } else {
+            if (targetY == 'A') {
+                B = B + A;
+            } else {
+                B = B + B;
+            }
+        }
+    } else if (cmd == 4) {              // 4번: 곱셈 (X *= Y)
+        if (targetX == 'A') {
+            if (targetY == 'A') {
+                A = A * A;
+            } else {
+                A = A * B;
+            }
+        } else {
+            if (targetY == 'A') {
+                B = B * A;
+            } else {
+                B = B * B;
+            }
+        }
+    } else if (cmd == 5) {              // 5번: 뺄셈 (X -= Y)
+        if (targetX == 'A') {
+            if (targetY == 'A') {
+                A = A - A;
+            } else {
+                A = A - B;
+            }
+        } else {
+            if (targetY == 'A') {
+                B = B - A;
+            } else {
+                B = B - B;
+            }
+        }
+    } else if (cmd == 6) {              // 6번: 정수 나눗셈 (X /= Y)
+        if (targetX == 'A') {
+            if (targetY == 'A') {
+                if (A == 0) {
+                    cout << "에러: 0으로 나눌 수 없습니다!" << endl;
+                } else {
+                    A = A / A;
+                }
+            } else {
+                if (B == 0) {
+                    cout << "에러: 0으로 나눌 수 없습니다!" << endl;
+                } else {
+                    A = A / B;
+                }
+            }
+        } else {
+            if (targetY == 'A') {
+                if (A == 0) {
+                    cout << "에러: 0으로 나눌 수 없습니다!" << endl;
+                } else {
+                    B = B / A;
+                }
+            } else {
+                if (B == 0) {
+                    cout << "에러: 0으로 나눌 수 없습니다!" << endl;
+                } else {
+                    B = B / B;
+                }
+            }
+        }
     }
-
-    // 계산 결과를 대상 변수 X에 저장
-    if (targetX == 'A') A = result;
-    else B = result;
 }
 
 int main() {
