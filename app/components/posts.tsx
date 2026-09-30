@@ -9,6 +9,7 @@ import {
 const SUBJECT_SECTIONS: { subject: CourseSubject; label: string }[] = [
   { subject: 'programming1', label: '프로그래밍1' },
   { subject: 'computersystems', label: '컴퓨터 시스템' },
+  { subject: 'physicalmedia', label: '피지컬미디어' },
 ]
 
 function sortByDateDesc<T extends { metadata: { publishedAt: string } }>(
@@ -58,12 +59,10 @@ export function BlogPosts() {
     subject,
     label,
     posts: allBlogs.filter((p) => p.metadata.subject === subject),
-  })).filter((s) => s.posts.length > 0)
+  }))
 
   const other = allBlogs.filter(
-    (p) =>
-      p.metadata.subject !== 'programming1' &&
-      p.metadata.subject !== 'computersystems',
+    (p) => !SUBJECT_SECTIONS.some((section) => section.subject === p.metadata.subject),
   )
 
   let otherTheme = getSubjectTheme(undefined)

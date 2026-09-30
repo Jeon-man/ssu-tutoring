@@ -29,7 +29,7 @@ export async function GET() {
     <channel>
         <title>강의 자료</title>
         <link>${baseUrl}</link>
-        <description>프로그래밍1·컴퓨터 시스템 강의 자료 RSS</description>
+        <description>프로그래밍1·컴퓨터 시스템·피지컬미디어 강의 자료 RSS</description>
         ${itemsXml}
     </channel>
   </rss>`

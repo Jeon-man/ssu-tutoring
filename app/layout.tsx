@@ -16,11 +16,11 @@ export const metadata: Metadata = {
     template: '%s | 강의 자료',
   },
   description:
-    '프로그래밍1·컴퓨터 시스템 강의 자료 및 보충 자료를 모아 둔 페이지입니다.',
+    '프로그래밍1·컴퓨터 시스템·피지컬미디어 강의 자료 및 보충 자료를 모아 둔 페이지입니다.',
   openGraph: {
     title: '강의 자료',
     description:
-      '프로그래밍1·컴퓨터 시스템 강의 자료 및 보충 자료를 모아 둔 페이지입니다.',
+      '프로그래밍1·컴퓨터 시스템·피지컬미디어 강의 자료 및 보충 자료를 모아 둔 페이지입니다.',
     url: baseUrl,
     siteName: '강의 자료',
     locale: 'ko_KR',

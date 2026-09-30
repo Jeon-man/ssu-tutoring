@@ -1,7 +1,10 @@
 import fs from 'fs'
 import path from 'path'
 
-export type CourseSubject = 'programming1' | 'computersystems'
+export type CourseSubject =
+  | 'programming1'
+  | 'computersystems'
+  | 'physicalmedia'
 
 type Metadata = {
   title: string
@@ -27,7 +30,11 @@ function parseFrontmatter(fileContent: string) {
 
     switch (keyName) {
       case 'subject':
-        if (value === 'programming1' || value === 'computersystems') {
+        if (
+          value === 'programming1' ||
+          value === 'computersystems' ||
+          value === 'physicalmedia'
+        ) {
           metadata.subject = value
         }
         break
@@ -79,6 +86,7 @@ export function getBlogPosts() {
 export function getSubjectLabel(subject?: CourseSubject): string | null {
   if (subject === 'programming1') return '프로그래밍1'
   if (subject === 'computersystems') return '컴퓨터 시스템'
+  if (subject === 'physicalmedia') return '피지컬미디어'
   return null
 }
 
@@ -98,6 +106,14 @@ export function getSubjectTheme(subject?: CourseSubject) {
         'border-l-4 border-violet-600 bg-violet-100 shadow-sm ring-1 ring-violet-300/80 dark:border-violet-400 dark:bg-violet-950/55 dark:shadow-none dark:ring-violet-800/50',
       badge:
         'bg-violet-800 text-white shadow-sm ring-1 ring-violet-950/25 dark:bg-violet-500 dark:ring-violet-300/30',
+    }
+  }
+  if (subject === 'physicalmedia') {
+    return {
+      section:
+        'border-l-4 border-amber-600 bg-amber-100 shadow-sm ring-1 ring-amber-300/80 dark:border-amber-400 dark:bg-amber-950/55 dark:shadow-none dark:ring-amber-800/50',
+      badge:
+        'bg-amber-800 text-white shadow-sm ring-1 ring-amber-950/25 dark:bg-amber-500 dark:ring-amber-300/30',
     }
   }
   return {
