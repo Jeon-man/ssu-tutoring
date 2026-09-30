@@ -7,10 +7,12 @@ import {
 } from 'app/blog/utils'
 
 const SUBJECT_SECTIONS: { subject: CourseSubject; label: string }[] = [
+  { subject: 'physicalmedia', label: '피지컬미디어' },
   { subject: 'programming1', label: '프로그래밍1' },
   { subject: 'computersystems', label: '컴퓨터 시스템' },
-  { subject: 'physicalmedia', label: '피지컬미디어' },
 ]
+
+const LOCKED_SUBJECTS: CourseSubject[] = ['programming1', 'computersystems']
 
 function sortByDateDesc<T extends { metadata: { publishedAt: string } }>(
   posts: T[],
@@ -79,6 +81,7 @@ export function BlogPosts() {
     <div className="space-y-8 sm:space-y-10">
       {sections.map(({ subject, label, posts }) => {
         let theme = getSubjectTheme(subject)
+        let isLocked = LOCKED_SUBJECTS.includes(subject)
         return (
           <section
             key={label}
@@ -94,16 +97,26 @@ export function BlogPosts() {
                 자료 {posts.length}개
               </span>
             </div>
-            <div>
-              {posts.map((post) => (
-                <PostRow
-                  key={post.slug}
-                  slug={post.slug}
-                  publishedAt={post.metadata.publishedAt}
-                  title={post.metadata.title}
-                />
-              ))}
-            </div>
+            {isLocked ? (
+              <button
+                type="button"
+                disabled
+                className="rounded-lg bg-black/10 px-3 py-2 text-sm font-medium text-neutral-600 opacity-70 dark:bg-white/10 dark:text-neutral-300"
+              >
+                자료 열기 준비 중
+              </button>
+            ) : (
+              <div>
+                {posts.map((post) => (
+                  <PostRow
+                    key={post.slug}
+                    slug={post.slug}
+                    publishedAt={post.metadata.publishedAt}
+                    title={post.metadata.title}
+                  />
+                ))}
+              </div>
+            )}
           </section>
         )
       })}
