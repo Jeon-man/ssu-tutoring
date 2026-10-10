@@ -58,3 +58,78 @@ subject: 'physicalmedia'
 ```
 
 먼저 LED 한 개를 켜는 회로를 완성하고, 같은 원리를 12번·13번 핀에 각각 적용해 두 LED를 독립적으로 제어해 보세요.
+
+## 5. 버튼 두 개로 LED 밝기 조절하기
+
+PWM을 지원하는 9번 핀에 LED를 연결하고, 6번·7번 핀에는 버튼을 연결합니다. 버튼은 `INPUT_PULLUP` 모드이므로 버튼의 다른 쪽을 GND에 연결합니다. 이때 버튼을 누르면 `LOW`를 읽기 때문에 코드에서 `!digitalRead()`로 눌림 상태를 `HIGH`로 바꿔 사용합니다.
+
+- **BUTTON1 (6번 핀)**: 짧게 누르면 밝기가 증가하고, 0.5초 이상 누르고 있으면 계속 증가합니다.
+- **BUTTON2 (7번 핀)**: 짧게 누르면 밝기가 감소하고, 0.5초 이상 누르고 있으면 계속 감소합니다.
+- 밝기는 `0~255`이며, 최댓값 다음에는 `0`, 최솟값 다음에는 `255`로 순환합니다.
+
+```cpp
+const int LED = 9;
+const int BUTTON1 = 6;  // 밝기 증가
+const int BUTTON2 = 7;  // 밝기 감소
+
+int val1 = 0;
+int old_val1 = 0;
+int val2 = 0;
+int old_val2 = 0;
+
+int brightness = 0;
+unsigned long startTime1 = 0;
+unsigned long startTime2 = 0;
+
+void setup()
+{
+  pinMode(LED, OUTPUT);
+  pinMode(BUTTON1, INPUT_PULLUP);
+  pinMode(BUTTON2, INPUT_PULLUP);
+}
+
+void loop()
+{
+  val1 = !digitalRead(BUTTON1);
+  val2 = !digitalRead(BUTTON2);
+
+  if ((val1 == HIGH) && (old_val1 == LOW)) {
+    startTime1 = millis();
+    delay(10);
+  }
+
+  if ((val1 == HIGH) && (old_val1 == HIGH)) {
+    if ((millis() - startTime1) > 500) {
+      brightness++;
+      delay(10);
+
+      if (brightness > 255) {
+        brightness = 0;
+      }
+    }
+  }
+
+  if ((val2 == HIGH) && (old_val2 == LOW)) {
+    startTime2 = millis();
+    delay(10);
+  }
+
+  if ((val2 == HIGH) && (old_val2 == HIGH)) {
+    if ((millis() - startTime2) > 500) {
+      brightness--;
+      delay(10);
+
+      if (brightness < 0) {
+        brightness = 255;
+      }
+    }
+  }
+
+  old_val1 = val1;
+  old_val2 = val2;
+
+  analogWrite(LED, brightness);
+}
+```
+
+`analogWrite(LED, brightness)`는 0부터 255까지의 값으로 PWM 듀티비를 조절합니다. 값이 클수록 LED가 더 밝게 보입니다. LED에는 전류 제한 저항을 직렬로 연결하고, 아두이노 Uno 기준으로 9번 핀처럼 PWM을 지원하는 핀을 사용하세요.
