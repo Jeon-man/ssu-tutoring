@@ -61,75 +61,107 @@ subject: 'physicalmedia'
 
 ## 5. 버튼 두 개로 LED 밝기 조절하기
 
-PWM을 지원하는 9번 핀에 LED를 연결하고, 6번·7번 핀에는 버튼을 연결합니다. 버튼은 `INPUT_PULLUP` 모드이므로 버튼의 다른 쪽을 GND에 연결합니다. 이때 버튼을 누르면 `LOW`를 읽기 때문에 코드에서 `!digitalRead()`로 눌림 상태를 `HIGH`로 바꿔 사용합니다.
+LED는 13번 핀, 증가 버튼은 2번 핀, 감소 버튼은 3번 핀에 연결합니다. 이 예제는 `INPUT` 모드를 사용하므로 각 버튼 입력 핀이 떠 있지 않도록 풀다운 저항을 연결해야 합니다. 버튼을 누르면 입력 핀에 `HIGH`가 들어오도록 연결합니다.
 
-- **BUTTON1 (6번 핀)**: 짧게 누르면 밝기가 증가하고, 0.5초 이상 누르고 있으면 계속 증가합니다.
-- **BUTTON2 (7번 핀)**: 짧게 누르면 밝기가 감소하고, 0.5초 이상 누르고 있으면 계속 감소합니다.
-- 밝기는 `0~255`이며, 최댓값 다음에는 `0`, 최솟값 다음에는 `255`로 순환합니다.
+- **BUTTON1 (2번 핀)**: 누르고 있는 동안 밝기가 증가합니다.
+- **BUTTON2 (3번 핀)**: 누르고 있는 동안 밝기가 감소합니다.
+- 밝기는 20ms마다 한 단계씩 변하며, `0~255` 범위를 순환합니다.
 
 ```cpp
-const int LED = 9;
-const int BUTTON1 = 6;  // 밝기 증가
-const int BUTTON2 = 7;  // 밝기 감소
-
-int val1 = 0;
-int old_val1 = 0;
-int val2 = 0;
-int old_val2 = 0;
+const int LED = 13;
+const int BUTTON1 = 2;
+const int BUTTON2 = 3;
 
 int brightness = 0;
-unsigned long startTime1 = 0;
-unsigned long startTime2 = 0;
+
+const unsigned long FADE_INTERVAL = 20;
+
+unsigned long lastFadeTime = 0;
 
 void setup()
 {
+  Serial.begin(9600);
   pinMode(LED, OUTPUT);
-  pinMode(BUTTON1, INPUT_PULLUP);
-  pinMode(BUTTON2, INPUT_PULLUP);
+
+  pinMode(BUTTON1, INPUT);
+  pinMode(BUTTON2, INPUT);
+
+  Serial.println("=== 시작 ===");
+  Serial.print("초기 밝기: ");
+  Serial.println(brightness);
 }
 
 void loop()
 {
-  val1 = !digitalRead(BUTTON1);
-  val2 = !digitalRead(BUTTON2);
+  int btn1State = digitalRead(BUTTON1);
+  int btn2State = digitalRead(BUTTON2);
 
-  if ((val1 == HIGH) && (old_val1 == LOW)) {
-    startTime1 = millis();
-    delay(10);
-  }
+  unsigned long currentMillis = millis();
 
-  if ((val1 == HIGH) && (old_val1 == HIGH)) {
-    if ((millis() - startTime1) > 500) {
+  if (currentMillis - lastFadeTime >= FADE_INTERVAL) {
+    if (btn1State == HIGH) {
       brightness++;
-      delay(10);
-
       if (brightness > 255) {
         brightness = 0;
+        Serial.println("[버튼1] 255 초과 → 0으로 전환");
       }
+      Serial.print("[버튼1] 밝기: ");
+      Serial.println(brightness);
+      lastFadeTime = currentMillis;
     }
-  }
-
-  if ((val2 == HIGH) && (old_val2 == LOW)) {
-    startTime2 = millis();
-    delay(10);
-  }
-
-  if ((val2 == HIGH) && (old_val2 == HIGH)) {
-    if ((millis() - startTime2) > 500) {
+    else if (btn2State == HIGH) {
       brightness--;
-      delay(10);
-
       if (brightness < 0) {
         brightness = 255;
+        Serial.println("[버튼2] 0 미만 → 255로 전환");
       }
+      Serial.print("[버튼2] 밝기: ");
+      Serial.println(brightness);
+      lastFadeTime = currentMillis;
     }
   }
-
-  old_val1 = val1;
-  old_val2 = val2;
 
   analogWrite(LED, brightness);
 }
 ```
 
-`analogWrite(LED, brightness)`는 0부터 255까지의 값으로 PWM 듀티비를 조절합니다. 값이 클수록 LED가 더 밝게 보입니다. LED에는 전류 제한 저항을 직렬로 연결하고, 아두이노 Uno 기준으로 9번 핀처럼 PWM을 지원하는 핀을 사용하세요.
+`millis()`를 사용하므로 `delay()`로 프로그램 전체를 멈추지 않고 20ms마다 밝기를 바꿉니다. 시리얼 모니터를 `9600 baud`로 열면 밝기 변화와 범위 순환을 확인할 수 있습니다.
+
+> 주의: `analogWrite()`로 밝기를 부드럽게 조절하려면 PWM 지원 핀을 사용해야 합니다. 아두이노 Uno에서 13번 핀은 PWM 핀이 아니므로, 실제 페이드 효과를 확인하려면 LED 핀을 `3`, `5`, `6`, `9`, `10`, `11` 중 사용하지 않는 핀으로 변경하세요. LED에는 전류 제한 저항을 직렬로 연결합니다.
+
+## 6. 조도센서로 LED 밝기 제어하기
+
+조도센서를 `A5` 핀에 연결해 주변 밝기를 읽고, 그 값으로 6번 PWM 핀에 연결한 LED의 밝기를 조절합니다. 센서값은 시리얼 모니터에서 확인할 수 있습니다.
+
+```cpp
+const int LED = 6;   // PWM 핀
+const int LDR = A5;  // 조도센서 연결 핀
+int val = 0;
+int ledBrightness = 0;
+
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(LED, OUTPUT);
+  pinMode(LDR, INPUT);
+}
+
+void loop()
+{
+  val = analogRead(LDR);
+
+  analogWrite(LED, val);
+
+  Serial.print("LDR 값: ");
+  Serial.println(val);
+
+  delay(200);
+}
+```
+
+`analogRead()` 값은 `0~1023`이고, `analogWrite()`의 PWM 밝기값은 `0~255`입니다. LED 밝기가 센서값에 비례하도록 정확히 제어하려면 `map()`으로 범위를 변환해 사용합니다.
+
+```cpp
+ledBrightness = map(val, 0, 1023, 0, 255);
+analogWrite(LED, ledBrightness);
+```
