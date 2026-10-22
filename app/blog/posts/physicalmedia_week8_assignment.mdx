@@ -1,0 +1,151 @@
+---
+title: '피지컬미디어 8주차 과제'
+publishedAt: '2026-10-22'
+summary: '서보모터 기본 동작, 버튼을 이용한 각도 조절, 가변저항을 이용한 서보모터 제어 과제'
+subject: 'physicalmedia'
+---
+
+## 1번 문제: 서보모터 왕복 회전
+
+> 강의자료의 서보모터를 실험하라.
+
+아두이노 Uno의 4번 핀에 서보모터의 신호선을 연결하고, 서보모터가 `0°`에서 `180°`까지 이동한 뒤 다시 `0°` 방향으로 돌아오도록 작성합니다.
+
+![아두이노 Uno와 서보모터 연결 회로](/physical_media/week8_servo_problem1.png)
+
+```arduino
+#include <Servo.h>
+
+Servo myservo;
+int pos = 0;
+
+void setup()
+{
+  myservo.attach(4);
+}
+
+void loop()
+{
+  for (pos = 0; pos < 180; pos += 1)
+  {
+    myservo.write(pos);
+    delay(15);
+  }
+
+  delay(1000);
+
+  for (pos = 180; pos >= 1; pos -= 1)
+  {
+    myservo.write(pos);
+    delay(15);
+  }
+}
+```
+
+- `myservo.attach(4)`: 서보모터의 제어 신호를 4번 핀에 연결합니다.
+- `myservo.write(pos)`: 서보모터의 각도를 지정합니다.
+- `delay(15)`: 각도를 조금씩 바꾸는 사이의 시간을 조절해 부드럽게 움직이도록 합니다.
+
+## 2번 문제: 버튼으로 서보모터 각도 조절하기
+
+> DIDO: 버튼 2개를 가지고 실험하자. 버튼 1을 누르면 누를 때마다 0~180도까지 10도씩 증가하여 움직인다. 버튼 2를 누르면 누를 때마다 180에서 0도까지 10도씩 감소하여 움직인다. 0도에 도달하면 노란 LED, 180도에 도달하면 빨간 LED가 켜지도록 한다.
+
+버튼 1(2번 핀)을 누를 때마다 서보모터 각도를 `10°`씩 증가시키고, 버튼 2(3번 핀)를 누를 때마다 `10°`씩 감소시킵니다. 각도가 `0°`이면 노란 LED(13번 핀), `180°`이면 빨간 LED(12번 핀)가 켜지도록 구성합니다.
+
+![버튼 두 개, LED 두 개, 서보모터를 연결한 아두이노 Uno 회로](/physical_media/week8_servo_buttons_problem2.png)
+
+```arduino
+#include <Servo.h>
+
+Servo myServo;
+
+const int servoPin = 4;
+const int button1Pin = 2;  // 각도 증가 버튼
+const int button2Pin = 3;  // 각도 감소 버튼
+const int yellowLedPin = 13;
+const int redLedPin = 12;
+
+int angle = 0;
+
+int lastButton1State = HIGH;
+int lastButton2State = HIGH;
+
+void updateLeds() {
+  digitalWrite(yellowLedPin, angle == 0 ? HIGH : LOW);
+  digitalWrite(redLedPin, angle == 180 ? HIGH : LOW);
+}
+
+void setup() {
+  myServo.attach(servoPin);
+  myServo.write(angle);
+
+  pinMode(button1Pin, INPUT_PULLUP);
+  pinMode(button2Pin, INPUT_PULLUP);
+
+  pinMode(yellowLedPin, OUTPUT);
+  pinMode(redLedPin, OUTPUT);
+
+  updateLeds();
+}
+
+void loop() {
+  int button1State = digitalRead(button1Pin);
+  int button2State = digitalRead(button2Pin);
+
+  // 버튼 1을 누를 때마다 10도 증가
+  if (lastButton1State == HIGH && button1State == LOW) {
+    if (angle < 180) {
+      angle += 10;
+      myServo.write(angle);
+      updateLeds();
+    }
+    delay(200);  // 버튼 튐 방지
+  }
+
+  // 버튼 2를 누를 때마다 10도 감소
+  if (lastButton2State == HIGH && button2State == LOW) {
+    if (angle > 0) {
+      angle -= 10;
+      myServo.write(angle);
+      updateLeds();
+    }
+    delay(200);  // 버튼 튐 방지
+  }
+
+  lastButton1State = button1State;
+  lastButton2State = button2State;
+}
+```
+
+`INPUT_PULLUP` 모드를 사용하므로 버튼을 누르지 않을 때는 `HIGH`, 누르면 `LOW`가 읽힙니다. 이전 버튼 상태와 현재 상태를 비교해 눌린 순간에만 각도를 바꾸며, `delay(200)`으로 버튼 튐을 줄입니다.
+
+## 3번 문제: 가변저항으로 서보모터 제어하기
+
+> AIDO: 지난주 실험했던 가변저항을 이용하여 가변저항을 돌린 방향과 각도로 서보모터를 똑같이 움직여라.
+
+가변저항의 값을 `A5` 핀에서 읽어 서보모터의 각도로 변환하고, 4번 핀에 연결한 서보모터를 제어합니다.
+
+![가변저항과 서보모터를 연결한 아두이노 Uno 회로](/physical_media/week8_servo_pot_problem3.png)
+
+```arduino
+#include <Servo.h>
+
+Servo myServo;
+
+const int potPin = A5;  // 가변저항
+const int servoPin = 4; // 서보모터 신호 핀
+
+void setup() {
+  myServo.attach(servoPin);
+}
+
+void loop() {
+  int potValue = analogRead(potPin);
+  int angle = map(potValue, 0, 1023, 0, 180);
+
+  myServo.write(angle);
+  delay(15);
+}
+```
+
+`analogRead()`로 읽은 `0~1023` 범위의 값을 `map()`으로 `0~180`도 범위로 변환합니다. 가변저항을 돌리면 읽은 값에 따라 서보모터의 목표 각도가 바뀝니다.
