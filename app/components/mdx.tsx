@@ -107,6 +107,22 @@ function flattenCodeChildren(node: React.ReactNode): string {
 function Code({ children, ...props }) {
   const raw = flattenCodeChildren(children)
   const codeHTML = highlight(raw || '')
+  // 일부 C++ 구문에서 하이라이터가 기호를 누락하므로 원본 보존을 확인한다.
+  const entities = {
+    '&amp;': '&',
+    '&lt;': '<',
+    '&gt;': '>',
+    '&quot;': '"',
+    '&#39;': "'",
+    '&#x27;': "'",
+  }
+  const highlightedText = codeHTML
+    .replace(/<\/?span\b[^>]*>/g, '')
+    .replace(/&(?:amp|lt|gt|quot|#39|#x27);/g, (entity) => entities[entity])
+
+  if (highlightedText !== raw) {
+    return <code {...props}>{raw}</code>
+  }
   return <code dangerouslySetInnerHTML={{ __html: codeHTML }} {...props} />
 }
 

@@ -22,6 +22,8 @@ int pos = 0;
 void setup()
 {
   myservo.attach(4);
+  myservo.write(0);
+  delay(500);
 }
 
 void loop()
@@ -69,8 +71,13 @@ const int redLedPin = 12;
 
 int angle = 0;
 
-int lastButton1State = HIGH;
-int lastButton2State = HIGH;
+const unsigned long debounceMs = 30;
+int lastButton1Reading = LOW;
+int lastButton2Reading = LOW;
+int button1StableState = LOW;
+int button2StableState = LOW;
+unsigned long button1ChangedAt = 0;
+unsigned long button2ChangedAt = 0;
 
 void updateLeds() {
   digitalWrite(yellowLedPin, angle == 0 ? HIGH : LOW);
@@ -81,8 +88,8 @@ void setup() {
   myServo.attach(servoPin);
   myServo.write(angle);
 
-  pinMode(button1Pin, INPUT_PULLUP);
-  pinMode(button2Pin, INPUT_PULLUP);
+  pinMode(button1Pin, INPUT);
+  pinMode(button2Pin, INPUT);
 
   pinMode(yellowLedPin, OUTPUT);
   pinMode(redLedPin, OUTPUT);
@@ -91,35 +98,41 @@ void setup() {
 }
 
 void loop() {
-  int button1State = digitalRead(button1Pin);
-  int button2State = digitalRead(button2Pin);
+  const unsigned long now = millis();
+  const int reading1 = digitalRead(button1Pin);
+  const int reading2 = digitalRead(button2Pin);
 
-  // 버튼 1을 누를 때마다 10도 증가
-  if (lastButton1State == HIGH && button1State == LOW) {
-    if (angle < 180) {
-      angle += 10;
-      myServo.write(angle);
-      updateLeds();
-    }
-    delay(200);  // 버튼 튐 방지
+  if (reading1 != lastButton1Reading) {
+    button1ChangedAt = now;
+  }
+  if (reading2 != lastButton2Reading) {
+    button2ChangedAt = now;
   }
 
-  // 버튼 2를 누를 때마다 10도 감소
-  if (lastButton2State == HIGH && button2State == LOW) {
-    if (angle > 0) {
-      angle -= 10;
-      myServo.write(angle);
-      updateLeds();
+  if (now - button1ChangedAt >= debounceMs && reading1 != button1StableState) {
+    button1StableState = reading1;
+    if (button1StableState == HIGH) {
+      angle = min(angle + 10, 180);
     }
-    delay(200);  // 버튼 튐 방지
   }
 
-  lastButton1State = button1State;
-  lastButton2State = button2State;
+  if (now - button2ChangedAt >= debounceMs && reading2 != button2StableState) {
+    button2StableState = reading2;
+    if (button2StableState == HIGH) {
+      angle = max(angle - 10, 0);
+    }
+  }
+
+  lastButton1Reading = reading1;
+  lastButton2Reading = reading2;
+  myServo.write(angle);
+  updateLeds();
 }
 ```
 
-`INPUT_PULLUP` 모드를 사용하므로 버튼을 누르지 않을 때는 `HIGH`, 누르면 `LOW`가 읽힙니다. 이전 버튼 상태와 현재 상태를 비교해 눌린 순간에만 각도를 바꾸며, `delay(200)`으로 버튼 튐을 줄입니다.
+이 코드는 외부 풀다운 저항을 사용하는 연결 기준입니다. 각 입력 핀(2번·3번)을 10kΩ 저항으로 GND에 연결하고, 버튼을 누르면 해당 입력 핀이 5V와 연결되도록 합니다. 누르지 않으면 `LOW`, 누르면 `HIGH`입니다. 입력이 30ms 동안 유지된 경우에만 상태 변화를 인정하므로 버튼을 길게 눌러도 한 번에 10도만 움직입니다.
+
+노란 LED는 13번 핀, 빨간 LED는 12번 핀에서 각각 전류 제한 저항(예: 330Ω)을 거쳐 애노드(+)에 연결하고, 캐소드(-)는 GND에 연결합니다. 초기 각도는 0도이므로 처음에는 노란 LED가 켜집니다.
 
 ## 3번 문제: 가변저항으로 서보모터 제어하기
 
@@ -139,6 +152,8 @@ const int servoPin = 4; // 서보모터 신호 핀
 
 void setup() {
   myServo.attach(servoPin);
+  int initialAngle = map(analogRead(potPin), 0, 1023, 0, 180);
+  myServo.write(initialAngle);
 }
 
 void loop() {
@@ -151,3 +166,5 @@ void loop() {
 ```
 
 `analogRead()`로 읽은 `0~1023` 범위의 값을 `map()`으로 `0~180`도 범위로 변환합니다. 가변저항을 돌리면 읽은 값에 따라 서보모터의 목표 각도가 바뀝니다.
+
+가변저항의 가운데 단자는 A5, 양 끝 단자는 5V와 GND에 연결합니다. 회전 방향이 반대로 움직이면 양 끝 단자의 5V와 GND를 서로 바꾸거나, `map(potValue, 0, 1023, 180, 0)`으로 출력 범위를 뒤집습니다.

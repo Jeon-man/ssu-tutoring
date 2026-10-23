@@ -12,12 +12,14 @@
 
 ## 요구 사항
 
-- Node.js (`.nvmrc` 참고)
+- Node.js 22.23.4 이상 (22.x, `.nvmrc` 참고)
 - [pnpm](https://pnpm.io/)
 
 ## 로컬 실행
 
 ```bash
+nvm install
+nvm use
 pnpm install
 pnpm dev
 ```
