@@ -83,6 +83,36 @@ body {
   @apply font-medium;
 }
 
+.prose code .hljs-keyword,
+.prose code .hljs-type,
+.prose code .hljs-literal {
+  color: var(--sh-keyword);
+}
+
+.prose code .hljs-string,
+.prose code .hljs-char,
+.prose code .hljs-regexp {
+  color: var(--sh-string);
+}
+
+.prose code .hljs-number,
+.prose code .hljs-built_in {
+  color: var(--sh-property);
+}
+
+.prose code .hljs-title {
+  color: var(--sh-class);
+}
+
+.prose code .hljs-meta {
+  color: var(--sh-jsxliterals);
+}
+
+.prose code .hljs-comment {
+  color: var(--sh-comment);
+  font-style: italic;
+}
+
 .prose img {
   /* Don't apply styles to next/image */
   @apply m-0;

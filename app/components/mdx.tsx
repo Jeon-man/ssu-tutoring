@@ -2,8 +2,16 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import remarkGfm from 'remark-gfm'
-import { highlight } from 'sugar-high'
+import hljs from 'highlight.js/lib/core'
+import cpp from 'highlight.js/lib/languages/cpp'
+import java from 'highlight.js/lib/languages/java'
+import python from 'highlight.js/lib/languages/python'
 import React from 'react'
+
+hljs.registerLanguage('cpp', cpp)
+hljs.registerAliases(['arduino', 'c', 'c++'], { languageName: 'cpp' })
+hljs.registerLanguage('java', java)
+hljs.registerLanguage('python', python)
 
 function Table({ data }) {
   let headers = data.headers.map((header, index) => (
@@ -106,8 +114,12 @@ function flattenCodeChildren(node: React.ReactNode): string {
 
 function Code({ children, ...props }) {
   const raw = flattenCodeChildren(children)
-  const codeHTML = highlight(raw || '')
-  // 일부 C++ 구문에서 하이라이터가 기호를 누락하므로 원본 보존을 확인한다.
+  const language = /(?:^|\s)language-(\S+)/.exec(props.className || '')?.[1]
+  if (!language || !hljs.getLanguage(language)) {
+    return <code {...props}>{raw}</code>
+  }
+  const codeHTML = hljs.highlight(raw, { language, ignoreIllegals: true }).value
+  // 색상 처리 후에도 복사할 코드의 기호와 공백이 원본과 같은지 확인한다.
   const entities = {
     '&amp;': '&',
     '&lt;': '<',
