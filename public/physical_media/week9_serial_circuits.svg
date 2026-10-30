@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900">
+  <rect width="1200" height="900" fill="#f8fafc"/>
+  <style>text{font-family:Arial,sans-serif;fill:#172033;font-size:22px}.title{font-size:28px;font-weight:bold}.wire{fill:none;stroke:#334155;stroke-width:4;stroke-linejoin:round}.power{fill:none;stroke:#dc2626;stroke-width:4}.ground{fill:none;stroke:#2563eb;stroke-width:4}.part{fill:white;stroke:#334155;stroke-width:4}.note{font-size:18px;fill:#475569}</style>
+  <text x="48" y="55" class="title">1. Lecture example: LDR + LED + Serial (9600 baud)</text>
+  <rect x="40" y="80" width="1120" height="350" rx="20" fill="white" stroke="#cbd5e1"/>
+  <rect x="70" y="140" width="230" height="220" rx="12" fill="#e0f2fe" stroke="#0284c7" stroke-width="3"/>
+  <text x="92" y="180">Arduino Uno</text><text x="92" y="215" class="note">USB to computer</text>
+  <text x="245" y="268">A5</text><text x="245" y="318">D6</text>
+  <path d="M300 260H490" class="wire"/>
+  <path d="M490 120V170M490 220V260M490 260V300M490 350V390" class="wire"/>
+  <rect x="472" y="170" width="36" height="50" class="part"/>
+  <circle cx="490" cy="195" r="42" fill="none" stroke="#334155" stroke-width="2"/>
+  <path d="M440 140l25 25m-10-2 10 2-2-10M420 160l25 25m-10-2 10 2-2-10" class="wire"/>
+  <rect x="472" y="300" width="36" height="50" class="part"/>
+  <circle cx="490" cy="260" r="6" fill="#334155"/>
+  <text x="548" y="200">LDR (CdS)</text><text x="530" y="335">10 kOhm</text>
+  <text x="468" y="110" fill="#dc2626">5V</text><text x="465" y="415">GND</text>
+  <path d="M300 310H350V370H478Q490 346 502 370H740V220H790M840 220H900M950 220H1050V350" class="wire"/>
+  <rect x="790" y="202" width="50" height="36" class="part"/>
+  <text x="770" y="180">330 Ohm</text>
+  <path d="M900 195L945 220 900 245ZM950 190V250" class="part"/>
+  <path d="M945 175l25-25m-12 0h12v12M965 190l25-25m-12 0h12v12" class="wire"/>
+  <text x="915" y="290">LED</text><text x="874" y="265" class="note">A (+)</text><text x="958" y="265" class="note">K (-)</text>
+  <text x="1020" y="385">GND</text>
+  <text x="48" y="490" class="title">2. Assignment: Potentiometer + Processing circle</text>
+  <rect x="40" y="515" width="1120" height="330" rx="20" fill="white" stroke="#cbd5e1"/>
+  <rect x="70" y="570" width="230" height="220" rx="12" fill="#e0f2fe" stroke="#0284c7" stroke-width="3"/>
+  <text x="92" y="610">Arduino Uno</text><text x="92" y="645" class="note">USB to computer</text><text x="245" y="705">A5</text>
+  <path d="M300 700H580" class="wire"/>
+  <path d="M560 690l20 10-20 10" class="wire"/>
+  <rect x="580" y="645" width="40" height="110" class="part"/>
+  <path d="M600 585V645" class="power"/><path d="M600 755V805" class="ground"/>
+  <text x="580" y="570">5V</text><text x="570" y="830">GND</text>
+  <text x="655" y="685">10 kOhm potentiometer</text>
+  <text x="655" y="722" class="note">Center terminal (wiper) to A5</text>
+  <text x="655" y="758" class="note">Outer terminals to 5V and GND</text>
+  <text x="50" y="880" class="note">All GND points connect to Arduino GND. Disconnect USB before changing wiring.</text>
+</svg>
