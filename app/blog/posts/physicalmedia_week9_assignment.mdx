@@ -27,7 +27,7 @@ subject: 'physicalmedia'
 
 > PPT의 예제를 실행하라.
 
-조도센서 값을 A5에서 읽어 LED 밝기를 조절하고, 같은 값을 USB 시리얼 통신으로 Processing에 보냅니다. 강의자료의 동작을 유지하면서 별도 폰트 파일 없이 실행할 수 있도록 정리한 코드입니다.
+조도센서 값을 A5에서 읽어 LED 밝기를 조절하고, 같은 값을 USB 시리얼 통신으로 Processing에 보냅니다. 아래 코드는 강의자료 PDF 5·6쪽의 원문 코드입니다.
 
 ### 회로 연결
 
@@ -43,73 +43,88 @@ LED에는 전류 제한용 330Ω 저항을 직렬로 추가해 연결합니다. 
 
 ### Arduino 코드
 
-새 스케치에 다음 코드를 넣고 Uno에 업로드합니다. `analogRead()`의 `0~1023` 값을 PWM 출력 범위인 `0~255`로 바꿉니다.
+PDF 5쪽의 코드입니다. `LDR = 5`는 `analogRead(5)`에서 아날로그 입력 A5를 뜻합니다.
 
 ```arduino
-const int sensorPin = A5;
-const int ledPin = 6;
+const int LED = 6;
+const int LDR = 5;
+int val = 0;
+byte inByte = 0;
 
-void setup() {
-  pinMode(ledPin, OUTPUT);
+void setup()
+{
+  pinMode(LED, OUTPUT);
   Serial.begin(9600);
 }
 
-void loop() {
-  int sensorValue = analogRead(sensorPin);
-  int brightness = map(sensorValue, 0, 1023, 0, 255);
-
-  analogWrite(ledPin, brightness);
-  Serial.println(sensorValue);
-  delay(50);
+void loop()
+{
+  val = analogRead(LDR);
+  Serial.println(val);
+  analogWrite(LED, val/4);
+  if (Serial.available() >0)
+  {
+    inByte = Serial.read();
+  }
+  delay(100);
 }
 ```
 
 ### Processing 코드
 
-[Processing](https://processing.org/download)을 열고 Java 모드의 새 스케치에 넣습니다. `PORT_INDEX` 선택 방법은 아래 실행 순서를 참고하세요.
+PDF 6쪽의 코드입니다. [Processing](https://processing.org/download)의 Java 모드에서 사용합니다.
 
 ```java
 import processing.serial.*;
+int light = 0;
+Serial port;
+color c;
+String buffer = "";
+PFont font;
 
-Serial arduino;
-final int PORT_INDEX = 0;  // 콘솔 목록에서 Arduino 포트 번호로 변경
-volatile int sensorValue = 0;
+void setup()
+{
+  size(300, 300);
+  frameRate(20);
 
-void setup() {
-  size(600, 400);
-  textSize(28);
-  String[] ports = Serial.list();
-  printArray(ports);
-
-  if (PORT_INDEX < 0 || PORT_INDEX >= ports.length) {
-    println("Check the Arduino connection and PORT_INDEX.");
-    exit();
-    return;
-  }
-
-  arduino = new Serial(this, ports[PORT_INDEX], 9600);
-  arduino.clear();
-  arduino.bufferUntil('\n');
-}
-
-void draw() {
-  background(25);
+  font = loadFont("AmericanaBT-Italic-48.vlw");
   fill(255);
-  text("Light level: " + sensorValue, 35, height / 2);
+  textFont(font, 32);
+
+  println(Serial.list());
+  String arduinoPort = Serial.list()[1];
+  port = new Serial(this, arduinoPort, 9600);
 }
 
-void serialEvent(Serial port) {
-  String line = port.readStringUntil('\n');
-  if (line == null) return;
-  line = trim(line);
-  if (!line.matches("[0-9]{1,4}")) return;
+void draw()
+{
+  background(c);
+  text("light level", 10, 100);
 
-  int value = Integer.parseInt(line);
-  if (value >= 0 && value <= 1023) {
-    sensorValue = value;
+  text(light, 200, 100);
+
+  if (port.available() > 0)
+  {
+    int inByte = port.read();
+    if (inByte != 10)
+    {
+      buffer = buffer + char(inByte);
+    }
+    else
+    {
+      if (buffer.length() >1)
+      {
+        buffer = buffer.substring(0, buffer.length() - 1);
+        light = int(buffer);
+        buffer = "";
+        port.clear();
+      }
+    }
   }
 }
 ```
+
+원문은 `AmericanaBT-Italic-48.vlw` 폰트 파일을 스케치의 `data` 폴더에 필요로 합니다. 해당 파일은 PDF에 포함되어 있지 않습니다. Processing의 폰트 생성 기능으로 준비한 파일을 사용할 경우 `loadFont()`의 파일명을 그 파일명에 맞춰야 합니다. 또한 `Serial.list()[1]`은 두 번째 포트를 선택하므로, 콘솔에 출력된 목록에서 실제 아두이노 포트 번호를 확인해 실행 환경에 맞게 선택합니다. 위 코드 블록에는 PDF 원문의 파일명과 포트 번호를 그대로 두었습니다.
 
 조도센서를 손으로 가렸다가 빛을 비추면 화면의 숫자와 LED 밝기가 함께 바뀌어야 합니다.
 
@@ -122,6 +137,10 @@ void serialEvent(Serial port) {
 1. 가변저항의 가운데 단자(와이퍼)를 `A5`에 연결합니다.
 2. 양 끝 단자를 각각 `5V`, `GND`에 연결합니다.
 3. Uno를 컴퓨터에 USB로 연결합니다. 이 실습에는 LED가 필요하지 않습니다.
+
+![2번 과제 가변저항 연결 참고: 가운데 단자는 A5, 양 끝은 5V와 GND](/physical_media/week9_potentiometer_circuit.png)
+
+위 이미지에서 가변저항의 세 단자 연결을 참고하세요. 1번 회로에서 남아 있는 고정 저항과 LED 및 해당 배선은 2번 과제에 필요하지 않으므로 제거합니다. 이미지의 LED는 전류 제한 저항 없이 연결되어 있으므로, LED를 함께 사용하려면 반드시 330Ω 등의 저항을 LED와 직렬로 추가해야 합니다.
 
 가변저항은 보는 방향과 배선에 따라 값이 증가하는 회전 방향이 달라집니다. 오른쪽으로 돌릴 때 값이 증가하도록 배선하고, 반대라면 USB를 분리한 뒤 양 끝의 5V·GND 연결을 서로 바꾸세요. 가운데 A5 연결은 유지합니다.
 
