@@ -28,6 +28,8 @@ pnpm dev
 
 ## 환경 변수 (댓글 사용 시)
 
+현재 댓글 기능은 `lib/comments-config.ts`의 `COMMENTS_ENABLED = false`로 비활성화되어 있습니다. 댓글 UI를 표시하지 않으며, 댓글 조회·작성 API도 DB에 연결하지 않고 503을 반환합니다. DB를 다시 준비한 뒤 이 값을 `true`로 변경하면 재활성화됩니다.
+
 프로젝트 루트에 `.env.local`을 만들고 다음을 넣습니다.
 
 | 변수                        | 설명                                   |

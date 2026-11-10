@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getBlogPosts } from 'app/blog/utils'
 import { getSupabaseAdmin, type PostCommentRow } from 'lib/supabase/admin'
+import { COMMENTS_ENABLED } from 'lib/comments-config'
 
 const UUID_RE =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
@@ -10,6 +11,12 @@ function isValidPostSlug(slug: string) {
 }
 
 export async function GET(request: Request) {
+  if (!COMMENTS_ENABLED) {
+    return NextResponse.json(
+      { error: '댓글 기능이 비활성화되어 있습니다.' },
+      { status: 503, headers: { 'Cache-Control': 'no-store' } },
+    )
+  }
   let adminResult = getSupabaseAdmin()
   if (!adminResult.ok) {
     return NextResponse.json(adminResult.body, { status: adminResult.status })
@@ -40,6 +47,12 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  if (!COMMENTS_ENABLED) {
+    return NextResponse.json(
+      { error: '댓글 기능이 비활성화되어 있습니다.' },
+      { status: 503, headers: { 'Cache-Control': 'no-store' } },
+    )
+  }
   let adminResult = getSupabaseAdmin()
   if (!adminResult.ok) {
     return NextResponse.json(adminResult.body, { status: adminResult.status })
