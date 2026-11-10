@@ -1,0 +1,38 @@
+---
+title: '피지컬미디어 이번 주 과제: LCD 출력'
+publishedAt: '2026-11-10'
+summary: 'LCD 연결 회로와 LiquidCrystal 라이브러리를 사용하는 예제 코드'
+subject: 'physicalmedia'
+---
+
+## 과제
+
+1. 교재에 있는 LCD 예제를 응용하여 빛센서나 가변저항 값을 LCD로 디스플레이하시오.
+
+## 회로
+
+![아두이노 Uno, 16×2 LCD, 가변저항을 연결한 회로](/physical_media/lcd_20261110_circuit.png)
+
+## 코드
+
+```cpp
+#include <LiquidCrystal.h>
+
+// initialize the library with the numbers of the interface pins
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+
+void setup() {
+  // set up the LCD's number of columns and rows:
+  lcd.begin(16, 2);
+  // Print a message to the LCD.
+  lcd.print("hello, world!");
+}
+
+void loop() {
+  // set the cursor to column 0, line 1
+  // (note: line 1 is the second row, since counting begins with 0):
+  lcd.setCursor(0, 1);
+  // print the number of seconds since reset:
+  lcd.print(millis()/1000);
+}
+```
